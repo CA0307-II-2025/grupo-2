@@ -2,19 +2,32 @@
 
 ## 🎯  Objetivo del Sprint:
 
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
-
+Sentar las bases del proyecto, tener la base de datos lista y confiable, definir claramente el tema de investigación y preparar el dashboard inicial para poder avanzar con análisis más complejos.
 ## 😃  Historias de usuario
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
+- HU#1 - "Cargar datos crudos desde CSV" (Estimación: 5 pts) .
+
+- HU#3 - "Hacer análisis exploratorio de columnas" (Estimación: 3 pts) .
+
+- HU#4 - "Buscar bibliografía sobre análisis de cópulas" (Estimación: 2 pts) .
+
+- HU#5 - "Buscar bibliografía sobre análisis de valores extremos" (Estimación: 2 pts) .
+
+- HU#6 - "Configurar dashboard inicial" (Estimación: 3 pts) . Joseph Romero Chinchilla
+
+- HU#7 - "Limpiar datos" (Estimación: 5 pts) .
+
+- HU#8 - "Aplicar procedimientos no paramétricos encontrados en bibliografía" (Estimación: 3 pts) .
+
+- HU#9 - "Actualizar dashboard con nueva información" (Estimación: 2 pts) .
+
+- HU#10 - "Comenzar redacción del reporte escrito" (Estimación: 2 pts) .
 
 
 
 ## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
+- *Semana 1:* _Cargar datos crudos, hacer análisis exploratorio de columnas, buscar bibliografía sobre cópulas y valores extremos, configurar dashboard inicial._
+- *Semana 2:* _Limpiar datos, aplicar procedimientos no paramétricos, actualizar dashboard con datos limpios y empezar la redacción del reporte.._
 
 
 ## 🥇  Criterios de aceptación del Sprint:
@@ -45,12 +58,12 @@ El formato para cada estudiante debe ser
 
 
 
-##  Fecha: YYYY-MM-DD
+##  Fecha: 2025-08-21
 
-### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Estudiante Joseph Romero:
+- **¿Qué hice ayer?**: Configuré GitHub, instalé UV en VSCode, instalé pre-commit, investigué sobre cómo se utiliza UV, y además vi videos y documentación sobre el uso de Plotly para hacer dashboards.
+- **¿Qué haré hoy?**:Implementar el dashboard en Python.
+- **¿Hay algo que me está bloqueando?**:Por el momento no hay nada que me bloquee.
 
 ### Estudiante B:
 - **¿Qué hice ayer?**:
