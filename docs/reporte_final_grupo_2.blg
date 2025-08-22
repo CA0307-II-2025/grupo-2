@@ -1,0 +1,61 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: reporte_final_grupo_2.aux
+Reallocating 'name_of_file' (item size: 1) to 8 items.
+The style file: apacite.bst
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+Reallocating 'glb_str_end' (item size: 4) to 20 items.
+Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
+Reallocating 'global_strs' (item size: 1) to 4000000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 9000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Database file #1: referencias.bib
+Warning--entry type for "Siddiqui2022" isn't style-file defined
+--line 133 of file referencias.bib
+apacite.bst [2013/07/21 v6.03 APA bibliography style]
+You've used 7 entries,
+            6951 wiz_defined-function locations,
+            1327 strings with 12200 characters,
+and the built_in function-call counts, 13097 in all, are:
+= -- 1636
+> -- 103
+< -- 588
++ -- 615
+- -- 14
+* -- 839
+:= -- 2370
+add.period$ -- 29
+call.type$ -- 7
+change.case$ -- 119
+chr.to.int$ -- 0
+cite$ -- 14
+duplicate$ -- 338
+empty$ -- 541
+format.name$ -- 178
+if$ -- 2512
+int.to.chr$ -- 0
+int.to.str$ -- 21
+missing$ -- 0
+newline$ -- 194
+num.names$ -- 56
+pop$ -- 238
+preamble$ -- 1
+purify$ -- 28
+quote$ -- 0
+skip$ -- 860
+stack$ -- 0
+substring$ -- 670
+swap$ -- 193
+text.length$ -- 14
+text.prefix$ -- 0
+top$ -- 1
+type$ -- 632
+warning$ -- 0
+while$ -- 55
+width$ -- 0
+write$ -- 231
+(There was 1 warning)

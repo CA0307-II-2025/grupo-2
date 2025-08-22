@@ -2,29 +2,33 @@
 % Paquetes
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{graphicx}   % Para incluir imágenes (ej. logo)
-\usepackage{geometry}   % Para márgenes
+\usepackage{graphicx}   
+\usepackage{geometry}
 \geometry{left=3cm,right=3cm,top=3cm,bottom=3cm}
+\usepackage{setspace}
+\setstretch{1.5}
+\usepackage{apacite}
+\bibliographystyle{apacite}
 
 \begin{document}
 
 % Portada
 \begin{titlepage}
     \centering
-
+    
     % Logo opcional
     \includegraphics[width=0.3\textwidth]{LogoUCR.png}\par\vspace{1cm}
-
+    
     {\scshape\LARGE Universidad De Costa Rica \par}
-    \vspace{2cm}
-
+    \vspace{1.5cm}
+    
     {\Huge\bfseries Proyecto Estadística II\par}
-    \vspace{3cm}
+    \vspace{1.5cm}
 
     {\large \bfseries Autores:\par}
-    {\Large Dixon Montero Hernández \par}
-    {\Large Andrey \par}
-    {\Large Joseph\par}
+    {\Large Dixon Montero Hernández - B99109 \par}
+    {\Large Jose Andrey Prado Rojas - C36174 \par}
+    {\Large Joseph Romero Chinchilla - C37006\par}
     \vspace{0.5cm}
     {\large Facultad de Ciencias Básicas, Universidad De Costa Rica\par}
     {\large CA0307: Estadística Actuarial II}
@@ -32,10 +36,29 @@
 
     {\large\bfseries Profesor:\par}
     {\large Dr. Maikol Solís Chacón}
-
+    
     \vfill
-
+    
     {\large \today\par}
 \end{titlepage}
 
+\section*{Introducción}
+
+El estudio de fenómenos extremos vinculados a catástrofes naturales, tales como inundaciones o terremotos, ha experimentado un avance significativo en los últimos años mediante la adopción de metodologías probabilísticas multivariadas. Estas metodologías permiten representar de manera más precisa la compleja interdependencia entre variables esenciales, ofreciendo un marco analítico robusto frente a la incertidumbre inherente a los eventos extremos. En este contexto, las cópulas se han consolidado como una herramienta estadística fundamental, ya que posibilitan construir distribuciones conjuntas a partir de distribuciones marginales, separando el modelado de cada variable individual de la estructura de dependencia que las vincula. Esta flexibilidad resulta particularmente relevante en el análisis de fenómenos naturales extremos, dado que las variables involucradas rara vez presentan distribuciones normales y suelen estar fuertemente correlacionadas \cite{DelfinerGutierrez2025,PerezGarcia2004}.  
+
+Paralelamente, la teoría de valores extremos (Extreme Value Theory, EVT) se ha establecido como un marco esencial para modelar y predecir eventos raros y catastróficos, proporcionando herramientas matemáticas capaces de estimar las colas de distribución de dichos fenómenos \cite{Siddiqui2022,DelfinerGutierrez2025}. La integración de EVT con cópulas permite capturar simultáneamente la dependencia entre múltiples variables extremas, lo que resulta crucial para obtener estimaciones precisas de riesgos multivariados, como la combinación de intensidad y duración de lluvias extremas o la simultaneidad de aceleraciones sísmicas en distintos modos estructurales.  
+
+En el ámbito hidrológico, la aplicación de cópulas ha favorecido la estimación de riesgos de inundaciones, evidenciada en investigaciones que utilizan modelos de vine copula para evaluar la probabilidad conjunta de que la duración, el volumen y el pico de una crecida excedan determinados umbrales \cite{DelfinerGutierrez2025}. Este enfoque integral permite medir con mayor exactitud las probabilidades de eventos multivariados, proporcionando información clave para el diseño de sistemas de alerta temprana y estrategias de mitigación. Aunque la probabilidad combinada de ocurrencia de eventos extremos suele ser baja, su correcta identificación y modelado contribuye a reducir la incertidumbre en la gestión del riesgo y optimizar la toma de decisiones \cite{PerezGarcia2004}.  
+
+De manera análoga, en ingeniería sísmica, las cópulas han demostrado su utilidad al evaluar riesgos desde una perspectiva multivariada. Un caso ilustrativo corresponde a un estudio probabilístico de un rascacielos de acero en la Ciudad de México, en el que se consideraron como variables de entrada las aceleraciones espectrales asociadas a los primeros modos de vibración y como variable de salida la máxima deformación entre los pisos. La modelización de la relación entre estas variables mediante cópulas permitió obtener tasas de excedencia conjuntas más precisas que las ofrecidas por enfoques univariados tradicionales, los cuales tienden a sobreestimar los riesgos \cite{Siddiqui2022}. Este ejemplo evidencia cómo la incorporación de dependencias estadísticas mejora la exactitud de las estimaciones y fortalece la evaluación de la seguridad estructural ante eventos sísmicos.  
+
+En el ámbito asegurador y de gestión de riesgos financieros, la modelización probabilística de eventos extremos permite cuantificar pérdidas potenciales derivadas de catástrofes naturales y establecer primas adecuadas para la transferencia de riesgo. La combinación de cópulas con análisis de valor en riesgo (VaR) y técnicas de simulación proporciona herramientas robustas para evaluar escenarios de pérdidas catastróficas y diseñar estrategias de mitigación frente a incertidumbres significativas \cite{PerezGarcia2004}.  
+
+En este trabajo, se pretende aplicar estas metodologías al estudio de desastres naturales en Costa Rica, considerando fenómenos como inundaciones, deslizamientos y eventos sísmicos, y generando un marco probabilístico que permita evaluar y gestionar el riesgo de manera más precisa. Este enfoque busca adaptarse a las particularidades geográficas, hidrológicas y sísmicas del país, ofreciendo información valiosa para la prevención, planificación y toma de decisiones en contextos de alta incertidumbre.  
+
+En conjunto, estos avances evidencian que la aplicación de cópulas en el análisis de desastres naturales proporciona una visión integral y versátil. Al capturar las relaciones entre variables clave y estimar la probabilidad real de eventos extremos multivariados, las cópulas se consolidan como un método esencial para diseñar estrategias de prevención, optimizar el diseño estructural y administrar el riesgo en escenarios complejos e inciertos \cite{DelfinerGutierrez2025,Siddiqui2022,PerezGarcia2004}.  
+
+
+\nocite{*}% Mostrar todas
+\bibliography{referencias}
 \end{document}

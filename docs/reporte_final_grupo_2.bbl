@@ -1,0 +1,209 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Chand%
+\ \protect \BOthers {.}}{%
+Chand%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2024}}%
+}]{%
+Chand2024}
+\APACinsertmetastar {%
+Chand2024}%
+\begin{APACrefauthors}%
+Chand, R.%
+, Nguyen-Huy, T.%
+, Deo, R\BPBI C.%
+, Ghimire, S.%
+, Ali, M.%
+\BCBL {}\ \BBA {} Ghahramani, A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2024}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Copula-Probabilistic Flood Risk Analysis with an Hourly
+  Flood Monitoring Index} {Copula-probabilistic flood risk analysis with an
+  hourly flood monitoring index}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Water}{16}{11}{1560}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.3390/w16111560} \end{APACrefURL}
+\newblock
+\APACrefnote{Published: 29 May 2024}
+\newblock
+\begin{APACrefDOI} \doi{10.3390/w16111560} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Delfiner%
+\ \BBA {} Gutiérrez~Girault%
+}{%
+Delfiner%
+\ \BBA {} Gutiérrez~Girault%
+}{%
+{\protect \APACyear {2025}}%
+}]{%
+DelfinerGutierrez2025}
+\APACinsertmetastar {%
+DelfinerGutierrez2025}%
+\begin{APACrefauthors}%
+Delfiner, M\BPBI T.%
+\BCBT {}\ \BBA {} Gutiérrez~Girault, M\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2025}{}{}.
+\newblock
+\APACrefbtitle {Aplicación de la teoría de valores extremos al gerenciamiento
+  del riesgo} {Aplicación de la teoría de valores extremos al gerenciamiento
+  del riesgo}\ \APACbVolEdTR {}{Working Paper / Documento}.
+\newblock
+\APACaddressInstitution{}{UCEMA}.
+\newblock
+\begin{APACrefURL}
+  \url{https://ucema.edu.ar/publicaciones/download/documentos/217.pdf}
+  \end{APACrefURL}
+\newblock
+\APACrefnote{Descargado de: UCEMA, 23 de agosto de 2025}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Krupskii%
+\ \BBA {} Joe%
+}{%
+Krupskii%
+\ \BBA {} Joe%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+krupskii2013factor}
+\APACinsertmetastar {%
+krupskii2013factor}%
+\begin{APACrefauthors}%
+Krupskii, P.%
+\BCBT {}\ \BBA {} Joe, H.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Factor copula models for multivariate data} {Factor
+  copula models for multivariate data}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Multivariate Analysis}{120}{}{85--101}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Patton%
+}{%
+Patton%
+}{%
+{\protect \APACyear {2012}}%
+}]{%
+patton2012review}
+\APACinsertmetastar {%
+patton2012review}%
+\begin{APACrefauthors}%
+Patton, A\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A review of copula models for economic time series} {A
+  review of copula models for economic time series}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Multivariate Analysis}{110}{}{4--18}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Pérez~Fructuoso%
+\ \BBA {} García~Pérez%
+}{%
+Pérez~Fructuoso%
+\ \BBA {} García~Pérez%
+}{%
+{\protect \APACyear {2004}}%
+}]{%
+PerezGarcia2004}
+\APACinsertmetastar {%
+PerezGarcia2004}%
+\begin{APACrefauthors}%
+Pérez~Fructuoso, M\BPBI J.%
+\BCBT {}\ \BBA {} García~Pérez, A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2004}{}{}.
+\newblock
+\APACrefbtitle {Aplicación de la teoría del valor extremo al ajuste y
+  modelación de catástrofes.} {Aplicación de la teoría del valor extremo al
+  ajuste y modelación de catástrofes.}
+\newblock
+\begin{APACrefURL}
+  \url{https://documentacion.fundacionmapfre.org/documentacion/en/media/group/1026232.do}
+  \end{APACrefURL}
+\newblock
+\APACrefnote{Accedido el 21 de agosto de 2025}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Rivera-Vargas%
+\ \BBA {} Heredia-Zavoni%
+}{%
+Rivera-Vargas%
+\ \BBA {} Heredia-Zavoni%
+}{%
+{\protect \APACyear {2022}}%
+}]{%
+RiveraVargas2022}
+\APACinsertmetastar {%
+RiveraVargas2022}%
+\begin{APACrefauthors}%
+Rivera-Vargas, D.%
+\BCBT {}\ \BBA {} Heredia-Zavoni, E.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2022}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Análisis probabilístico multivariado de peligro
+  sísmico usando cópulas} {Análisis probabilístico multivariado de peligro
+  sísmico usando cópulas}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Ingeniería sísmica}{}{107}{22--46}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.18867/ris.107.588} \end{APACrefURL}
+\newblock
+\APACrefnote{Epub 29 de agosto de 2022}
+\newblock
+\begin{APACrefDOI} \doi{10.18867/ris.107.588} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Siddiqui%
+}{%
+Siddiqui%
+}{%
+{\protect \APACyear {2022}}%
+}]{%
+Siddiqui2022}
+\APACinsertmetastar {%
+Siddiqui2022}%
+\begin{APACrefauthors}%
+Siddiqui, O.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2022}{}{}.
+\newblock
+\APACrefbtitle {Extreme Value Theory.} {Extreme value theory.}
+\newblock
+\begin{APACrefURL} \url{https://www.learnsignal.com/blog/extreme-value-theory/}
+  \end{APACrefURL}
+\newblock
+\APACrefnote{Accedido el 21 de agosto de 2025}
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
