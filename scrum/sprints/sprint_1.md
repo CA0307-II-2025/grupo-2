@@ -2,19 +2,24 @@
 
 ## 🎯  Objetivo del Sprint:
 
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
+Tener una base solida con la que poder trabajr durante el resto del curso, con un entorno (dashboard) configurado y una base de datos limpia con la que comenzar a aplicar técnicas del curso.
 
 ## 😃  Historias de usuario
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
-
-
+- HU#1 - Como científico de datos quiero iniciar la configuración del dashboard. (Completado)
+- HU#2 - Como científico de datos quiero cargar datos crudos desde la fuente cruda (CSV) para crear mi base de datos limpia. (Completado)
+- HU#3 - Como analista quiero buscar bibliografía relacionada con nuestro tema involucrando el análisis de cópulas. (Completado)
+- HU#4 - Como analista quiero buscar bibliografía relacionada con nuestro tema involucrando el análisis de valores extremos. (Completado)
+- HU#5 - Como analista de datos quiero hacer una limpieza de los datos (To do)
+- HU#6 - Como estudiante de estadística quiero aplicar los procedimientos encontrados en la bibliografía sobre análisis no paramétricos de los datos. (To do)
+- HU#7 - Como científico de datos quiero actualizar el dashboard con la información nueva. (To do)
+- HU#8 - Como investigador quiero comenzar la redacción del reporte escrito. (Completado)
+- HU#9 - Como analista de datos quiero estudiar la estructura de la base de datos con el fin de aplicar las técnicas de análisis de datos correctas. (Completado)
+- HU#10 - Como analista de datos quiero comenzar a realizar gráficos y tablas resumen de mis datos. (Completado)
 
 ## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
+- *Semana 1:* Importación de datos, limpieza inicial, configuración del dashboard y búsqueda de bibliografía.
+- *Semana 2:* Realizar análisis descriptivo, aplicar técnicas de análisis no paramétricas, actualizar dashboard y comenzar reporte escrito.
 
 
 ## 🥇  Criterios de aceptación del Sprint:
@@ -23,16 +28,14 @@
 
 
 ## 📌  Asignación de tareas inicial
-- *Persona A:* Historia 1
-- *Persona B:* Historia 2
-- *Persona C:* documentación
+- *Joseph Romero:* Historia 1, 3 y 4.
+- *Dixon Montero:* Historia 3, 4 y 8.
+- *Andrey Prado:* Historia 2, 5, 7, 9 y 10. 
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** _No tenemos la base de datos limpia.
-- **Solución** _Crear una historia solo para limpiar la base de datos_.
-
-
+- **Bloqueo:** Requerimos un mayor conocimiento de los datos para decidir el tema de investigación.
+- **Solución** Realizar una mayor investigación así como una revisión de la bibliografía para definir el tema de investigación.
 
 
 # ⏳  Daily
@@ -45,27 +48,22 @@ El formato para cada estudiante debe ser
 
 
 
-##  Fecha: YYYY-MM-DD
+##  Fecha: 2025-08-22
 
-### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Joseph Romero:
+- **¿Qué hice ayer?**: Configuración del dashboard y búsqueda de bibliografía relacionada con el análisis de cópulas y valores extremos.
+- **¿Qué haré hoy?**: Continuar con la búsqueda de bibliografía y comenzar a aplicar los conceptos encontrados.
+- **¿Hay algo que me está bloqueando?**: No, pero necesito más tiempo para entender los conceptos de cópulas y valores extremos. Así como la configuración del dashboard.
 
-### Estudiante B:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Dixon Montero:
+- **¿Qué hice ayer?**: Revisión de la bibliografía sobre análisis de cópulas y valores extremos.
+- **¿Qué haré hoy?**: Complementar la revisión de la bibliografía y comenzar a aplicar los conceptos encontrados.
+- **¿Hay algo que me está bloqueando?**: No tengo bloqueos, pero necesito más tiempo para entender los conceptos de cópulas y valores extremos.
 
-### Estudiante C:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
-
-### Estudiante D:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Andrey Prado:
+- **¿Qué hice ayer?**: Una revisión de la estructura de la base de datos.
+- **¿Qué haré hoy?**: Complementar dicha revisión con la bibliografía encontrada.
+- **¿Hay algo que me está bloqueando?**: La comprensión de los temas a tratar en la bibliografía, ya que son temas nuevos para mí.
 
 
 
