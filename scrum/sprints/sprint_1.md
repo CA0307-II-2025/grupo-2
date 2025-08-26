@@ -30,7 +30,7 @@ Tener una base solida con la que poder trabajr durante el resto del curso, con u
 ## 📌  Asignación de tareas inicial
 - *Joseph Romero:* Historia 1, 3 y 4.
 - *Dixon Montero:* Historia 3, 4 y 8.
-- *Andrey Prado:* Historia 2, 5, 7, 9 y 10. 
+- *Andrey Prado:* Historia 2, 5, 7, 9 y 10.
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
