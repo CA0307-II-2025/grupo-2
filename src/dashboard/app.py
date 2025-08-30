@@ -1,6 +1,4 @@
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 import dash
 from dash import dcc, html, Input, Output, dash_table
 import plotly.express as px
@@ -86,14 +84,15 @@ conteo.columns = ["Event", "count"]
 conteo["frec_rel"] = conteo["count"] / conteo["count"].sum() * 100
 
 # Promedio de daños por evento
-conteo["promedio_danos"] = df.groupby("Event")["Losses $Local"].mean().reset_index(drop=True)
+conteo["promedio_danos"] = (
+    df.groupby("Event")["Losses $Local"].mean().reset_index(drop=True)
+)
 
 # Normalizamos el promedio de daños
 prueba = conteo.copy()
 prueba["promedio_danos"] = (
-    (prueba["promedio_danos"] - prueba["promedio_danos"].mean())
-    / prueba["promedio_danos"].std()
-)
+    prueba["promedio_danos"] - prueba["promedio_danos"].mean()
+) / prueba["promedio_danos"].std()
 
 # ==============================
 # 2. Dashboard con Dash
@@ -152,7 +151,10 @@ app.layout = html.Div(
                         html.Label("Categoría (decorativo):"),
                         dcc.Dropdown(
                             id="dropdown",
-                            options=[{"label": x, "value": x} for x in conteo["Event"].unique()],
+                            options=[
+                                {"label": x, "value": x}
+                                for x in conteo["Event"].unique()
+                            ],
                             value=conteo["Event"].iloc[0],
                         ),
                         html.Label("Rango (decorativo):"),
