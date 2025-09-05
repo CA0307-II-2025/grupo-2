@@ -30,7 +30,7 @@ Tener una base solida con la que poder trabajr durante el resto del curso, con u
 ## 📌  Asignación de tareas inicial
 - *Joseph Romero:* Historia 1, 3 y 4.
 - *Dixon Montero:* Historia 3, 4 y 8.
-- *Andrey Prado:* Historia 2, 5, 7, 9 y 10. 
+- *Andrey Prado:* Historia 2, 5, 7, 9 y 10.
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
@@ -67,20 +67,22 @@ El formato para cada estudiante debe ser
 
 
 
-# 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
+# 🔍   Revisión en clase (Fecha: 2025-08-22)
 
 
 
 ## 📈  Resultado mostrado
 
-- *Funcionalidad A:* (ej: "Carga automática de dataset desde CSV en base de datos completada").
-- *Funcionalidad B:* (ej: "Gráficos descriptivos generados dinámicamente").
+- *Funcionalidad A:* Carga de datos crudos en el Git Hub.
+- *Funcionalidad B:* Creación de Reporte.
+- *Funcionalidad C:* Presentación de idea inicial y datos.
 
 
 ## :arrows_counterclockwise:  Retroalimentación
 
-- **Profesor**:
-- **Compañeros:**
+- **Profesor**: Sobre el uso correcto del GitHub y no dejar las cosas para último. Además el profesor nos brindo guía para
+- continuar con el desarrollo del tema.
+- **Compañeros:** Ninguna.
 
 
 ## ✔️  Criterios de aceptación cumplidos:
@@ -88,12 +90,12 @@ El formato para cada estudiante debe ser
 - [x] Carga automática de la base de datos.
 
 
-# 🔙  Retrospective – Fecha: YYYY-MM-DD
+# 🔙  Retrospective – Fecha: 2025-08-22
 
 ## :white_check_mark: Qué salió bien
-1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
-1.  _Usamos commits convencionales correctamente y no hubo errores_
-1.  Documentación actualizada al día evitó retrabajo luego.
+1.  _Buena comunicación_ Logramos mantenernos comunicados evitando así incovenientes y retrasos.
+1.  _No hubo problema con el git, nadie tuvo problemas con la clonación, ni el manejo de los commits_
+1.  _Se logro terminar con las tareas que se programaron para la finalización_.
 
 
 
