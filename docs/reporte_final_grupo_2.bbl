@@ -1,6 +1,38 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
+Centeno~Morales%
+}{%
+Centeno~Morales%
+}{%
+{\protect \APACyear {2017}}%
+}]{%
+CentenoMorales2017}
+\APACinsertmetastar {%
+CentenoMorales2017}%
+\begin{APACrefauthors}%
+Centeno~Morales, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{May}{}.
+\newblock
+\APACrefbtitle {¿Nos encontramos preparados (as)? Desastres naturales y
+  desplazamiento ambiental en Costa Rica.} {¿nos encontramos preparados (as)?
+  desastres naturales y desplazamiento ambiental en costa rica.}
+\newblock
+\APAChowpublished {Presentación institucional, Instituto de Estudios Sociales
+  en Población (IDESPO), Universidad Nacional de Costa Rica}.
+\newblock
+\begin{APACrefURL}
+  \url{https://repositorio.una.ac.cr/items/e1ae7cf7-1c47-4c7a-84ea-130bc58dc941}
+  \end{APACrefURL}
+\newblock
+\APACrefnote{Subido en el repositorio académico de la Universidad Nacional
+  (UNA)}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Chand%
 \ \protect \BOthers {.}}{%
 Chand%
@@ -95,6 +127,59 @@ Krupskii, P.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Orozco-Montoya%
+, Brenes-Maykall%
+\BCBL {}\ \BBA {} Sura-Fonseca%
+}{%
+Orozco-Montoya%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2022}}%
+}]{%
+OrozcoMontoya2022}
+\APACinsertmetastar {%
+OrozcoMontoya2022}%
+\begin{APACrefauthors}%
+Orozco-Montoya, R\BPBI A.%
+, Brenes-Maykall, A.%
+\BCBL {}\ \BBA {} Sura-Fonseca, R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2022}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Inventario Histórico de Desastres en Costa Rica en el
+  Periodo 1970-2020} {Inventario histórico de desastres en costa rica en el
+  periodo 1970-2020}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Revista de Estudios Latinoamericanos sobre Reducción
+  del Riesgo de Desastres REDER}{6}{1}{66--82}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Paniagua%
+}{%
+Paniagua%
+}{%
+{\protect \APACyear {1995}}%
+}]{%
+Paniagua1995}
+\APACinsertmetastar {%
+Paniagua1995}%
+\begin{APACrefauthors}%
+Paniagua, S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1995}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Los desastres naturales y sus implicaciones en América
+  Central} {Los desastres naturales y sus implicaciones en américa
+  central}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Revista Geológica de América Central}{}{18}{}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Patton%
 }{%
 Patton%
@@ -146,6 +231,31 @@ Pérez~Fructuoso, M\BPBI J.%
   \end{APACrefURL}
 \newblock
 \APACrefnote{Accedido el 21 de agosto de 2025}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Pérez-Mallaína%
+}{%
+Pérez-Mallaína%
+}{%
+{\protect \APACyear {2005}}%
+}]{%
+PerezMallaina2005}
+\APACinsertmetastar {%
+PerezMallaina2005}%
+\begin{APACrefauthors}%
+Pérez-Mallaína, P\BPBI E.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2005}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Las catástrofes naturales como instrumento de
+  observación social: el caso del terremoto de Lima en 1746} {Las catástrofes
+  naturales como instrumento de observación social: el caso del terremoto de
+  lima en 1746}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Anuario de Estudios Americanos}{62}{2}{47--76}.
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
