@@ -14,45 +14,56 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'wiz_functions' (item size: 4) to 9000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: referencias.bib
+Warning--entry type for "undrr2015" isn't style-file defined
+--line 225 of file referencias.bib
+Warning--entry type for "cne2022" isn't style-file defined
+--line 243 of file referencias.bib
+Warning--entry type for "bancamundial2021" isn't style-file defined
+--line 261 of file referencias.bib
+Warning--entry type for "cepal2014" isn't style-file defined
+--line 279 of file referencias.bib
+Warning--entry type for "pnud2014" isn't style-file defined
+--line 335 of file referencias.bib
 apacite.bst [2013/07/21 v6.03 APA bibliography style]
-You've used 11 entries,
+You've used 19 entries,
             6951 wiz_defined-function locations,
-            1357 strings with 13237 characters,
-and the built_in function-call counts, 20522 in all, are:
-= -- 2496
-> -- 152
-< -- 1018
-+ -- 1033
-- -- 22
-* -- 1360
-:= -- 3929
-add.period$ -- 46
-call.type$ -- 11
-change.case$ -- 189
+            1412 strings with 14677 characters,
+and the built_in function-call counts, 35131 in all, are:
+= -- 4459
+> -- 240
+< -- 1673
++ -- 1614
+- -- 50
+* -- 2175
+:= -- 6427
+add.period$ -- 83
+call.type$ -- 19
+change.case$ -- 325
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 499
-empty$ -- 826
-format.name$ -- 252
-if$ -- 3838
+cite$ -- 38
+duplicate$ -- 812
+empty$ -- 1417
+format.name$ -- 384
+if$ -- 6756
 int.to.chr$ -- 0
-int.to.str$ -- 33
+int.to.str$ -- 57
 missing$ -- 0
-newline$ -- 290
-num.names$ -- 88
-pop$ -- 425
+newline$ -- 488
+num.names$ -- 152
+pop$ -- 651
 preamble$ -- 1
-purify$ -- 46
+purify$ -- 78
 quote$ -- 0
-skip$ -- 1210
+skip$ -- 2427
 stack$ -- 0
-substring$ -- 1113
-swap$ -- 292
-text.length$ -- 24
+substring$ -- 1734
+swap$ -- 452
+text.length$ -- 46
 text.prefix$ -- 0
 top$ -- 1
-type$ -- 880
+type$ -- 1880
 warning$ -- 0
-while$ -- 84
+while$ -- 128
 width$ -- 0
-write$ -- 342
+write$ -- 564
+(There were 5 warnings)

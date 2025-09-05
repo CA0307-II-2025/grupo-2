@@ -1,6 +1,32 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
+{Banco Mundial}%
+}{%
+{Banco Mundial}%
+}{%
+{\protect \APACyear {2021}}%
+}]{%
+bancamundial2021}
+\APACinsertmetastar {%
+bancamundial2021}%
+\begin{APACrefauthors}%
+{Banco Mundial}.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2021}{}{}.
+\newblock
+\APACrefbtitle {Evaluación de riesgos y resiliencia en América Latina y el
+  Caribe.} {Evaluación de riesgos y resiliencia en américa latina y el
+  caribe.}
+\newblock
+\APACaddressPublisher{Washington, DC}{}.
+\newblock
+\begin{APACrefURL} \url{https://documents.worldbank.org} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Centeno~Morales%
 }{%
 Centeno~Morales%
@@ -68,6 +94,85 @@ Chand, R.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+{Comisión Económica para América Latina y el Caribe}%
+}{%
+{Comisión Económica para América Latina y el Caribe}%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+cepal2014}
+\APACinsertmetastar {%
+cepal2014}%
+\begin{APACrefauthors}%
+{Comisión Económica para América Latina y el Caribe}.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2014}{}{}.
+\newblock
+\APACrefbtitle {Impacto de los desastres naturales en América Latina y el
+  Caribe, 1990--2012.} {Impacto de los desastres naturales en américa latina y
+  el caribe, 1990--2012.}
+\newblock
+\APACaddressPublisher{Santiago de Chile}{}.
+\newblock
+\begin{APACrefURL} \url{https://www.cepal.org} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+{Comisión Nacional de Prevención de Riesgos y Atención de Emergencias}%
+}{%
+{Comisión Nacional de Prevención de Riesgos y Atención de Emergencias}%
+}{%
+{\protect \APACyear {2022}}%
+}]{%
+cne2022}
+\APACinsertmetastar {%
+cne2022}%
+\begin{APACrefauthors}%
+{Comisión Nacional de Prevención de Riesgos y Atención de Emergencias}.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2022}{}{}.
+\newblock
+\APACrefbtitle {Plan Nacional de Gestión del Riesgo 2021--2025.} {Plan
+  nacional de gestión del riesgo 2021--2025.}
+\newblock
+\APACaddressPublisher{San José, Costa Rica}{}.
+\newblock
+\begin{APACrefURL} \url{https://www.cne.go.cr} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Cordero%
+\ \BBA {} Quesada-Román%
+}{%
+Cordero%
+\ \BBA {} Quesada-Román%
+}{%
+{\protect \APACyear {2019}}%
+}]{%
+cordero2019}
+\APACinsertmetastar {%
+cordero2019}%
+\begin{APACrefauthors}%
+Cordero, R\BPBI R.%
+\BCBT {}\ \BBA {} Quesada-Román, A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2019}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Natural hazards and climate change in Costa Rica: A
+  review} {Natural hazards and climate change in costa rica: A review}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Natural Hazards}{99}{1}{1--25}.
+\newblock
+\begin{APACrefDOI} \doi{10.1007/s11069-019-03728-0} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Delfiner%
 \ \BBA {} Gutiérrez~Girault%
 }{%
@@ -98,6 +203,31 @@ Delfiner, M\BPBI T.%
   \end{APACrefURL}
 \newblock
 \APACrefnote{Descargado de: UCEMA, 23 de agosto de 2025}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+{DesInventar}%
+}{%
+{DesInventar}%
+}{%
+{\protect \APACyear {2023}}%
+}]{%
+desinventar2023}
+\APACinsertmetastar {%
+desinventar2023}%
+\begin{APACrefauthors}%
+{DesInventar}.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2023}{}{}.
+\newblock
+\APACrefbtitle {Sistema de Inventario de Desastres.} {Sistema de inventario de
+  desastres.}
+\newblock
+\begin{APACrefURL} \url{https://www.desinventar.net} \end{APACrefURL}
+\newblock
+\APACrefnote{Base de datos en línea}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -203,6 +333,32 @@ Patton, A\BPBI J.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+{Programa de las Naciones Unidas para el Desarrollo}%
+}{%
+{Programa de las Naciones Unidas para el Desarrollo}%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+pnud2014}
+\APACinsertmetastar {%
+pnud2014}%
+\begin{APACrefauthors}%
+{Programa de las Naciones Unidas para el Desarrollo}.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2014}{}{}.
+\newblock
+\APACrefbtitle {Gestión del riesgo de desastres: Enfoque para el desarrollo
+  sostenible.} {Gestión del riesgo de desastres: Enfoque para el desarrollo
+  sostenible.}
+\newblock
+\APACaddressPublisher{Nueva York}{}.
+\newblock
+\begin{APACrefURL} \url{https://www.undp.org} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Pérez~Fructuoso%
 \ \BBA {} García~Pérez%
 }{%
@@ -256,6 +412,36 @@ Pérez-Mallaína, P\BPBI E.%
   lima en 1746}.{\BBCQ}
 \newblock
 \APACjournalVolNumPages{Anuario de Estudios Americanos}{62}{2}{47--76}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Quesada-Román%
+\ \BBA {} Barrantes-Castillo%
+}{%
+Quesada-Román%
+\ \BBA {} Barrantes-Castillo%
+}{%
+{\protect \APACyear {2020}}%
+}]{%
+quesada2020}
+\APACinsertmetastar {%
+quesada2020}%
+\begin{APACrefauthors}%
+Quesada-Román, A.%
+\BCBT {}\ \BBA {} Barrantes-Castillo, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2020}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Disaster risk reduction in Costa Rica: A review of
+  progress and challenges} {Disaster risk reduction in costa rica: A review of
+  progress and challenges}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{International Journal of Disaster Risk
+  Reduction}{50}{}{101707}.
+\newblock
+\begin{APACrefDOI} \doi{10.1016/j.ijdrr.2020.101707} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -314,6 +500,34 @@ Siddiqui, O.%
   \end{APACrefURL}
 \newblock
 \APACrefnote{Accedido el 21 de agosto de 2025}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+{United Nations Office for Disaster Risk Reduction}%
+}{%
+{United Nations Office for Disaster Risk Reduction}%
+}{%
+{\protect \APACyear {2015}}%
+}]{%
+undrr2015}
+\APACinsertmetastar {%
+undrr2015}%
+\begin{APACrefauthors}%
+{United Nations Office for Disaster Risk Reduction}.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+\APACrefbtitle {Marco de Sendai para la Reducción del Riesgo de Desastres
+  2015--2030.} {Marco de sendai para la reducción del riesgo de desastres
+  2015--2030.}
+\newblock
+\APACaddressPublisher{Ginebra, Suiza}{}.
+\newblock
+\begin{APACrefURL}
+  \url{https://www.undrr.org/publication/sendai-framework-disaster-risk-reduction-2015-2030}
+  \end{APACrefURL}
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}
