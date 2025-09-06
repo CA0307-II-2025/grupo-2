@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex reporte_final_grupo_2"] 1757052628.88341 "reporte_final_grupo_2.aux" "reporte_final_grupo_2.bbl" "reporte_final_grupo_2" 1757052630.27175 0
-  "./referencias.bib" 1757052056 6850 fbddbd3476c6451e53eb4271cd7c0d32 ""
+["bibtex reporte_final_grupo_2"] 1757134801.08904 "reporte_final_grupo_2.aux" "reporte_final_grupo_2.bbl" "reporte_final_grupo_2" 1757134804.12501 0
+  "./referencias.bib" 1757132289 6850 fbddbd3476c6451e53eb4271cd7c0d32 ""
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/bibtex/bst/apacite/apacite.bst" 1374952728 146156 9d7b79dbf9d91133318126032cff8c27 ""
-  "reporte_final_grupo_2.aux" 1757052629 6524 aaa9261ec08253762e8b0dda3ea8e15d "pdflatex"
+  "reporte_final_grupo_2.aux" 1757134802 6525 235745864de2f8a7d382c2554e854cb4 "pdflatex"
   (generated)
   "reporte_final_grupo_2.bbl"
   "reporte_final_grupo_2.blg"
   (rewritten before read)
-["pdflatex"] 1757052629.25965 "c:/Users/andre/OneDrive/Documentos/II2025/CA0307 Estadística Actuarial II/Proyecto/grupo-2/docs/reporte_final_grupo_2.tex" "reporte_final_grupo_2.pdf" "reporte_final_grupo_2" 1757052630.2722 0
+["pdflatex"] 1757134801.59043 "c:/Users/andre/OneDrive/Documentos/II2025/CA0307 Estadística Actuarial II/Proyecto/grupo-2/docs/reporte_final_grupo_2.tex" "reporte_final_grupo_2.pdf" "reporte_final_grupo_2" 1757134804.1259 0
   "C:/Users/andre/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1756574026 84494 a8180be56c145805b4f410bdf12ed94e ""
   "C:/Users/andre/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1755841743 13257295 1e710b25e92a3ea61735de4857c06d94 ""
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmbx12.tfm" 1136765053 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -57,10 +57,11 @@
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1751005717 30351 a2b09edc6c93a742566b222c33d0278e ""
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/tex/latex/setspace/setspace.sty" 1670403145 22490 8cac309b79a4c53a4ffce4b1b07aead0 ""
   "LogoUCR.png" 1755837177 158202 c6760520de413d5ebd1e3538d44037b4 ""
-  "c:/Users/andre/OneDrive/Documentos/II2025/CA0307 Estadística Actuarial II/Proyecto/grupo-2/docs/reporte_final_grupo_2.tex" 1757052627 13906 e7ee686268747855ecb1823c2f96fbdd ""
-  "reporte_final_grupo_2.aux" 1757052629 6524 aaa9261ec08253762e8b0dda3ea8e15d "pdflatex"
-  "reporte_final_grupo_2.bbl" 1757052629 14259 136b9441948bdc53ed4c37c893fe2e77 "bibtex reporte_final_grupo_2"
-  "reporte_final_grupo_2.tex" 1757052627 13906 e7ee686268747855ecb1823c2f96fbdd ""
+  "c:/Users/andre/OneDrive/Documentos/II2025/CA0307 Estadística Actuarial II/Proyecto/grupo-2/docs/reporte_final_grupo_2.tex" 1757134796 14743 5c0ac5fe18cd4c0d5cf3309175eca5f9 ""
+  "fig/avance_dash_1/1.png" 1757133882 78022 75cd2e075e4cabd9d4a7bd248ce74f4d ""
+  "reporte_final_grupo_2.aux" 1757134802 6525 235745864de2f8a7d382c2554e854cb4 "pdflatex"
+  "reporte_final_grupo_2.bbl" 1757134801 14259 136b9441948bdc53ed4c37c893fe2e77 "bibtex reporte_final_grupo_2"
+  "reporte_final_grupo_2.tex" 1757134796 14743 5c0ac5fe18cd4c0d5cf3309175eca5f9 ""
   (generated)
   "reporte_final_grupo_2.aux"
   "reporte_final_grupo_2.log"

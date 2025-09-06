@@ -2,100 +2,38 @@ import pandas as pd
 import dash
 from dash import dcc, html, Input, Output, dash_table
 import plotly.express as px
-import datetime
+import plotly.graph_objects as go
 
-# ==============================
-# 1. Carga y preprocesamiento de datos
-# ==============================
-df = pd.read_excel("../../data/raw/datos_crudos.xlsx", header=1)
-
-df = df[
-    [
-        "Serial",
-        "Event",
-        "&quot;Provincia&quot;",
-        "&quot;CantÃ³n&quot;",
-        "&quot;Distrito&quot;",
-        "&quot;Location&quot;",
-        "Date (YMD)",
-        "Comments",
-        "Cause",
-        "Description of Cause",
-        "Source",
-        "Magnitude",
-        "Duration (d)",
-        "Other sectors",
-        "Deaths",
-        "Injured",
-        "Missing",
-        "Houses Destroyed",
-        "Houses Damaged",
-        "Directly affected",
-        "Indirectly Affected",
-        "Relocated",
-        "Evacuated",
-        "Losses $Local",
-        "Education centers",
-        "Hospitals",
-    ]
-]
-
+# Cargar y preparar datos (según el notebook)
+df = pd.read_excel(r"data\raw\datos_crudos.xlsx").dropna()
 df.columns = [
-    "Serial",
-    "Event",
-    "Provincia",
-    "Canton",
-    "Distrito",
-    "Ubicacion",
-    "Date (YMD)",
-    "Comments",
-    "Cause",
-    "Description of Cause",
-    "Source",
-    "Magnitude",
-    "Duration (d)",
-    "Other sectors",
-    "Deaths",
-    "Injured",
-    "Missing",
-    "Houses Destroyed",
-    "Houses Damaged",
-    "Directly affected",
-    "Indirectly Affected",
-    "Relocated",
-    "Evacuated",
-    "Losses $Local",
-    "Education centers",
-    "Hospitals",
+    "ano",
+    "evento",
+    "categoria",
+    "decreto",
+    "provincia",
+    "canton",
+    "latitud",
+    "longitud",
+    "tipologia",
+    "total",
 ]
-
-# Eliminamos nulos en Event y en pérdidas
-df = df.dropna(subset=["Event", "Losses $Local"])
-
-# Arreglamos valores que no son numéricos
-df = df[df["Losses $Local"] != "AfectaciÃ³n por exceso de escorrentÃ\xada superficial."]
-df["Losses $Local"] = df["Losses $Local"].astype(float)
-
-# Conteo de eventos
-conteo = pd.DataFrame(df["Event"].value_counts().reset_index())
-conteo.columns = ["Event", "count"]
-
-# Frecuencia relativa
-conteo["frec_rel"] = conteo["count"] / conteo["count"].sum() * 100
-
-# Promedio de daños por evento
-conteo["promedio_danos"] = (
-    df.groupby("Event")["Losses $Local"].mean().reset_index(drop=True)
+df["tipologia"] = (
+    df["tipologia"].str.strip().str.upper().str.replace(r"\s+", " ", regex=True)
 )
 
-# Normalizamos el promedio de daños
-prueba = conteo.copy()
-prueba["promedio_danos"] = (
-    prueba["promedio_danos"] - prueba["promedio_danos"].mean()
-) / prueba["promedio_danos"].std()
+# Análisis de pérdidas por año
+perdidas_anuales = df.groupby("ano")["total"].sum().sort_index()
+df_perdidas_anuales = perdidas_anuales.reset_index()
+df_perdidas_anuales.columns = ["Año", "Pérdidas"]
+
+# Análisis de pérdidas por tipología
+perdidas_tipologia = df.groupby("tipologia")["total"].sum().sort_values()
+df_perdidas_tipologia = perdidas_tipologia.reset_index()
+df_perdidas_tipologia.columns = ["Tipología", "Pérdidas"]
 
 # ==============================
-# 2. Dashboard con Dash
+# Dashboard con Dash
 # ==============================
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
 server = app.server
@@ -105,7 +43,12 @@ app.layout = html.Div(
     children=[
         # Encabezado
         html.Div(
-            [html.H1("Eventos extremos en Costa Rica", className="titulo")],
+            [
+                html.H1(
+                    "Análisis de pérdidas por desastres naturales en Costa Rica",
+                    className="titulo",
+                )
+            ],
             className="encabezado",
         ),
         # Portada
@@ -142,29 +85,44 @@ app.layout = html.Div(
                             id="tabs",
                             value="tab1",
                             children=[
-                                dcc.Tab(label="Gráficos", value="tab1"),
-                                dcc.Tab(label="Tabla", value="tab2"),
-                                dcc.Tab(label="Extras", value="tab3"),
+                                dcc.Tab(label="Pérdidas por año", value="tab1"),
+                                dcc.Tab(label="Pérdidas por tipología", value="tab2"),
+                                dcc.Tab(label="Datos detallados", value="tab3"),
                             ],
                         ),
                         html.Hr(),
-                        html.Label("Categoría (decorativo):"),
+                        html.Label("Filtrar por año:"),
                         dcc.Dropdown(
-                            id="dropdown",
+                            id="dropdown-anio",
+                            options=[
+                                {"label": str(int(x)), "value": x}
+                                for x in sorted(df["ano"].unique())
+                            ],
+                            value=sorted(df["ano"].unique())[0],
+                            multi=True,
+                        ),
+                        html.Label("Filtrar por tipología:"),
+                        dcc.Dropdown(
+                            id="dropdown-tipologia",
                             options=[
                                 {"label": x, "value": x}
-                                for x in conteo["Event"].unique()
+                                for x in sorted(df["tipologia"].unique())
                             ],
-                            value=conteo["Event"].iloc[0],
+                            value=sorted(df["tipologia"].unique())[0],
+                            multi=True,
                         ),
-                        html.Label("Rango (decorativo):"),
-                        dcc.RangeSlider(0, 100, 10, value=[20, 80], id="slider"),
+                        html.Label("Rango de años:"),
+                        dcc.RangeSlider(
+                            id="slider-anio",
+                            min=df["ano"].min(),
+                            max=df["ano"].max(),
+                            step=1,
+                            marks={
+                                int(ano): str(int(ano)) for ano in df["ano"].unique()
+                            },
+                            value=[df["ano"].min(), df["ano"].max()],
+                        ),
                         html.Br(),
-                        dcc.DatePickerRange(
-                            id="fechas",
-                            start_date=datetime.date(2025, 1, 1),
-                            end_date=datetime.date(2025, 12, 31),
-                        ),
                     ],
                     className="Menu",
                 ),
@@ -182,79 +140,176 @@ app.layout = html.Div(
 def mostrar_tab(tab):
     if tab == "tab1":
         return html.Div(
-            [html.H3("Gráficos"), dcc.Graph(id="grafico1"), dcc.Graph(id="grafico2")]
+            [
+                html.H3("Pérdidas anuales por desastres naturales"),
+                dcc.Graph(id="grafico-perdidas-anuales"),
+                html.Div(
+                    [
+                        html.H4("Resumen estadístico"),
+                        dash_table.DataTable(
+                            id="tabla-resumen-anual",
+                            columns=[
+                                {"name": "Estadística", "id": "Estadística"},
+                                {"name": "Valor", "id": "Valor"},
+                            ],
+                            data=[],
+                            page_size=10,
+                            style_table={"overflowX": "auto"},
+                        ),
+                    ]
+                ),
+            ]
         )
     elif tab == "tab2":
         return html.Div(
             [
-                html.H3("Tabla - Conteo de Eventos"),
-                dash_table.DataTable(
-                    id="tabla",
-                    columns=[{"name": c, "id": c} for c in conteo.columns],
-                    data=conteo.to_dict("records"),
-                    page_size=10,
-                    filter_action="native",
-                    sort_action="native",
-                    export_format="csv",
-                    style_table={"overflowX": "auto"},
+                html.H3("Pérdidas por tipología"),
+                dcc.Graph(id="grafico-perdidas-tipologia"),
+                html.Div(
+                    [
+                        html.H4("Resumen por tipología"),
+                        dash_table.DataTable(
+                            id="tabla-resumen-tipologia",
+                            columns=[
+                                {"name": "Tipología", "id": "Tipología"},
+                                {"name": "Pérdidas totales", "id": "Pérdidas totales"},
+                                {"name": "Porcentaje", "id": "Porcentaje"},
+                            ],
+                            data=[],
+                            page_size=10,
+                            style_table={"overflowX": "auto"},
+                        ),
+                    ]
                 ),
             ]
         )
     else:
         return html.Div(
             [
-                html.H3("Extras"),
-                html.Button("Descargar", id="btn-descargar"),
-                dcc.Download(id="descarga"),
-                html.Br(),
-                html.H4("Referencias utilizadas"),
-                html.Ul(
-                    [
-                        html.Li(
-                            "Plotly Technologies Inc. (n.d.). Dash tutorial. https://dash.plotly.com/tutorial"
-                        ),
-                        html.Li(
-                            "Plotly Technologies Inc. (n.d.). Plotly Python library. https://plotly.com/python/"
-                        ),
-                    ]
+                html.H3("Datos detallados"),
+                dash_table.DataTable(
+                    id="tabla-detalles",
+                    columns=[{"name": col, "id": col} for col in df.columns],
+                    data=df.to_dict("records"),
+                    page_size=10,
+                    filter_action="native",
+                    sort_action="native",
+                    export_format="csv",
+                    style_table={
+                        "overflowX": "auto",
+                        "height": "400px",
+                        "overflowY": "auto",
+                    },
                 ),
             ]
         )
 
 
 @app.callback(
-    [Output("grafico1", "figure"), Output("grafico2", "figure")],
-    [Input("dropdown", "value"), Input("slider", "value")],
+    Output("grafico-perdidas-anuales", "figure"), [Input("slider-anio", "value")]
 )
-def actualizar_graficos(cat, rango):
-    # Gráfico 1: Conteo de eventos
-    fig1 = px.bar(
-        conteo,
-        x="count",
-        y="Event",
-        orientation="h",
-        title="Conteo de eventos",
+def actualizar_grafico_anual(rango_anio):
+    filtered_df = df_perdidas_anuales[
+        (df_perdidas_anuales["Año"] >= rango_anio[0])
+        & (df_perdidas_anuales["Año"] <= rango_anio[1])
+    ]
+
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=filtered_df["Año"],
+            y=filtered_df["Pérdidas"],
+            mode="lines+markers",
+            line=dict(color="royalblue", width=2),
+            marker=dict(size=8),
+            name="Pérdidas",
+        )
     )
 
-    # Gráfico 2: Promedio de daños estandarizados
-    fig2 = px.bar(
-        prueba,
-        x="promedio_danos",
-        y="Event",
-        orientation="h",
-        title="Promedio de daños (estandarizado)",
+    fig.update_layout(
+        width=1000,
+        height=500,
+        template="simple_white",
+        title="Pérdidas anuales por desastres naturales en Costa Rica",
+        xaxis_title="Año",
+        yaxis_title="Pérdidas totales",
+        hovermode="x unified",
     )
 
-    return fig1, fig2
+    return fig
 
 
 @app.callback(
-    Output("descarga", "data"),
-    Input("btn-descargar", "n_clicks"),
-    prevent_initial_call=True,
+    Output("grafico-perdidas-tipologia", "figure"),
+    [Input("dropdown-tipologia", "value")],
 )
-def descargar_csv(n):
-    return dcc.send_data_frame(conteo.to_csv, "conteo_eventos.csv", index=False)
+def actualizar_grafico_tipologia(tipologias):
+    if not tipologias or (isinstance(tipologias, list) and len(tipologias) == 0):
+        filtered_df = df_perdidas_tipologia
+    else:
+        if not isinstance(tipologias, list):
+            tipologias = [tipologias]
+        filtered_df = df_perdidas_tipologia[
+            df_perdidas_tipologia["Tipología"].isin(tipologias)
+        ]
+
+    fig = px.bar(
+        filtered_df,
+        x="Pérdidas",
+        y="Tipología",
+        orientation="h",
+        title="Distribución de Pérdidas por Tipología",
+    )
+
+    fig.update_layout(
+        xaxis_title="Pérdida en Colones",
+        yaxis_title="Tipología",
+        xaxis_type="log",  # Escala logarítmica para mejor visualización
+    )
+
+    return fig
+
+
+@app.callback(Output("tabla-resumen-anual", "data"), [Input("slider-anio", "value")])
+def actualizar_tabla_anual(rango_anio):
+    filtered_df = df_perdidas_anuales[
+        (df_perdidas_anuales["Año"] >= rango_anio[0])
+        & (df_perdidas_anuales["Año"] <= rango_anio[1])
+    ]
+
+    if len(filtered_df) > 0:
+        stats = filtered_df["Pérdidas"].describe().reset_index()
+        stats.columns = ["Estadística", "Valor"]
+        stats["Valor"] = stats["Valor"].apply(lambda x: f"{x:,.2f}")
+        return stats.to_dict("records")
+    return []
+
+
+@app.callback(
+    Output("tabla-resumen-tipologia", "data"), [Input("dropdown-tipologia", "value")]
+)
+def actualizar_tabla_tipologia(tipologias):
+    if not tipologias or (isinstance(tipologias, list) and len(tipologias) == 0):
+        filtered_df = df_perdidas_tipologia
+    else:
+        if not isinstance(tipologias, list):
+            tipologias = [tipologias]
+        filtered_df = df_perdidas_tipologia[
+            df_perdidas_tipologia["Tipología"].isin(tipologias)
+        ]
+
+    total_perdidas = filtered_df["Pérdidas"].sum()
+    filtered_df["Porcentaje"] = (filtered_df["Pérdidas"] / total_perdidas * 100).round(
+        2
+    )
+    filtered_df["Pérdidas totales"] = filtered_df["Pérdidas"].apply(
+        lambda x: f"₡{x:,.2f}"
+    )
+    filtered_df["Porcentaje"] = filtered_df["Porcentaje"].apply(lambda x: f"{x}%")
+
+    return filtered_df[["Tipología", "Pérdidas totales", "Porcentaje"]].to_dict(
+        "records"
+    )
 
 
 if __name__ == "__main__":
