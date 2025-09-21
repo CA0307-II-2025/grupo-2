@@ -164,21 +164,36 @@ def collect_plotly_figs(prefixes=None):
     return figs
 
 def gallery(paths):
-    """Muestra una grilla limpia con las imágenes dadas."""
+    """Muestra una grilla con imágenes grandes y sin nombres de archivo."""
     if not paths:
-        return html.Div("No hay imágenes detectadas todavía.", style={"color":"#666","fontStyle":"italic"})
+        return html.Div(
+            "No hay imágenes detectadas todavía.",
+            style={"color":"#666","fontStyle":"italic"}
+        )
     cards = []
     for p in paths:
         cards.append(
-            html.Figure(
-                [
-                    html.Img(src=_b64_img(p), style={"width":"100%","height":"auto"}),
-                    html.Figcaption(os.path.basename(p), style={"textAlign":"center","fontStyle":"italic","fontSize":"0.9rem"}),
-                ],
-                style={"background":"#fff","border":"1px solid #eee","borderRadius":"12px","padding":"8px","boxShadow":"0 2px 8px rgba(0,0,0,0.05)","marginBottom":"12px"}
+            html.Img(
+                src=_b64_img(p),
+                style={
+                    "width": "100%",
+                    "height": "auto",
+                    "borderRadius": "16px",
+                    "boxShadow": "0 4px 12px rgba(0,0,0,0.15)",
+                    "marginBottom": "20px"
+                }
             )
         )
-    return html.Div(cards, style={"display":"grid","gridTemplateColumns":"repeat(auto-fill, minmax(320px, 1fr))","gap":"14px","alignItems":"start"})
+    return html.Div(
+        cards,
+        style={
+            # Más grande: cada imagen ocupa mínimo 500px
+            "display": "grid",
+            "gridTemplateColumns": "repeat(auto-fill, minmax(500px, 1fr))",
+            "gap": "20px",
+            "alignItems": "start"
+        }
+    )
 
 # =========================
 # APP
