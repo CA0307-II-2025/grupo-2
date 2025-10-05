@@ -2,12 +2,12 @@
 
 ## 🎯  Objetivo del Sprint:
 
-Ajustar el dashboard y comenzar las cópulas. 
+Ajustar el dashboard y comenzar las cópulas.
 
 ## 😃  Historias de usuario
 
-- HU1 – Ajuste del dashboard (Estimación: 5 pts) – 
-- HU2 – Comenzar el plateamiento de las cópulas (Estimación: 8 pts) – 
+- HU1 – Ajuste del dashboard (Estimación: 5 pts) –
+- HU2 – Comenzar el plateamiento de las cópulas (Estimación: 8 pts) –
 
 
 
