@@ -2,71 +2,64 @@
 
 ## 🎯  Objetivo del Sprint:
 
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
+Ajustar el dashboard y comenzar las cópulas. 
 
 ## 😃  Historias de usuario
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
+- HU1 – Ajuste del dashboard (Estimación: 5 pts) – 
+- HU2 – Comenzar el plateamiento de las cópulas (Estimación: 8 pts) – 
 
 
 
 ## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
+- *Semana 1:* Modificar el dashboard para que se vea mas ordenado
+- *Semana 2:* Hacer simulaciones y probar distintas copulas
 
 
 ## 🥇  Criterios de aceptación del Sprint:
-- [ ] _Todas las historias listadas completadas y aceptadas por el profesor._
-- [ ] _El código limpia automáticamente la base de datos._
+- [ ] _Dashboard mejorado
+- [ ] _Primer draft del codigo de las copulas
 
 
 ## 📌  Asignación de tareas inicial
-- *Persona A:* Historia 1
-- *Persona B:* Historia 2
-- *Persona C:* documentación
+- *Persona A:* Organizar el dashboard
+- *Persona B:* Realiza el ETV
+- *Persona C:* Se encarga de la investigación teorica de cópulas
+- *Persona D:* Realiza la primera version del codigo de cópulas
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** _No tenemos la base de datos limpia.
-- **Solución** _Crear una historia solo para limpiar la base de datos_.
+- **Bloqueo:** Todavía tienen que organizarse las branches
+- **Solución** Posibles correciones en el codigo de cópulas
 
 
 
 
 # ⏳  Daily
 
-El formato para cada estudiante debe ser
 
-- **¿Qué hice ayer?**: _Describir brevemente las tareas completadas ayer, vinculadas a historias (ej: "Implementé la función de limpieza y escribí test para valores faltantes")._
-- **¿Qué haré hoy?**: _Enumerar foco de hoy (ej: "Integrar resultados descriptivos en el reporte y comenzar prueba de hipótesis")._
-- **¿Hay algo que me está bloqueando?**: _Listar obstáculos o dependencias (ej: "Falta confirmar el rango de años con PO" o "La librería X está dando un bug")._
-
-
-
-##  Fecha: YYYY-MM-DD
+##  Fecha: 2025-10-03
 
 ### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- **¿Qué hice ayer?**: Avancé en la organización del dashboard, ajustando el orden de los elementos visuales.
+- **¿Qué haré hoy?**: Finalizaré el diseño del dashboard y verificaré que los datos se muestren correctamente.
+- **¿Hay algo que me está bloqueando?**
 
 ### Estudiante B:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- **¿Qué hice ayer?**: Revisé el ETV y recopilé información base para el análisis.
+- **¿Qué haré hoy?**: Terminaré el documento del ETV y lo compartiré con el equipo.
+- **¿Hay algo que me está bloqueando?**: No por el momento.
 
 ### Estudiante C:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- **¿Qué hice ayer?**: Leí artículos sobre teoría de cópulas y recopilé material de referencia.
+- **¿Qué haré hoy?**: Elaborar un resumen con los principales tipos de cópulas y sus propiedades.
+- **¿Hay algo que me está bloqueando?**: Necesito coordinar con la persona que desarrolla el código para asegurar coherencia teórica.
+
 
 ### Estudiante D:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
-
+- **¿Qué hice ayer?**: Configuré el entorno de trabajo y realicé pruebas iniciales con el código base de cópulas.
+- **¿Qué haré hoy?**: Implementar la primera versión del código y probar diferentes simulaciones.
+- **¿Hay algo que me está bloqueando?**: Falta definir bien las branches para integrar los avances sin conflictos.
 
 
 # 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
@@ -75,9 +68,8 @@ El formato para cada estudiante debe ser
 
 ## 📈  Resultado mostrado
 
-- *Funcionalidad A:* (ej: "Carga automática de dataset desde CSV en base de datos completada").
-- *Funcionalidad B:* (ej: "Gráficos descriptivos generados dinámicamente").
-
+- *Funcionalidad A:* Dashboard mejorado.
+- *Funcionalidad B:* Las copulas han sido comenzadas.
 
 ## :arrows_counterclockwise:  Retroalimentación
 
@@ -86,8 +78,8 @@ El formato para cada estudiante debe ser
 
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [] _Historias 1, 2, 3. completadas. Falta la historia 4.
-- [x] Carga automática de la base de datos.
+- [] Dashboard mejorado
+- [] Copulas
 
 
 # 🔙  Retrospective – Fecha: YYYY-MM-DD
