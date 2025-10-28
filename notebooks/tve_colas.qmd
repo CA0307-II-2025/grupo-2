@@ -1,0 +1,554 @@
+---
+title: "Análisis de Colas"
+author: "Andrey Prado"
+date: today
+format:
+  html:
+    theme: flatly
+    toc: true
+    toc-location: left
+    highlight: tango
+    code-overflow: wrap
+---
+
+```{r}
+library(tidyverse)
+library(fitdistrplus)
+library(actuar)
+library(goftest)
+library(MASS)
+library(qrmtools)
+library(ismev)
+library(evd)
+library(gridExtra)
+library(coda)
+library(bayesplot)
+
+df <- read.csv('../data/clean/datos_limpios.csv')
+```
+
+## Análisis Descriptivo de los datos
+
+```{r}
+df <- df %>% dplyr::select('ano', 'provincia', 'canton', 'latitud', 'longitud','tipologia', 'total')
+
+for (name in c('provincia', 'canton', 'tipologia')){
+  df[[name]] <- iconv(df[[name]], from = "UTF-8", to = "ASCII//TRANSLIT")
+  df[[name]] <- gsub("Ã³", "ó", df[[name]])
+  df[[name]] <- gsub("Ã©", "é", df[[name]])
+  df[[name]] <- gsub("Ã", "í", df[[name]])
+  df[[name]] <- gsub("Ã±", "ñ", df[[name]])
+  df[[name]] <- gsub("Ãº", "ú", df[[name]])
+  df[[name]] <- gsub("Ã¡", "á", df[[name]])
+  
+}
+
+```
+
+Primero se analizaran las tipologías
+
+```{r}
+unique(df$tipologia)
+```
+
+Se agruparán de la siguiente manera
+
+- Infraestructura : Carreteras, Puentes, Alcantarillas, Ferrovías y Aerodromos
+- Energía : Sistemas Eléctricos, Infocomunicaciones y Energía
+- Hidrico : Sistemas de Agua, Sistemas de Riego, Ríos y Quebradas
+- Social : Social, Primer Impacto, Vivienda, Edificios Públicos y Centros Educativos
+- Productivo : Agropecuario y Actividad Empresarial
+- Obras : Obras Correctivas y Obras Diversas
+- Otros : Diversas y Ambiente
+
+```{r}
+df <- df %>%
+  mutate(categoria = case_when(
+    tipologia %in% c("CARRETERAS", "PUENTES", "ALCANTARILLAS Y VADOS", 
+                     "FERROVIAS", "AERODROMOS") ~ "INFRAESTRUCTURA",
+    
+    tipologia %in% c("SISTEMAS ELECTRICOS", "SISTEMAS DE INFOCOMUNICACIONES", 
+                     "ENERGIA (POLIDUCTO)") ~ "ENERGÍA",
+    
+    tipologia %in% c("SISTEMAS DE AGUA", "SISTEMAS DE RIEGO", 
+                     "RIOS Y QUEBRADAS") ~ "HÍDRICO",
+    
+    tipologia %in% c("SOCIAL", "PRIMER IMPACTO", "VIVIENDA", 
+                     "EDIFICIOS PUBLICOS", "CENTROS EDUCATIVOS") ~ "SOCIAL",
+    
+    tipologia %in% c("AGROPECUARIO", "ACTIVIDAD EMPRESARIAL") ~ "PRODUCTIVO",
+    
+    tipologia %in% c("OBRAS CORRECTIVAS", "OBRAS DIVERSAS") ~ "OBRAS",
+    
+    tipologia %in% c("DIVERSAS", "AMBIENTE") ~ "OTROS",
+    
+    TRUE ~ "SIN CATEGORÍA"
+  )) %>% dplyr::select(-tipologia)
+
+orden_provincias <- c("San Jose", "Alajuela", "Cartago", "Heredia", 
+                     "Guanacaste", "Puntarenas", "Limon")
+
+df$provincia <- factor(df$provincia, levels = orden_provincias)
+
+```
+
+Cantidades 
+
+```{r}
+dist_eventos <- df %>% 
+  group_by(categoria) %>% 
+  summarise(num_eventos = n(),
+            proporcion = n() / nrow(df)) %>% 
+  arrange(desc(num_eventos))
+
+cat("Distribución de Eventos por Categoría")
+
+print(dist_eventos)
+```
+
+Cómo la proporción de Energía, Obras y Otros es bastante baja con respecto a las demás se descartarán
+
+```{r}
+df <- df %>% filter(!categoria %in% c('OTROS', 'OBRAS', 'ENERGÍA'))
+```
+
+
+```{r}
+dist_eventos <- df %>% 
+  group_by(categoria) %>% 
+  summarise(num_eventos = n(),
+            proporcion = n() / nrow(df)) %>% 
+  arrange(desc(num_eventos))
+
+cat("Distribución de Eventos por Categoría")
+
+print(dist_eventos)
+```
+
+
+```{r}
+dist_dano <- df %>% 
+  group_by(categoria) %>% 
+  summarise(
+    num_eventos = n(),
+    total_danos = sum(total, na.rm = TRUE),
+    dano_promedio = mean(total, na.rm = TRUE),
+    dano_mediano = median(total, na.rm = TRUE),
+    dano_maximo = max(total, na.rm = TRUE),
+    proporcion_dano_total = total_danos / sum(datos$total, na.rm = TRUE)
+  ) %>%
+  arrange(desc(total_danos))
+
+cat("Distribución de Eventos por Monto de Daños")
+
+print(dist_dano)
+
+g1 <- ggplot(dist_dano, aes(x = reorder(categoria, -total_danos), y = total_danos)) +
+  geom_bar(stat = "identity", fill = "firebrick", alpha = 0.8) +
+  geom_text(aes(label = format(total_danos, big.mark = ",", scientific = FALSE)), 
+            vjust = -0.5, size = 3) +
+  labs(title = "Daños Económicos totales por categoría",
+       x = "Categoría", y = "Daño Total") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(g1)
+```
+
+```{r}
+dist_lugar <- df %>% 
+  group_by(provincia) %>% 
+  summarise(num_eventos = n(),
+            proporcion = n() / nrow(df)) %>% 
+  arrange(desc(num_eventos))
+
+cat("Distribución de Eventos por Provincia")
+
+print(dist_lugar)
+
+g2 <- ggplot(dist_lugar, aes(x = reorder(provincia, -num_eventos), y = num_eventos)) +
+  geom_bar(stat = "identity", fill = "firebrick", alpha = 0.8) +
+  geom_text(aes(label = format(num_eventos, big.mark = ",", scientific = FALSE)), 
+            vjust = -0.5, size = 3) +
+  labs(title = "Frecuencia por Provincia",
+       x = "Provincia", y = "Frecuencia") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(g2)
+```
+
+
+```{r}
+serie_provincia <- df %>% 
+  group_by(ano, provincia) %>% 
+  summarise(total = sum(total, na.rm = TRUE),
+  n_eventos = n(),
+  .groups = 'drop')
+
+g_provincia <- ggplot(serie_provincia, aes(x = ano, y = total)) +
+  geom_line(linewidth = 1, color = "firebrick") +
+  geom_point(size = 2, color = "firebrick") +
+  facet_wrap(~ provincia, scales = "free_y") +
+  labs(
+    title = "Evolución del daño total anual por provincia",
+    x = "Año",
+    y = "Daño Total"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(face = "bold")
+  )
+
+print(g_provincia)
+```
+
+```{r}
+serie_categoria <- df %>%
+  group_by(ano, categoria) %>%
+  summarise(
+    total = sum(total, na.rm = TRUE),
+    n_eventos = n(),
+    .groups = 'drop'
+  )
+
+g_categoria <- ggplot(serie_categoria, aes(x = ano, y = total)) +
+  geom_line(linewidth = 1, color = "firebrick") +
+  geom_point(size = 2, color = "firebrick") +
+  facet_wrap(~ categoria, scales = "free_y") +
+  labs(
+    title = "Evolución del daño total por tipología",
+    x = "Año",
+    y = "Daño Total"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(face = "bold")
+  )
+
+print(g_categoria)
+```
+
+
+```{r}
+g_hist <- ggplot(df, aes(x = total)) +
+  geom_histogram(bins = 80, fill = "firebrick", color = "white", alpha = 0.8) +
+  scale_x_log10() +
+  labs(
+    title = "Distribución de los daños",
+    x = "Daños (escala logarítmica)",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+print(g_hist)
+```
+
+
+```{r}
+g_hist_cat <- ggplot(df, aes(x = total)) +
+  geom_histogram(bins = 35, fill = "firebrick", alpha = 0.7) +
+  scale_x_log10() +
+  facet_wrap(~ categoria, scales = "free_y") +
+  labs(
+    title = "Distribución de daños por tipología",
+    x = "Daños (escala logarítmica)",
+    y = "Frecuencia"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+print(g_hist_cat)
+```
+
+
+```{r}
+g_hist_prov <- ggplot(df, aes(x = total)) +
+  geom_histogram(bins = 35, fill = "firebrick", alpha = 0.7) +
+  scale_x_log10() +
+  facet_wrap(~ provincia, scales = "free_y") +
+  labs(
+    title = "Distribución de daños por provincia",
+    x = "Daños (escala logarítmica)",
+    y = "Frecuencia"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+print(g_hist_prov)
+```
+
+## Ajuste de Distribuciones para los datos (TVE)
+
+### Comparación por Categorías
+
+Se tomarán dos combinaciones de distribuciones para cuerpo + cola
+
+- Combinación #1
+
+Para el cuerpo se usará una distribución $Gamma(\alpha, \beta)$ donde $\alpha$ es el parámetro de forma y su significado dice que si $\alpha<1$ entonces la cola inicial es pesada, $\alpha=1$ es una distribución exponencial y $\alpha>1$ dice que la cola es moderada. Luego el $\beta$ dice que si los valores son altos, la distribución es más concentrada.
+
+- Combinación #2
+
+Para el cuerpo se usará
+
+```{r}
+encontrar_umbral_optimo <- function(datos, nombre, u_min = 0.7, u_max = 0.99, puntos = 250, min_excesos = 50){
+  datos <- sort(datos)
+  n <- length(datos)
+  
+  u_seq <- quantile(datos, probs = seq(u_min, u_max, length.out = puntos))
+  
+  mrl <- sapply(u_seq, function(u){
+    excesos <- datos[datos > u]
+    if(length(excesos) < 1) return(NA)
+    mean(excesos - u)
+  })
+  
+  var_local <- sapply(seq_along(mrl), function(i){
+    idx <- max(1, i-2):min(length(mrl), i+2)
+    var(mrl[idx], na.rm = TRUE)
+  })
+  
+  ad_pvals <- numeric(length(u_seq))
+  
+  for(i in seq_along(u_seq)){
+    u <- u_seq[i]
+    excesos <- datos[datos > u]
+    if(length(excesos) >= min_excesos){
+      fit <- try(gpd.fit(excesos, threshold = 0, show = FALSE), silent = TRUE)
+      if(!inherits(fit, "try-error")){
+        ad_test <- try(ad.test(excesos, "gpd", xi = fit$mle[1], beta = fit$mle[2]), silent = TRUE)
+        if(!inherits(ad_test, "try-error")){
+          ad_pvals[i] <- ad_test$p.value
+        } else {
+          ad_pvals[i] <- NA
+        }
+      } else {
+        ad_pvals[i] <- NA
+      }
+    } else {
+      ad_pvals[i] <- NA
+    }
+  }
+
+  stable_idx <- which(var_local <= 1.5 * min(var_local, na.rm = TRUE) & ad_pvals >= 0.05)
+  
+  if(length(stable_idx) > 0){
+    u_opt <- u_seq[stable_idx[which.max(ad_pvals[stable_idx])]]
+  } else {
+    u_opt <- u_seq[which.min(var_local)]
+  }
+  
+  plot(u_seq, mrl, type = 'b', pch = 19, col = 'firebrick',
+       main = paste('Mean Residual Life Plot', nombre), xlab = 'Umbral', ylab = 'MRL(u)')
+  abline(v = u_opt, col = "blue", lwd = 2, lty = 2)
+  grid()
+  legend("topright", legend = paste("Umbral óptimo =", round(u_opt,3)),
+         col = "blue", lwd = 2, lty = 2, bty = "n")
+  
+  return(u_opt)
+}
+```
+
+
+```{r}
+#| warning: false
+
+cuerpo_list <- list()
+cola_list <- list()
+umbral_list <- list()
+excesos_count <- list()
+excesos_prop <- list()
+
+for (name in unique(df$categoria)) {
+  datos_categoria <- df$total[df$categoria == name]
+  
+  umbral_opt <- encontrar_umbral_optimo(datos_categoria, name, u_min = 0.7, u_max = 0.99, min_excesos = 25)
+  cat("El Umbral Óptimo para", name, "es", umbral_opt, "\n")
+  
+  umbral_list[[name]] <- umbral_opt
+  
+  cuerpo_list[[name]] <- datos_categoria[datos_categoria <= umbral_opt]
+  cola_list[[name]] <- datos_categoria[datos_categoria > umbral_opt]
+  
+  n_excesos <- length(cola_list[[name]])
+  p_excesos <- n_excesos / length(datos_categoria)
+  
+  excesos_count[[name]] <- n_excesos
+  excesos_prop[[name]] <- p_excesos
+  
+  cat("Cantidad de excesos:", n_excesos, "- Proporción:", round(p_excesos,4), "\n\n")
+}
+```
+
+```{r}
+fit_gamma_jags <- function(x) {
+  data_jags <- list(x = x, N = length(x))
+  
+  model_string <- "
+  model {
+    for (i in 1:N) {
+      x[i] ~ dgamma(shape, rate)
+    }
+    log_shape ~ dnorm(0, 0.01)
+    log_rate ~ dnorm(0, 0.01)
+    shape <- exp(log_shape)
+    rate <- exp(log_rate)
+  }
+  "
+  
+  model <- jags.model(textConnection(model_string), data = data_jags, n.chains = 3, quiet = TRUE)
+  update(model, 1000)  # burn-in
+  samples <- coda.samples(model, variable.names = c("shape", "rate"), n.iter = 5000)
+  
+  return(samples)}
+  
+
+fit_weibull_jags <- function(x) {
+  data_jags <- list(x = x, N = length(x))
+  
+  model_string <- "
+    model {
+    for (i in 1:N) {
+      x[i] ~ dweib(shape, scale)
+    }
+    
+    # Priors (positivos)
+    log_shape ~ dnorm(0, 0.01)
+    log_scale ~ dnorm(0, 0.01)
+    
+    shape <- exp(log_shape)
+    scale <- exp(log_scale)
+  }
+  "
+  
+  model <- jags.model(textConnection(model_string), data = data_jags, n.chains = 3, quiet = TRUE)
+  update(model, 1000)  # burn-in
+  samples <- coda.samples(model, variable.names = c("shape", "rate"), n.iter = 5000)
+  
+  return(samples)}
+  
+```
+
+
+```{r}
+set.seed(123456789)
+
+# log verosimilitud par agamma
+log_likelihood_gamma <- function(params, data) {
+  shape <- params[1]
+  rate <- params[2]
+  if (shape <= 0 || rate <= 0) return(-Inf)
+  sum(dgamma(data, shape=shape, rate=rate, log=TRUE))
+}
+
+# log verosimilitud para gpd
+log_likelihood_gpd <- function(params, data) {
+  xi <- params[1]    
+  beta <- params[2]  
+  if (beta <= 0) return(-Inf)
+  if (any(1 + xi * data / beta <= 0)) return(-Inf)
+  sum(dgpd(data, xi=xi, beta=beta, log=TRUE))
+}
+dgpd <- function(x, xi, beta, log=FALSE) {
+  if (any(x < 0)) return(rep(-Inf, length(x)))
+  dens <- (1/beta)*(1 + xi*x/beta)^(-1/xi -1)
+  if (log) return(log(dens)) else return(dens)
+}
+
+# log verosimilitud para weibull
+log_likelihood_weibull <- function(params, data) {
+  shape <- params[1]
+  scale <- params[2]
+  if (shape <= 0 || scale <= 0) return(-Inf)
+  sum(dweibull(data, shape=shape, scale=scale, log=TRUE))
+}
+
+log_prior_generic <- function(params) {
+  if (any(params <= 0)) return(-Inf)
+  sum(dgamma(params, shape=2, rate=1, log=TRUE))
+}
+
+# Función de posterior
+log_posterior <- function(params, data, dist) {
+  ll <- switch(dist,
+        gamma = log_likelihood_gamma(params, data),
+        gpd = log_likelihood_gpd(params, data),
+        weibull = log_likelihood_weibull(params, data)
+  )
+  lp <- log_prior_generic(params)
+  ll + lp
+}
+
+# Metropolis-Hastings
+mcmc_metropolis <- function(init, data, dist, n_iter=10000, sigma=0.1) {
+  chain <- matrix(NA, nrow=n_iter, ncol=2)
+  chain[1,] <- init
+  current_log_post <- log_posterior(init, data, dist)
+  
+  for (i in 2:n_iter) {
+    proposal <- rnorm(2, mean=chain[i-1,], sd=sigma)
+    prop_log_post <- log_posterior(proposal, data, dist)
+    
+    if (log(runif(1)) < prop_log_post - current_log_post) {
+      chain[i,] <- proposal
+      current_log_post <- prop_log_post
+    } else {
+      chain[i,] <- chain[i-1,]
+    }
+  }
+  return(chain)
+}
+
+# Función que ajusta una distribución dada y devuelve tabla resumen
+ajuste_distribucion <- function(data, dist, init, n_iter=20000, burn_in=5000, sigma=0.2) {
+  chain <- mcmc_metropolis(init, data, dist, n_iter, sigma)
+  chain_burned <- chain[(burn_in+1):nrow(chain),]
+  
+  est_mean <- colMeans(chain_burned)
+  est_CI <- apply(chain_burned, 2, quantile, probs=c(0.025, 0.975))
+  
+  param_names <- switch(dist,
+                        gamma = c("shape", "rate"),
+                        gpd = c("xi", "beta"),
+                        weibull = c("shape", "scale"))
+  
+  df <- data.frame(
+    Distribucion = dist,
+    Parametro = param_names,
+    Estimacion = est_mean,
+    CI_2.5 = est_CI[1,],
+    CI_97.5 = est_CI[2,]
+  )
+  return(df)
+}
+
+# Simulación de datos ejemplo para cada distribución (100 obs)
+set.seed(123)
+data_gamma <- rgamma(100, shape=2, rate=1)
+data_gpd <- rgpd(100, xi=0.2, beta=1) # Defino rgpd abajo
+data_weibull <- rweibull(100, shape=2, scale=1)
+
+# Crear funciones rgpd para simulaciones
+rgpd <- function(n, xi, beta) {
+  u <- runif(n)
+  beta / xi * ( (1 - u)^(-xi) - 1 )
+}
+
+# Ajustes
+res_gamma <- ajuste_distribucion(datos, "gamma", init=c(1,1))
+res_gpd <- ajuste_distribucion(datos, "gpd", init=c(0.1,1))
+res_weibull <- ajuste_distribucion(d, "weibull", init=c(1,1))
+
+# Tabla comparativa
+resultados <- rbind(res_gamma, res_gpd, res_weibull)
+print(resultados)
+
+```
+
