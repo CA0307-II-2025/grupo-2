@@ -40,7 +40,7 @@ for (name in c('provincia', 'canton', 'tipologia')){
   df[[name]] <- gsub("Ã±", "ñ", df[[name]])
   df[[name]] <- gsub("Ãº", "ú", df[[name]])
   df[[name]] <- gsub("Ã¡", "á", df[[name]])
-  
+
 }
 
 ```
@@ -64,41 +64,41 @@ Se agruparán de la siguiente manera
 ```{r}
 df <- df %>%
   mutate(categoria = case_when(
-    tipologia %in% c("CARRETERAS", "PUENTES", "ALCANTARILLAS Y VADOS", 
+    tipologia %in% c("CARRETERAS", "PUENTES", "ALCANTARILLAS Y VADOS",
                      "FERROVIAS", "AERODROMOS") ~ "INFRAESTRUCTURA",
-    
-    tipologia %in% c("SISTEMAS ELECTRICOS", "SISTEMAS DE INFOCOMUNICACIONES", 
+
+    tipologia %in% c("SISTEMAS ELECTRICOS", "SISTEMAS DE INFOCOMUNICACIONES",
                      "ENERGIA (POLIDUCTO)") ~ "ENERGÍA",
-    
-    tipologia %in% c("SISTEMAS DE AGUA", "SISTEMAS DE RIEGO", 
+
+    tipologia %in% c("SISTEMAS DE AGUA", "SISTEMAS DE RIEGO",
                      "RIOS Y QUEBRADAS") ~ "HÍDRICO",
-    
-    tipologia %in% c("SOCIAL", "PRIMER IMPACTO", "VIVIENDA", 
+
+    tipologia %in% c("SOCIAL", "PRIMER IMPACTO", "VIVIENDA",
                      "EDIFICIOS PUBLICOS", "CENTROS EDUCATIVOS") ~ "SOCIAL",
-    
+
     tipologia %in% c("AGROPECUARIO", "ACTIVIDAD EMPRESARIAL") ~ "PRODUCTIVO",
-    
+
     tipologia %in% c("OBRAS CORRECTIVAS", "OBRAS DIVERSAS") ~ "OBRAS",
-    
+
     tipologia %in% c("DIVERSAS", "AMBIENTE") ~ "OTROS",
-    
+
     TRUE ~ "SIN CATEGORÍA"
   )) %>% dplyr::select(-tipologia)
 
-orden_provincias <- c("San Jose", "Alajuela", "Cartago", "Heredia", 
+orden_provincias <- c("San Jose", "Alajuela", "Cartago", "Heredia",
                      "Guanacaste", "Puntarenas", "Limon")
 
 df$provincia <- factor(df$provincia, levels = orden_provincias)
 
 ```
 
-Cantidades 
+Cantidades
 
 ```{r}
-dist_eventos <- df %>% 
-  group_by(categoria) %>% 
+dist_eventos <- df %>%
+  group_by(categoria) %>%
   summarise(num_eventos = n(),
-            proporcion = n() / nrow(df)) %>% 
+            proporcion = n() / nrow(df)) %>%
   arrange(desc(num_eventos))
 
 cat("Distribución de Eventos por Categoría")
@@ -114,10 +114,10 @@ df <- df %>% filter(!categoria %in% c('OTROS', 'OBRAS', 'ENERGÍA'))
 
 
 ```{r}
-dist_eventos <- df %>% 
-  group_by(categoria) %>% 
+dist_eventos <- df %>%
+  group_by(categoria) %>%
   summarise(num_eventos = n(),
-            proporcion = n() / nrow(df)) %>% 
+            proporcion = n() / nrow(df)) %>%
   arrange(desc(num_eventos))
 
 cat("Distribución de Eventos por Categoría")
@@ -127,8 +127,8 @@ print(dist_eventos)
 
 
 ```{r}
-dist_dano <- df %>% 
-  group_by(categoria) %>% 
+dist_dano <- df %>%
+  group_by(categoria) %>%
   summarise(
     num_eventos = n(),
     total_danos = sum(total, na.rm = TRUE),
@@ -145,7 +145,7 @@ print(dist_dano)
 
 g1 <- ggplot(dist_dano, aes(x = reorder(categoria, -total_danos), y = total_danos)) +
   geom_bar(stat = "identity", fill = "firebrick", alpha = 0.8) +
-  geom_text(aes(label = format(total_danos, big.mark = ",", scientific = FALSE)), 
+  geom_text(aes(label = format(total_danos, big.mark = ",", scientific = FALSE)),
             vjust = -0.5, size = 3) +
   labs(title = "Daños Económicos totales por categoría",
        x = "Categoría", y = "Daño Total") +
@@ -156,10 +156,10 @@ print(g1)
 ```
 
 ```{r}
-dist_lugar <- df %>% 
-  group_by(provincia) %>% 
+dist_lugar <- df %>%
+  group_by(provincia) %>%
   summarise(num_eventos = n(),
-            proporcion = n() / nrow(df)) %>% 
+            proporcion = n() / nrow(df)) %>%
   arrange(desc(num_eventos))
 
 cat("Distribución de Eventos por Provincia")
@@ -168,7 +168,7 @@ print(dist_lugar)
 
 g2 <- ggplot(dist_lugar, aes(x = reorder(provincia, -num_eventos), y = num_eventos)) +
   geom_bar(stat = "identity", fill = "firebrick", alpha = 0.8) +
-  geom_text(aes(label = format(num_eventos, big.mark = ",", scientific = FALSE)), 
+  geom_text(aes(label = format(num_eventos, big.mark = ",", scientific = FALSE)),
             vjust = -0.5, size = 3) +
   labs(title = "Frecuencia por Provincia",
        x = "Provincia", y = "Frecuencia") +
@@ -180,8 +180,8 @@ print(g2)
 
 
 ```{r}
-serie_provincia <- df %>% 
-  group_by(ano, provincia) %>% 
+serie_provincia <- df %>%
+  group_by(ano, provincia) %>%
   summarise(total = sum(total, na.rm = TRUE),
   n_eventos = n(),
   .groups = 'drop')
@@ -301,22 +301,22 @@ Para el cuerpo se usará
 encontrar_umbral_optimo <- function(datos, nombre, u_min = 0.7, u_max = 0.99, puntos = 250, min_excesos = 50){
   datos <- sort(datos)
   n <- length(datos)
-  
+
   u_seq <- quantile(datos, probs = seq(u_min, u_max, length.out = puntos))
-  
+
   mrl <- sapply(u_seq, function(u){
     excesos <- datos[datos > u]
     if(length(excesos) < 1) return(NA)
     mean(excesos - u)
   })
-  
+
   var_local <- sapply(seq_along(mrl), function(i){
     idx <- max(1, i-2):min(length(mrl), i+2)
     var(mrl[idx], na.rm = TRUE)
   })
-  
+
   ad_pvals <- numeric(length(u_seq))
-  
+
   for(i in seq_along(u_seq)){
     u <- u_seq[i]
     excesos <- datos[datos > u]
@@ -338,20 +338,20 @@ encontrar_umbral_optimo <- function(datos, nombre, u_min = 0.7, u_max = 0.99, pu
   }
 
   stable_idx <- which(var_local <= 1.5 * min(var_local, na.rm = TRUE) & ad_pvals >= 0.05)
-  
+
   if(length(stable_idx) > 0){
     u_opt <- u_seq[stable_idx[which.max(ad_pvals[stable_idx])]]
   } else {
     u_opt <- u_seq[which.min(var_local)]
   }
-  
+
   plot(u_seq, mrl, type = 'b', pch = 19, col = 'firebrick',
        main = paste('Mean Residual Life Plot', nombre), xlab = 'Umbral', ylab = 'MRL(u)')
   abline(v = u_opt, col = "blue", lwd = 2, lty = 2)
   grid()
   legend("topright", legend = paste("Umbral óptimo =", round(u_opt,3)),
          col = "blue", lwd = 2, lty = 2, bty = "n")
-  
+
   return(u_opt)
 }
 ```
@@ -368,21 +368,21 @@ excesos_prop <- list()
 
 for (name in unique(df$categoria)) {
   datos_categoria <- df$total[df$categoria == name]
-  
+
   umbral_opt <- encontrar_umbral_optimo(datos_categoria, name, u_min = 0.7, u_max = 0.99, min_excesos = 25)
   cat("El Umbral Óptimo para", name, "es", umbral_opt, "\n")
-  
+
   umbral_list[[name]] <- umbral_opt
-  
+
   cuerpo_list[[name]] <- datos_categoria[datos_categoria <= umbral_opt]
   cola_list[[name]] <- datos_categoria[datos_categoria > umbral_opt]
-  
+
   n_excesos <- length(cola_list[[name]])
   p_excesos <- n_excesos / length(datos_categoria)
-  
+
   excesos_count[[name]] <- n_excesos
   excesos_prop[[name]] <- p_excesos
-  
+
   cat("Cantidad de excesos:", n_excesos, "- Proporción:", round(p_excesos,4), "\n\n")
 }
 ```
@@ -390,7 +390,7 @@ for (name in unique(df$categoria)) {
 ```{r}
 fit_gamma_jags <- function(x) {
   data_jags <- list(x = x, N = length(x))
-  
+
   model_string <- "
   model {
     for (i in 1:N) {
@@ -402,38 +402,38 @@ fit_gamma_jags <- function(x) {
     rate <- exp(log_rate)
   }
   "
-  
+
   model <- jags.model(textConnection(model_string), data = data_jags, n.chains = 3, quiet = TRUE)
   update(model, 1000)  # burn-in
   samples <- coda.samples(model, variable.names = c("shape", "rate"), n.iter = 5000)
-  
+
   return(samples)}
-  
+
 
 fit_weibull_jags <- function(x) {
   data_jags <- list(x = x, N = length(x))
-  
+
   model_string <- "
     model {
     for (i in 1:N) {
       x[i] ~ dweib(shape, scale)
     }
-    
+
     # Priors (positivos)
     log_shape ~ dnorm(0, 0.01)
     log_scale ~ dnorm(0, 0.01)
-    
+
     shape <- exp(log_shape)
     scale <- exp(log_scale)
   }
   "
-  
+
   model <- jags.model(textConnection(model_string), data = data_jags, n.chains = 3, quiet = TRUE)
   update(model, 1000)  # burn-in
   samples <- coda.samples(model, variable.names = c("shape", "rate"), n.iter = 5000)
-  
+
   return(samples)}
-  
+
 ```
 
 
@@ -450,8 +450,8 @@ log_likelihood_gamma <- function(params, data) {
 
 # log verosimilitud para gpd
 log_likelihood_gpd <- function(params, data) {
-  xi <- params[1]    
-  beta <- params[2]  
+  xi <- params[1]
+  beta <- params[2]
   if (beta <= 0) return(-Inf)
   if (any(1 + xi * data / beta <= 0)) return(-Inf)
   sum(dgpd(data, xi=xi, beta=beta, log=TRUE))
@@ -491,11 +491,11 @@ mcmc_metropolis <- function(init, data, dist, n_iter=10000, sigma=0.1) {
   chain <- matrix(NA, nrow=n_iter, ncol=2)
   chain[1,] <- init
   current_log_post <- log_posterior(init, data, dist)
-  
+
   for (i in 2:n_iter) {
     proposal <- rnorm(2, mean=chain[i-1,], sd=sigma)
     prop_log_post <- log_posterior(proposal, data, dist)
-    
+
     if (log(runif(1)) < prop_log_post - current_log_post) {
       chain[i,] <- proposal
       current_log_post <- prop_log_post
@@ -510,15 +510,15 @@ mcmc_metropolis <- function(init, data, dist, n_iter=10000, sigma=0.1) {
 ajuste_distribucion <- function(data, dist, init, n_iter=20000, burn_in=5000, sigma=0.2) {
   chain <- mcmc_metropolis(init, data, dist, n_iter, sigma)
   chain_burned <- chain[(burn_in+1):nrow(chain),]
-  
+
   est_mean <- colMeans(chain_burned)
   est_CI <- apply(chain_burned, 2, quantile, probs=c(0.025, 0.975))
-  
+
   param_names <- switch(dist,
                         gamma = c("shape", "rate"),
                         gpd = c("xi", "beta"),
                         weibull = c("shape", "scale"))
-  
+
   df <- data.frame(
     Distribucion = dist,
     Parametro = param_names,
@@ -551,4 +551,3 @@ resultados <- rbind(res_gamma, res_gpd, res_weibull)
 print(resultados)
 
 ```
-
