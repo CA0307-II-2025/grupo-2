@@ -1,5 +1,5 @@
 ---
-title: "Análisis de Colas"
+title: "AnÃ¡lisis de Colas"
 author: "Andrey Prado"
 date: today
 format:
@@ -9,6 +9,7 @@ format:
     toc-location: left
     highlight: tango
     code-overflow: wrap
+    self-contained-math: true
 ---
 
 ```{r}
@@ -24,39 +25,40 @@ library(gridExtra)
 library(coda)
 library(bayesplot)
 
+
 df <- read.csv('../data/clean/datos_limpios.csv')
 ```
 
-## Análisis Descriptivo de los datos
+## An?lisis Descriptivo de los datos
 
 ```{r}
 df <- df %>% dplyr::select('ano', 'provincia', 'canton', 'latitud', 'longitud','tipologia', 'total')
 
 for (name in c('provincia', 'canton', 'tipologia')){
   df[[name]] <- iconv(df[[name]], from = "UTF-8", to = "ASCII//TRANSLIT")
-  df[[name]] <- gsub("Ã³", "ó", df[[name]])
-  df[[name]] <- gsub("Ã©", "é", df[[name]])
-  df[[name]] <- gsub("Ã", "í", df[[name]])
-  df[[name]] <- gsub("Ã±", "ñ", df[[name]])
-  df[[name]] <- gsub("Ãº", "ú", df[[name]])
-  df[[name]] <- gsub("Ã¡", "á", df[[name]])
+  df[[name]] <- gsub("Ã³", "?", df[[name]])
+  df[[name]] <- gsub("Ã©", "?", df[[name]])
+  df[[name]] <- gsub("?", "?", df[[name]])
+  df[[name]] <- gsub("Ã±", "?", df[[name]])
+  df[[name]] <- gsub("Ãº", "?", df[[name]])
+  df[[name]] <- gsub("Ã¡", "?", df[[name]])
 
 }
 
 ```
 
-Primero se analizaran las tipologías
+Primero se analizaran las tipolog?as
 
 ```{r}
-unique(df$tipologia)
+unique(df$categoria)
 ```
 
-Se agruparán de la siguiente manera
+Se agrupar?n de la siguiente manera
 
-- Infraestructura : Carreteras, Puentes, Alcantarillas, Ferrovías y Aerodromos
-- Energía : Sistemas Eléctricos, Infocomunicaciones y Energía
-- Hidrico : Sistemas de Agua, Sistemas de Riego, Ríos y Quebradas
-- Social : Social, Primer Impacto, Vivienda, Edificios Públicos y Centros Educativos
+- Infraestructura : Carreteras, Puentes, Alcantarillas, Ferrov?as y Aerodromos
+- Energ?a : Sistemas El?ctricos, Infocomunicaciones y Energ?a
+- Hidrico : Sistemas de Agua, Sistemas de Riego, R?os y Quebradas
+- Social : Social, Primer Impacto, Vivienda, Edificios P?blicos y Centros Educativos
 - Productivo : Agropecuario y Actividad Empresarial
 - Obras : Obras Correctivas y Obras Diversas
 - Otros : Diversas y Ambiente
@@ -68,10 +70,10 @@ df <- df %>%
                      "FERROVIAS", "AERODROMOS") ~ "INFRAESTRUCTURA",
 
     tipologia %in% c("SISTEMAS ELECTRICOS", "SISTEMAS DE INFOCOMUNICACIONES",
-                     "ENERGIA (POLIDUCTO)") ~ "ENERGÍA",
+                     "ENERGIA (POLIDUCTO)") ~ "ENERG?A",
 
     tipologia %in% c("SISTEMAS DE AGUA", "SISTEMAS DE RIEGO",
-                     "RIOS Y QUEBRADAS") ~ "HÍDRICO",
+                     "RIOS Y QUEBRADAS") ~ "H?DRICO",
 
     tipologia %in% c("SOCIAL", "PRIMER IMPACTO", "VIVIENDA",
                      "EDIFICIOS PUBLICOS", "CENTROS EDUCATIVOS") ~ "SOCIAL",
@@ -82,7 +84,7 @@ df <- df %>%
 
     tipologia %in% c("DIVERSAS", "AMBIENTE") ~ "OTROS",
 
-    TRUE ~ "SIN CATEGORÍA"
+    TRUE ~ "SIN CATEGOR?A"
   )) %>% dplyr::select(-tipologia)
 
 orden_provincias <- c("San Jose", "Alajuela", "Cartago", "Heredia",
@@ -101,15 +103,15 @@ dist_eventos <- df %>%
             proporcion = n() / nrow(df)) %>%
   arrange(desc(num_eventos))
 
-cat("Distribución de Eventos por Categoría")
+cat("Distribuci?n de Eventos por Categor?a")
 
 print(dist_eventos)
 ```
 
-Cómo la proporción de Energía, Obras y Otros es bastante baja con respecto a las demás se descartarán
+C?mo la proporci?n de Energ?a, Obras y Otros es bastante baja con respecto a las dem?s se descartar?n
 
 ```{r}
-df <- df %>% filter(!categoria %in% c('OTROS', 'OBRAS', 'ENERGÍA'))
+df <- df %>% filter(!categoria %in% c('OTROS', 'OBRAS', 'ENERG?A'))
 ```
 
 
@@ -120,7 +122,7 @@ dist_eventos <- df %>%
             proporcion = n() / nrow(df)) %>%
   arrange(desc(num_eventos))
 
-cat("Distribución de Eventos por Categoría")
+cat("Distribuci?n de Eventos por Categor?a")
 
 print(dist_eventos)
 ```
@@ -135,11 +137,11 @@ dist_dano <- df %>%
     dano_promedio = mean(total, na.rm = TRUE),
     dano_mediano = median(total, na.rm = TRUE),
     dano_maximo = max(total, na.rm = TRUE),
-    proporcion_dano_total = total_danos / sum(datos$total, na.rm = TRUE)
+    proporcion_dano_total = total_danos / sum(df$total, na.rm = TRUE)
   ) %>%
   arrange(desc(total_danos))
 
-cat("Distribución de Eventos por Monto de Daños")
+cat("Distribuci?n de Eventos por Monto de Da?os")
 
 print(dist_dano)
 
@@ -147,10 +149,16 @@ g1 <- ggplot(dist_dano, aes(x = reorder(categoria, -total_danos), y = total_dano
   geom_bar(stat = "identity", fill = "firebrick", alpha = 0.8) +
   geom_text(aes(label = format(total_danos, big.mark = ",", scientific = FALSE)),
             vjust = -0.5, size = 3) +
-  labs(title = "Daños Económicos totales por categoría",
-       x = "Categoría", y = "Daño Total") +
+  labs(
+    title = "DaÃ±os EconÃ³micos Totales por CategorÃ­a",
+    x = "CategorÃ­a",
+    y = "DaÃ±o Total"
+  ) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(hjust = 0.5, face = "bold")  # <- centrado del tÃ­tulo
+  )
 
 print(g1)
 ```
@@ -162,7 +170,7 @@ dist_lugar <- df %>%
             proporcion = n() / nrow(df)) %>%
   arrange(desc(num_eventos))
 
-cat("Distribución de Eventos por Provincia")
+cat("Distribuci?n de Eventos por Provincia")
 
 print(dist_lugar)
 
@@ -191,9 +199,9 @@ g_provincia <- ggplot(serie_provincia, aes(x = ano, y = total)) +
   geom_point(size = 2, color = "firebrick") +
   facet_wrap(~ provincia, scales = "free_y") +
   labs(
-    title = "Evolución del daño total anual por provincia",
-    x = "Año",
-    y = "Daño Total"
+    title = "Evoluci?n del da?o total anual por provincia",
+    x = "A?o",
+    y = "Da?o Total"
   ) +
   theme_minimal() +
   theme(
@@ -218,9 +226,9 @@ g_categoria <- ggplot(serie_categoria, aes(x = ano, y = total)) +
   geom_point(size = 2, color = "firebrick") +
   facet_wrap(~ categoria, scales = "free_y") +
   labs(
-    title = "Evolución del daño total por tipología",
-    x = "Año",
-    y = "Daño Total"
+    title = "Evoluci?n del da?o total por tipolog?a",
+    x = "A?o",
+    y = "Da?o Total"
   ) +
   theme_minimal() +
   theme(
@@ -237,8 +245,8 @@ g_hist <- ggplot(df, aes(x = total)) +
   geom_histogram(bins = 80, fill = "firebrick", color = "white", alpha = 0.8) +
   scale_x_log10() +
   labs(
-    title = "Distribución de los daños",
-    x = "Daños (escala logarítmica)",
+    title = "DistribuciÃ³n de los da?os",
+    x = "DaÃ±os (escala logarÃ­tmica)",
     y = "Frecuencia"
   ) +
   theme_minimal()
@@ -252,8 +260,8 @@ g_hist_cat <- ggplot(df, aes(x = total)) +
   scale_x_log10() +
   facet_wrap(~ categoria, scales = "free_y") +
   labs(
-    title = "Distribución de daños por tipología",
-    x = "Daños (escala logarítmica)",
+    title = "Distribuci?n de da?os por tipolog?a",
+    x = "DaÃ±os (escala logarÃ­tmica)",
     y = "Frecuencia"
   ) +
   theme_minimal() +
@@ -271,8 +279,8 @@ g_hist_prov <- ggplot(df, aes(x = total)) +
   scale_x_log10() +
   facet_wrap(~ provincia, scales = "free_y") +
   labs(
-    title = "Distribución de daños por provincia",
-    x = "Daños (escala logarítmica)",
+    title = "Distribuci?n de da?os por provincia",
+    x = "DaÃ±os (escala logarÃ­tmica)",
     y = "Frecuencia"
   ) +
   theme_minimal() +
@@ -285,17 +293,17 @@ print(g_hist_prov)
 
 ## Ajuste de Distribuciones para los datos (TVE)
 
-### Comparación por Categorías
+### Comparaci?n por Categor?as
 
-Se tomarán dos combinaciones de distribuciones para cuerpo + cola
+Se tomar?n dos combinaciones de distribuciones para cuerpo + cola
 
-- Combinación #1
+- Combinaci?n #1
 
-Para el cuerpo se usará una distribución $Gamma(\alpha, \beta)$ donde $\alpha$ es el parámetro de forma y su significado dice que si $\alpha<1$ entonces la cola inicial es pesada, $\alpha=1$ es una distribución exponencial y $\alpha>1$ dice que la cola es moderada. Luego el $\beta$ dice que si los valores son altos, la distribución es más concentrada.
+Para el cuerpo se usar? una distribuci?n $Gamma(\alpha, \beta)$ donde $\alpha$ es el par?metro de forma y su significado dice que si $\alpha<1$ entonces la cola inicial es pesada, $\alpha=1$ es una distribuci?n exponencial y $\alpha>1$ dice que la cola es moderada. Luego el $\beta$ dice que si los valores son altos, la distribuci?n es m?s concentrada.
 
-- Combinación #2
+- Combinaci?n #2
 
-Para el cuerpo se usará
+Para el cuerpo se usar?
 
 ```{r}
 encontrar_umbral_optimo <- function(datos, nombre, u_min = 0.7, u_max = 0.99, puntos = 250, min_excesos = 50){
@@ -349,7 +357,7 @@ encontrar_umbral_optimo <- function(datos, nombre, u_min = 0.7, u_max = 0.99, pu
        main = paste('Mean Residual Life Plot', nombre), xlab = 'Umbral', ylab = 'MRL(u)')
   abline(v = u_opt, col = "blue", lwd = 2, lty = 2)
   grid()
-  legend("topright", legend = paste("Umbral óptimo =", round(u_opt,3)),
+  legend("topright", legend = paste("Umbral ?ptimo =", round(u_opt,3)),
          col = "blue", lwd = 2, lty = 2, bty = "n")
 
   return(u_opt)
@@ -370,7 +378,7 @@ for (name in unique(df$categoria)) {
   datos_categoria <- df$total[df$categoria == name]
 
   umbral_opt <- encontrar_umbral_optimo(datos_categoria, name, u_min = 0.7, u_max = 0.99, min_excesos = 25)
-  cat("El Umbral Óptimo para", name, "es", umbral_opt, "\n")
+  cat("El Umbral ?ptimo para", name, "es", umbral_opt, "\n")
 
   umbral_list[[name]] <- umbral_opt
 
@@ -383,7 +391,7 @@ for (name in unique(df$categoria)) {
   excesos_count[[name]] <- n_excesos
   excesos_prop[[name]] <- p_excesos
 
-  cat("Cantidad de excesos:", n_excesos, "- Proporción:", round(p_excesos,4), "\n\n")
+  cat("Cantidad de excesos:", n_excesos, "- Proporci?n:", round(p_excesos,4), "\n\n")
 }
 ```
 
@@ -475,7 +483,7 @@ log_prior_generic <- function(params) {
   sum(dgamma(params, shape=2, rate=1, log=TRUE))
 }
 
-# Función de posterior
+# Funci?n de posterior
 log_posterior <- function(params, data, dist) {
   ll <- switch(dist,
         gamma = log_likelihood_gamma(params, data),
@@ -506,7 +514,7 @@ mcmc_metropolis <- function(init, data, dist, n_iter=10000, sigma=0.1) {
   return(chain)
 }
 
-# Función que ajusta una distribución dada y devuelve tabla resumen
+# Funci?n que ajusta una distribuci?n dada y devuelve tabla resumen
 ajuste_distribucion <- function(data, dist, init, n_iter=20000, burn_in=5000, sigma=0.2) {
   chain <- mcmc_metropolis(init, data, dist, n_iter, sigma)
   chain_burned <- chain[(burn_in+1):nrow(chain),]
@@ -529,7 +537,7 @@ ajuste_distribucion <- function(data, dist, init, n_iter=20000, burn_in=5000, si
   return(df)
 }
 
-# Simulación de datos ejemplo para cada distribución (100 obs)
+# Simulaci?n de datos ejemplo para cada distribuci?n (100 obs)
 set.seed(123)
 data_gamma <- rgamma(100, shape=2, rate=1)
 data_gpd <- rgpd(100, xi=0.2, beta=1) # Defino rgpd abajo
