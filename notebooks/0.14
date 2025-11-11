@@ -60,20 +60,20 @@ openssl-3.5.4        | 8.8 MB    | ######2    |  63% [A
 statsmodels-0.14.5   | 11.2 MB   |            |   0%
 
 openssl-3.5.4        | 8.8 MB    | ########   |  81% [A
-statsmodels-0.14.5   | 11.2 MB   | 8          |   8% 
+statsmodels-0.14.5   | 11.2 MB   | 8          |   8%
 statsmodels-0.14.5   | 11.2 MB   | #6         |  17%
 
 openssl-3.5.4        | 8.8 MB    | #########8 |  99% [A
 
 openssl-3.5.4        | 8.8 MB    | ########## | 100% [A
-statsmodels-0.14.5   | 11.2 MB   | ###2       |  32% 
+statsmodels-0.14.5   | 11.2 MB   | ###2       |  32%
 statsmodels-0.14.5   | 11.2 MB   | ####8      |  48%
 
 openssl-3.5.4        | 8.8 MB    | ########## | 100% [A
-statsmodels-0.14.5   | 11.2 MB   | ######4    |  65% 
-statsmodels-0.14.5   | 11.2 MB   | ########   |  81% 
-statsmodels-0.14.5   | 11.2 MB   | #########7 |  97% 
-statsmodels-0.14.5   | 11.2 MB   | ########## | 100% 
+statsmodels-0.14.5   | 11.2 MB   | ######4    |  65%
+statsmodels-0.14.5   | 11.2 MB   | ########   |  81%
+statsmodels-0.14.5   | 11.2 MB   | #########7 |  97%
+statsmodels-0.14.5   | 11.2 MB   | ########## | 100%
 statsmodels-0.14.5   | 11.2 MB   | ########## | 100%
 
                                                      [A
