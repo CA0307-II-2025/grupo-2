@@ -27,33 +27,59 @@ The following packages will be downloaded:
 
 The following packages will be UPDATED:
 
-  ca-certificates                       2025.8.3-h4c7d964_0 --> 2025.10.5-h4c7d964_0 
-  openssl                                  3.5.2-h725018a_0 --> 3.5.4-h725018a_0 
-  statsmodels                        0.14.5-py311h17033d2_0 --> 0.14.5-py311h17033d2_1 
+  ca-certificates                       2025.8.3-h4c7d964_0 --> 2025.10.5-h4c7d964_0
+  openssl                                  3.5.2-h725018a_0 --> 3.5.4-h725018a_0
+  statsmodels                        0.14.5-py311h17033d2_0 --> 0.14.5-py311h17033d2_1
 
 
 
-Downloading and Extracting Packages: ...working...statsmodels-0.14.5   | 11.2 MB   |            |   0% 
-openssl-3.5.4        | 8.8 MB    |            |   0% [A
+Downloading and Extracting Packages: ...working...
+statsmodels-0.14.5   | 11.2 MB   |            |   0%
 
-ca-certificates-2025 | 153 KB    |            |   0% [A[A
+openssl-3.5.4        | 8.8 MB    |            |   0% [A
 
-ca-certificates-2025 | 153 KB    | #          |  10% [A[A
 
-ca-certificates-2025 | 153 KB    | ########## | 100% [A[A
-openssl-3.5.4        | 8.8 MB    |            |   0% [A
+ca-certificates-2025 | 153 KB    |            |   0% [A[A
 
-ca-certificates-2025 | 153 KB    | ########## | 100% [A[A
-openssl-3.5.4        | 8.8 MB    | ##1        |  21% [A
-openssl-3.5.4        | 8.8 MB    | ####2      |  42% [A
-openssl-3.5.4        | 8.8 MB    | ######2    |  63% [Astatsmodels-0.14.5   | 11.2 MB   |            |   0% 
-openssl-3.5.4        | 8.8 MB    | ########   |  81% [Astatsmodels-0.14.5   | 11.2 MB   | 8          |   8% statsmodels-0.14.5   | 11.2 MB   | #6         |  17% 
-openssl-3.5.4        | 8.8 MB    | #########8 |  99% [A
-openssl-3.5.4        | 8.8 MB    | ########## | 100% [Astatsmodels-0.14.5   | 11.2 MB   | ###2       |  32% statsmodels-0.14.5   | 11.2 MB   | ####8      |  48% 
-openssl-3.5.4        | 8.8 MB    | ########## | 100% [Astatsmodels-0.14.5   | 11.2 MB   | ######4    |  65% statsmodels-0.14.5   | 11.2 MB   | ########   |  81% statsmodels-0.14.5   | 11.2 MB   | #########7 |  97% statsmodels-0.14.5   | 11.2 MB   | ########## | 100% statsmodels-0.14.5   | 11.2 MB   | ########## | 100%                                                      
-                                                     [A
 
-                                                     [A[A done
+ca-certificates-2025 | 153 KB    | #          |  10% [A[A
+
+
+ca-certificates-2025 | 153 KB    | ########## | 100% [A[A
+
+openssl-3.5.4        | 8.8 MB    |            |   0% [A
+
+
+ca-certificates-2025 | 153 KB    | ########## | 100% [A[A
+
+openssl-3.5.4        | 8.8 MB    | ##1        |  21% [A
+
+openssl-3.5.4        | 8.8 MB    | ####2      |  42% [A
+
+openssl-3.5.4        | 8.8 MB    | ######2    |  63% [A
+statsmodels-0.14.5   | 11.2 MB   |            |   0%
+
+openssl-3.5.4        | 8.8 MB    | ########   |  81% [A
+statsmodels-0.14.5   | 11.2 MB   | 8          |   8% 
+statsmodels-0.14.5   | 11.2 MB   | #6         |  17%
+
+openssl-3.5.4        | 8.8 MB    | #########8 |  99% [A
+
+openssl-3.5.4        | 8.8 MB    | ########## | 100% [A
+statsmodels-0.14.5   | 11.2 MB   | ###2       |  32% 
+statsmodels-0.14.5   | 11.2 MB   | ####8      |  48%
+
+openssl-3.5.4        | 8.8 MB    | ########## | 100% [A
+statsmodels-0.14.5   | 11.2 MB   | ######4    |  65% 
+statsmodels-0.14.5   | 11.2 MB   | ########   |  81% 
+statsmodels-0.14.5   | 11.2 MB   | #########7 |  97% 
+statsmodels-0.14.5   | 11.2 MB   | ########## | 100% 
+statsmodels-0.14.5   | 11.2 MB   | ########## | 100%
+
+                                                     [A
+
+
+                                                     [A[A done
 Preparing transaction: / done
 Verifying transaction: \ | / - \ | / done
 Executing transaction: \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - done
