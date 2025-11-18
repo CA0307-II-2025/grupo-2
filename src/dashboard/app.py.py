@@ -6,19 +6,17 @@ import plotly.express as px
 import plotly.graph_objects as go
 import json
 from scipy.stats import lognorm
+import os
 
-# Cargar los datos de pérdidas históricas
-# (asegúrese de que 'datos_limpios.csv' esté en el mismo directorio que este script, o ajuste la ruta)
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(CURRENT_DIR)
 df = pd.read_csv(
-    "C:\\Users\\josep\\OneDrive - Universidad de Costa Rica\\UCR\\AÑO 3\\2\\Estadistica\\Proyecto Grupal\\grupo-2\\data\\clean\\datos_limpios.csv"
+    r"../../data/clean/datos_limpios.csv"
 )
-# Filtrar datos inválidos o faltantes (aseguramos que las pérdidas sean positivas para el análisis)
 df = df[df["total"] > 0]
 
-# Cargar el mapa geográfico de provincias de Costa Rica (GeoJSON)
-# (asegúrese de que 'provincias.json' esté disponible en el mismo directorio, o ajuste la ruta)
 with open(
-    "C:\\Users\\josep\\OneDrive - Universidad de Costa Rica\\UCR\\AÑO 3\\2\\Estadistica\\Proyecto Grupal\\grupo-2\\data\\provincias.json",
+    r"../../data/provincias.json",
     "r",
 ) as f:
     geojson = json.load(f)
