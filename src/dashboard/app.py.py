@@ -14,6 +14,7 @@ df = pd.read_csv(r"../../data/clean/datos_limpios.csv")
 df = pd.read_csv(
     r"../../data/clean/datos_limpios.csv"
 )
+
 df = df[df["total"] > 0]
 
 with open(
