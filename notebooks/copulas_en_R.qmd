@@ -1063,6 +1063,140 @@ write.csv(res_prov_cat, '../res/copulas/provincia_categoria.csv')
 write.csv(res_sec_cat, '../res/copulas/sector_categoria.csv')
 ```
 
+```{r}
+res_prov_sec <- read.csv('../res/copulas/provincia_sector.csv')
+res_prov_cat <- read.csv('../res/copulas/provincia_categoria.csv')
+res_sec_cat <- read.csv('../res/copulas/sector_categoria.csv')
+
+```
+
+
+## VaR y CVaR
+
+```{r}
+riesgo_par <- function(nombre_x, nombre_y, carpeta_x, carpeta_y, fit,
+                       base_path = "../res/marginales",
+                       n = 50000, alpha = 0.95) {
+
+  # cargar marginal X
+  m1 <- leer_marginal(file.path(base_path, carpeta_x, nombre_x))
+
+  # cargar marginal Y
+  m2 <- leer_marginal(file.path(base_path, carpeta_y, nombre_y))
+  
+  # calcular riesgos
+  calcular_var_cvar_par(fit, m1, m2, n = n)
+}
+
+
+calcular_var_cvar_par <- function(fit, m1, m2, n = 50000) {
+  
+  # 1. Simular U desde la cópula
+  U_sim <- BiCopSim(
+    N      = n,
+    family = fit$family,
+    par    = fit$par,
+    par2   = fit$par2
+  )
+  
+  U1 <- U_sim[,1]
+  U2 <- U_sim[,2]
+  
+  # 2. Transformar a X,Y con las marginales
+  X_sim <- transformar_desde_U(U1, m1)
+  Y_sim <- transformar_desde_U(U2, m2)
+
+  # 3. Suma conjunta
+  S_sim <- X_sim + Y_sim
+
+  # --- niveles de confianza ---
+  alphas <- c(0.95, 0.99)
+
+  # --- listas de resultados ---
+  out <- list()
+
+  for (a in alphas) {
+
+    # VaR individuales
+    VaR_X <- quantile(X_sim, a, na.rm = TRUE)
+    VaR_Y <- quantile(Y_sim, a, na.rm = TRUE)
+
+    # VaR conjunto
+    VaR_S <- quantile(S_sim, a, na.rm = TRUE)
+
+    # CVaR conjunto
+    CVaR_S <- mean(S_sim[S_sim >= VaR_S], na.rm = TRUE)
+
+    # CVaR condicional: Y | X >= VaR_X
+    CVaR_cond <- mean(Y_sim[X_sim >= VaR_X], na.rm = TRUE)
+
+    # guardar con nombres específicos
+    suf <- ifelse(a == 0.95, "95", "99")
+
+    out[[paste0("VaR_X_", suf)]]       <- VaR_X
+    out[[paste0("VaR_Y_", suf)]]       <- VaR_Y
+    out[[paste0("VaR_Cop_", suf)]]     <- VaR_S
+    out[[paste0("CVaR_Cop_", suf)]]    <- CVaR_S
+    out[[paste0("CVaR_cond_", suf)]]   <- CVaR_cond
+  }
+
+  return(out)
+}
+
+
+```
+
+```{r}
+res_prov_sec_riesgo <- res_prov_sec %>%
+  rowwise() %>%
+  mutate(
+    riesgo = list(
+      riesgo_par(
+        nombre_x  = varA,
+        nombre_y  = varB,
+        carpeta_x = tipoA,
+        carpeta_y = tipoB,
+        fit       = fit
+      )
+    )
+  ) %>%
+  unnest_wider(riesgo) %>% 
+  ungroup()
+
+res_prov_cat_riesgo <- res_prov_cat %>%
+  rowwise() %>%
+  mutate(
+    riesgo = list(
+      riesgo_par(
+        nombre_x  = varA,
+        nombre_y  = varB,
+        carpeta_x = tipoA,
+        carpeta_y = tipoB,
+        fit       = fit
+      )
+    )
+  ) %>%
+  unnest_wider(riesgo) %>% 
+  ungroup()
+
+
+res_sec_cat_riesgo <- res_sec_cat %>%
+  rowwise() %>%
+  mutate(
+    riesgo = list(
+      riesgo_par(
+        nombre_x  = varA,
+        nombre_y  = varB,
+        carpeta_x = tipoA,
+        carpeta_y = tipoB,
+        fit       = fit
+      )
+    )
+  ) %>%
+  unnest_wider(riesgo) %>% 
+  ungroup()
+
+```
 
 
 ```{r}
