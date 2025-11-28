@@ -43,49 +43,69 @@
     {\large \today\par}
 \end{titlepage}
 \section*{Resumen}
-Este trabajo analiza el impacto de los desastres naturales en Costa Rica a partir de métodos estadísticos avanzados como la teoría del valor extremo (EVT) y las cópulas. El objetivo es modelar la dependencia entre variables extremas (inundaciones, deslizamientos, sismos) y estimar el riesgo multivariado asociado. Se integran resultados descriptivos, inferenciales y de modelización para ofrecer un marco probabilístico robusto que apoye la toma de decisiones en gestión del riesgo, con aplicaciones en hidrología, ingeniería sísmica y aseguramiento catastrófico. Los hallazgos permiten cuantificar de manera más precisa las pérdidas potenciales y respaldan estrategias de mitigación, financiamiento y prevención de desastres.
+El análisis de fenómenos naturales extremos requiere metodologías que permitan capturar 
+tanto la variabilidad individual de las variables involucradas como la compleja 
+estructura de dependencia que las vincula. En este estudio se desarrolla un enfoque 
+probabilístico multivariado orientado a la evaluación del riesgo asociado a desastres 
+naturales en Costa Rica, considerando eventos como inundaciones, deslizamientos y sismos. 
+El proceso inicia con un análisis exploratorio exhaustivo que permite caracterizar la 
+estructura de los datos, identificar patrones relevantes y garantizar su calidad antes 
+del modelado estadístico.
 
-\section*{Introducción}
+Posteriormente, se implementa el método de simulación Monte Carlo para generar un 
+conjunto amplio de escenarios estocásticos que representan la variabilidad potencial de 
+los fenómenos estudiados. Esto posibilita la estimación de distribuciones empíricas y 
+métricas de riesgo como el Valor en Riesgo (VaR) a distintos niveles de confianza. Para 
+capturar adecuadamente la dependencia entre variables, se ajustan diferentes modelos de 
+cópulas, lo que permite representar relaciones no lineales y comportamientos de cola 
+que los métodos tradicionales no logran reflejar.
 
-El estudio de fenómenos extremos vinculados a catástrofes naturales, tales como inundaciones o terremotos, ha experimentado un avance significativo en los últimos años mediante la adopción de metodologías probabilísticas multivariadas. Estas metodologías permiten representar de manera más precisa la compleja interdependencia entre variables esenciales, ofreciendo un marco analítico robusto frente a la incertidumbre inherente a los eventos extremos. En este contexto, las cópulas se han consolidado como una herramienta estadística fundamental, ya que posibilitan construir distribuciones conjuntas a partir de distribuciones marginales, separando el modelado de cada variable individual de la estructura de dependencia que las vincula. Esta flexibilidad resulta particularmente relevante en el análisis de fenómenos naturales extremos, dado que las variables involucradas rara vez presentan distribuciones normales y suelen estar fuertemente correlacionadas \cite{DelfinerGutierrez2025,PerezGarcia2004}.
+Adicionalmente, se emplean transformaciones empíricas y técnicas vinculadas a la teoría 
+de valores extremos, lo que facilita el análisis diferenciado por provincia y categoría, 
+así como la construcción de métricas de riesgo específicas para cada región. Finalmente, 
+se elaboran visualizaciones y estructuras comparativas que permiten identificar patrones 
+espaciales y sectoriales de riesgo.
 
-Paralelamente, la teoría de valores extremos (Extreme Value Theory, EVT) se ha establecido como un marco esencial para modelar y predecir eventos raros y catastróficos, proporcionando herramientas matemáticas capaces de estimar las colas de distribución de dichos fenómenos \cite{Siddiqui2022,DelfinerGutierrez2025}. La integración de EVT con cópulas permite capturar simultáneamente la dependencia entre múltiples variables extremas, lo que resulta crucial para obtener estimaciones precisas de riesgos multivariados, como la combinación de intensidad y duración de lluvias extremas o la simultaneidad de aceleraciones sísmicas en distintos modos estructurales.
-
-En el ámbito hidrológico, la aplicación de cópulas ha favorecido la estimación de riesgos de inundaciones, evidenciada en investigaciones que utilizan modelos de vine copula para evaluar la probabilidad conjunta de que la duración, el volumen y el pico de una crecida excedan determinados umbrales \cite{DelfinerGutierrez2025}. Este enfoque integral permite medir con mayor exactitud las probabilidades de eventos multivariados, proporcionando información clave para el diseño de sistemas de alerta temprana y estrategias de mitigación. Aunque la probabilidad combinada de ocurrencia de eventos extremos suele ser baja, su correcta identificación y modelado contribuye a reducir la incertidumbre en la gestión del riesgo y optimizar la toma de decisiones \cite{PerezGarcia2004}.
-
-De manera análoga, en ingeniería sísmica, las cópulas han demostrado su utilidad al evaluar riesgos desde una perspectiva multivariada. Un caso ilustrativo corresponde a un estudio probabilístico de un rascacielos de acero en la Ciudad de México, en el que se consideraron como variables de entrada las aceleraciones espectrales asociadas a los primeros modos de vibración y como variable de salida la máxima deformación entre los pisos. La modelización de la relación entre estas variables mediante cópulas permitió obtener tasas de excedencia conjuntas más precisas que las ofrecidas por enfoques univariados tradicionales, los cuales tienden a sobreestimar los riesgos \cite{Siddiqui2022}. Este ejemplo evidencia cómo la incorporación de dependencias estadísticas mejora la exactitud de las estimaciones y fortalece la evaluación de la seguridad estructural ante eventos sísmicos.
-
-En el ámbito asegurador y de gestión de riesgos financieros, la modelización probabilística de eventos extremos permite cuantificar pérdidas potenciales derivadas de catástrofes naturales y establecer primas adecuadas para la transferencia de riesgo. La combinación de cópulas con análisis de valor en riesgo (VaR) y técnicas de simulación proporciona herramientas robustas para evaluar escenarios de pérdidas catastróficas y diseñar estrategias de mitigación frente a incertidumbres significativas \cite{PerezGarcia2004}.
-
-En este trabajo, se pretende aplicar estas metodologías al estudio de desastres naturales en Costa Rica, considerando fenómenos como inundaciones, deslizamientos y eventos sísmicos, y generando un marco probabilístico que permita evaluar y gestionar el riesgo de manera más precisa. Este enfoque busca adaptarse a las particularidades geográficas, hidrológicas y sísmicas del país, ofreciendo información valiosa para la prevención, planificación y toma de decisiones en contextos de alta incertidumbre.
-
-En conjunto, estos avances evidencian que la aplicación de cópulas en el análisis de desastres naturales proporciona una visión integral y versátil. Al capturar las relaciones entre variables clave y estimar la probabilidad real de eventos extremos multivariados, las cópulas se consolidan como un método esencial para diseñar estrategias de prevención, optimizar el diseño estructural y administrar el riesgo en escenarios complejos e inciertos \cite{DelfinerGutierrez2025,Siddiqui2022,PerezGarcia2004}.
+En conjunto, la metodología desarrollada proporciona una evaluación integral y precisa 
+de los fenómenos extremos, ofreciendo una base sólida para la toma de decisiones en 
+gestión del riesgo y planificación ante eventos catastróficos.
 
 \newpage
-\section*{Metodología}
+\section*{Introducción}
 
-La presente investigación es de carácter cuantitativo y aplicado, ya que busca modelar el riesgo financiero asociado a desastres naturales mediante técnicas estadísticas avanzadas. El enfoque metodológico combina la teoría del valor extremo (EVT) y las cópulas, integrando herramientas de inferencia bayesiana para la estimación de parámetros y su comparación entre modelos. Este procedimiento permite capturar tanto el comportamiento univariado de los eventos extremos como la estructura de dependencia multivariada que los relaciona.
+El estudio de fenómenos extremos asociados a catástrofes naturales, tales como 
+inundaciones, deslizamientos o sismos, ha experimentado un notable desarrollo gracias 
+a la incorporación de enfoques probabilísticos multivariados capaces de representar con 
+mayor precisión la compleja interacción entre variables físicas clave. Dichos enfoques 
+permiten abordar la incertidumbre inherente a los eventos extremos mediante técnicas que 
+separan el análisis marginal del estudio de la dependencia, ofreciendo así una estructura 
+metodológica más flexible y coherente. En este marco, las cópulas se han consolidado 
+como una herramienta fundamental, pues permiten construir distribuciones conjuntas a 
+partir de distribuciones marginales arbitrarias, capturando dependencias no lineales y 
+comportamientos en cola que los métodos tradicionales basados exclusivamente en 
+correlación no logran reflejar adecuadamente \cite{DelfinerGutierrez2025,PerezGarcia2004}.
 
-\subsection*{Fuentes de datos}
-Los datos utilizados provienen del sistema \textit{DesInventar}, una base histórica de desastres naturales en Costa Rica que registra información sobre eventos como inundaciones, deslizamientos, sequías, tormentas y terremotos. Para este análisis se seleccionaron las variables de año, tipo de evento, provincia, tipología y monto de pérdidas económicas. Los datos fueron limpiados y consolidados mediante Python y Pandas, siguiendo criterios de eliminación de valores nulos y estandarización de categorías.
+Paralelamente, la teoría de valores extremos (Extreme Value Theory, EVT) constituye un 
+pilar esencial para el modelado de eventos raros y de alto impacto, proporcionando 
+herramientas rigurosas para caracterizar el comportamiento de las colas de distribución 
+y estimar la probabilidad de ocurrencia de fenómenos extraordinarios \cite{Siddiqui2022}. La combinación de EVT con modelos de dependencia basados en cópulas amplía significativamente la capacidad analítica, al permitir la evaluación conjunta de múltiples variables extremas, como la intensidad y duración de precipitaciones, o la simultaneidad de aceleraciones sísmicas en diversas direcciones estructurales.
 
-\subsection*{Análisis descriptivo e inferencial}
-En una primera etapa se efectuó un análisis descriptivo de las pérdidas por tipo de evento y por año, aplicando estimaciones de densidad mediante kernels para identificar la distribución empírica de los datos. Posteriormente, se realizaron contrastes de hipótesis sobre las medias y varianzas de las pérdidas por categoría, con el fin de determinar diferencias significativas en la magnitud de los impactos.
+Diversos estudios han demostrado la utilidad de esta integración metodológica en áreas 
+como la hidrología y la ingeniería sísmica. Por ejemplo, en el análisis de riesgos de 
+inundación, el empleo de vine copulas ha permitido modelar de manera precisa la 
+dependencia entre la duración, el volumen y el pico de una crecida, obteniéndose 
+probabilidades conjuntas más realistas y mejor fundamentadas que las que se derivarían 
+de un análisis univariado \cite{DelfinerGutierrez2025}. De igual forma, en ingeniería 
+estructural, la evaluación probabilística de la demanda sísmica basada en cópulas ha 
+demostrado reducir la sobreestimación del riesgo que típicamente surge cuando se ignora 
+la dependencia entre aceleraciones espectrales en distintos modos de vibración \cite{Siddiqui2022}.
 
-\subsection*{Modelado estadístico}
-La segunda etapa consistió en el ajuste de modelos de teoría del valor extremo (EVT), los cuales permiten describir el comportamiento de las colas de la distribución de pérdidas. Según \citeA{Klugman2019}, “\textit{las distribuciones con colas pesadas son esenciales para representar adecuadamente la naturaleza de los riesgos extremos}” \cite[p. 260]{Klugman2019}. En este trabajo se emplearon distribuciones tipo Pareto y Generalized Extreme Value (GEV) para estimar los cuantiles asociados a eventos de alta severidad.
+El ámbito asegurador también ha incorporado estas metodologías para mejorar la cuantificación de pérdidas asociadas a catástrofes naturales. La integración de cópulas con técnicas de simulación, particularmente con el método de Monte Carlo, ha permitido caracterizar escenarios de pérdidas extremas y estimar métricas de riesgo como el Valor en Riesgo (VaR), proporcionando una base más sólida para el establecimiento de primas y para la gestión estratégica del riesgo financiero \cite{PerezGarcia2004}.
 
-\subsection*{Modelos de dependencia mediante cópulas}
-Con el fin de representar la estructura de dependencia entre variables extremas —como intensidad y duración de los eventos— se emplearon cópulas bivariantes de diferentes familias: Gaussiana, Student-t, Clayton, Gumbel y Frank. Estas cópulas permiten construir distribuciones conjuntas flexibles a partir de marginales empíricas, separando la dependencia del comportamiento individual de cada variable. De acuerdo con \citeA{Nelsen2006}, “\textit{las cópulas caracterizan completamente la dependencia entre variables a través de un conjunto reducido de parámetros que definen su estructura conjunta}” \cite[p. 57]{Nelsen2006}. La selección de la cópula óptima se basó en criterios de información como el AIC y el log-likelihood, tal como recomienda \citeA{Joe2014} en el contexto de modelación multivariada.
+En consonancia con estas aplicaciones, el presente trabajo desarrolla un marco probabilístico integral orientado al estudio de desastres naturales en Costa Rica. Para ello, se emplea un enfoque estructurado que inicia con un análisis exploratorio detallado de los datos, continúa con la generación de escenarios mediante simulación Monte Carlo, incorpora posteriormente el modelado de dependencias a través de cópulas, y se complementa con la aplicación de técnicas de EVT y estimación del VaR a diferentes niveles de confianza. Asimismo, se realiza un análisis diferenciado por provincia y categoría utilizando transformaciones empíricas que permiten estudiar con mayor precisión la variación espacial y sectorial del riesgo.
 
-\subsection*{Estimación de parámetros y comparación}
-La estimación de los parámetros de dependencia se realizó mediante métodos bayesianos, utilizando el algoritmo de muestreo de Gibbs (\textit{Gibbs Sampling}). Este método permite aproximar la distribución posterior de los parámetros cuando su forma analítica es desconocida o intractable. Según \citeA{Gelman2020}, “\textit{el muestreo de Gibbs constituye una estrategia eficiente para explorar distribuciones conjuntas complejas mediante la generación iterativa de valores condicionales}” \cite[p. 299]{Gelman2020}. En este proyecto, se compararon los parámetros obtenidos para cada familia de cópulas con el propósito de identificar el modelo que mejor describe la dependencia entre los fenómenos extremos de interés. La comparación entre los parámetros se basa en su significancia estadística y en la estabilidad de las estimaciones.
-
-\subsection*{Validación y simulación}
-Finalmente, los modelos ajustados fueron evaluados mediante simulaciones de Monte Carlo, generando pseudo-observaciones a partir de las cópulas calibradas. Se compararon las distribuciones simuladas con las empíricas mediante pruebas de bondad de ajuste y análisis visual de densidades conjuntas. Este procedimiento permite verificar la capacidad predictiva de los modelos y garantizar su coherencia con los datos observados.
-
-
-
+En conjunto, este enfoque metodológico robusto permite capturar la complejidad inherente a los fenómenos naturales extremos, mejorar la representación de sus dependencias estadísticas y proporcionar estimaciones más realistas de los riesgos multivariados. Al integrar técnicas avanzadas de simulación, estadística multivariada y análisis de valores extremos, el presente estudio contribuye a fortalecer la capacidad de evaluación, prevención y toma de decisiones ante escenarios catastróficos en el contexto costarricense \cite{DelfinerGutierrez2025,Siddiqui2022,PerezGarcia2004}.
+\newpage
 \section*{Marco Teórico}
 
 
@@ -110,36 +130,53 @@ En este contexto, la articulación entre el sector público, el sector privado y
 En síntesis, el estudio de los desastres naturales y los gastos que estos implican requiere una aproximación interdisciplinaria que combine historia, ciencias sociales, economía, estadística avanzada y gestión pública. Este trabajo plantea la necesidad de integrar perspectivas tradicionales sobre vulnerabilidad y desigualdad con marcos de gobernanza internacional y modelos probabilísticos modernos, con el fin de diseñar estrategias de mitigación y financiamiento que reduzcan los impactos económicos y sociales de los desastres en la región y contribuyan a garantizar la estabilidad económica y social a largo plazo.
 
 
+\section*{Metodología}
+
+La metodología empleada en el presente estudio se basó en una combinación de técnicas 
+estadísticas avanzadas orientadas al análisis de datos, la simulación estocástica y el 
+modelado de dependencias. El proceso inició con un análisis exploratorio exhaustivo de 
+la base de datos con el propósito de comprender la estructura de la información, 
+identificar patrones relevantes y evaluar la presencia de valores atípicos, 
+inconsistencias o posibles problemas de calidad. Durante esta etapa se examinaron 
+distribuciones marginales, se generaron representaciones gráficas como histogramas, 
+diagramas de cajas y mapas de correlación, y se efectuaron las transformaciones y 
+limpiezas necesarias para garantizar la integridad de los datos utilizados en las fases 
+posteriores.
+
+Posteriormente, se implementó el método de simulación Monte Carlo con el fin de modelar 
+la variabilidad inherente a las variables de interés y generar escenarios alternativos 
+que permitieran aproximar el comportamiento estocástico del sistema bajo estudio. Para 
+ello, se ajustaron distribuciones a los datos observados y se efectuó un número elevado 
+de simulaciones, lo que permitió obtener distribuciones empíricas de resultados, 
+cuantificar la incertidumbre y estimar medidas de riesgo como el Valor en Riesgo (VaR) 
+bajo diversos niveles de confianza.
+
+Con el objetivo de capturar la estructura de dependencia entre las variables, se 
+procedió al ajuste de diferentes modelos de cópulas, los cuales resultan especialmente 
+adecuados para representar relaciones no lineales y comportamientos de cola que no 
+pueden ser descritos mediante la correlación tradicional. Este procedimiento incluyó la 
+selección de familias de cópulas apropiadas, la estimación de sus parámetros mediante 
+métodos de máxima verosimilitud y el análisis de medidas de dependencia como el 
+coeficiente $\tau$ de Kendall. A partir de estas cópulas ajustadas se generaron simulaciones 
+conjuntas que preservan la estructura dependiente observada en los datos originales.
+
+Finalmente, se aplicaron técnicas de Transformación de Variables Empíricas (TVE) para 
+analizar de manera más precisa las dependencias entre categorías y provincias específicas, 
+complementando así el modelado previo. Esta etapa permitió transformar las variables a 
+una escala uniforme, calcular matrices de dependencia diferenciadas y estimar el Valor 
+en Riesgo tanto al 95 \% como al 99 \% para cada combinación de provincia y categoría. 
+Con base en estos resultados se elaboraron representaciones visuales como mapas de calor, 
+que facilitaron la identificación de patrones espaciales y sectoriales en los niveles de 
+riesgo. En conjunto, todas estas etapas proporcionaron un enfoque metodológico robusto y 
+coherente, permitiendo analizar de forma integral el comportamiento de las variables 
+bajo estudio y obtener conclusiones fundamentadas en técnicas cuantitativas de alta 
+precisión.
+
+\section*{Resultados}
+%Aquí va la sección de resultados y graficos relevantes
 \newpage
 \section*{Anexos}
 Link del Repositorio de GitHub : \url{https://github.com/CA0307-II-2025/grupo-2}
-
-Imágenes del Dashboard (Avance) :
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{fig/avance_dash_1/1.png}
-\end{figure}
-    \vspace{0.5cm}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{fig/avance_dash_1/1.png}
-\end{figure}
-    \vspace{0.5cm}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{fig/avance_dash_1/1.png}
-\end{figure}
-    \vspace{0.5cm}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{fig/avance_dash_1/1.png}
-\end{figure}
-    \vspace{0.5cm}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{fig/avance_dash_1/1.png}
-\end{figure}
 
 \newpage
 \nocite{*}% Mostrar todas
