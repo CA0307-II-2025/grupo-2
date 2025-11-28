@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_H\u00cdDRICO_Hidrometereol\u00f3gico",
+    "provincia": "Heredia",
+    "sector": "H\u00cdDRICO",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.001669221596252,
+    "p_u": 0.1299107142857143,
+    "n_total": 2240,
+    "n_body": 1949,
+    "n_tail": 291,
+    "best_body": "Weibull",
+    "best_tail": "Burr"
+}

@@ -1,0 +1,13 @@
+{
+    "location": "H\u00cdDRICO",
+    "provincia": null,
+    "sector": "H\u00cdDRICO",
+    "categoria": null,
+    "u_opt": 20.26788028711382,
+    "p_u": 0.17289719626168223,
+    "n_total": 214,
+    "n_body": 177,
+    "n_tail": 37,
+    "best_body": "Weibull",
+    "best_tail": "Burr"
+}

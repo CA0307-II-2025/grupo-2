@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_INFRAESTRUCTURA_Hidrometereol\u00f3gico",
+    "provincia": "Puntarenas",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.936321124952226,
+    "p_u": 0.048214285714285716,
+    "n_total": 2240,
+    "n_body": 2132,
+    "n_tail": 108,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

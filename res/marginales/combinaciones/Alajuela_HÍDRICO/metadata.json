@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_H\u00cdDRICO",
+    "provincia": "Alajuela",
+    "sector": "H\u00cdDRICO",
+    "categoria": null,
+    "u_opt": 19.637684665009377,
+    "p_u": 0.33883928571428573,
+    "n_total": 2240,
+    "n_body": 1481,
+    "n_tail": 759,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_INFRAESTRUCTURA",
+    "provincia": "Puntarenas",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": null,
+    "u_opt": 21.268148310896574,
+    "p_u": 0.10446428571428572,
+    "n_total": 2240,
+    "n_body": 2006,
+    "n_tail": 234,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

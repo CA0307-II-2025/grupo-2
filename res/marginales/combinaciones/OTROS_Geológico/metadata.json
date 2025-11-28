@@ -1,0 +1,13 @@
+{
+    "location": "OTROS_Geol\u00f3gico",
+    "provincia": null,
+    "sector": "OTROS",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 21.822955451281693,
+    "p_u": 0.054017857142857145,
+    "n_total": 2240,
+    "n_body": 2119,
+    "n_tail": 121,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

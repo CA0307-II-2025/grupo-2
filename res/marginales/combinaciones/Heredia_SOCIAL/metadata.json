@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_SOCIAL",
+    "provincia": "Heredia",
+    "sector": "SOCIAL",
+    "categoria": null,
+    "u_opt": 20.50518973697468,
+    "p_u": 0.19151785714285716,
+    "n_total": 2240,
+    "n_body": 1811,
+    "n_tail": 429,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

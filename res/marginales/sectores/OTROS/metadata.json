@@ -1,0 +1,13 @@
+{
+    "location": "OTROS",
+    "provincia": null,
+    "sector": "OTROS",
+    "categoria": null,
+    "u_opt": 20.916779323570893,
+    "p_u": 0.18457300275482094,
+    "n_total": 363,
+    "n_body": 296,
+    "n_tail": 67,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

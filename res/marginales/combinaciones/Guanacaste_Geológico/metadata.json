@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_Geol\u00f3gico",
+    "provincia": "Guanacaste",
+    "sector": null,
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 21.504574752092722,
+    "p_u": 0.07991071428571428,
+    "n_total": 2240,
+    "n_body": 2061,
+    "n_tail": 179,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

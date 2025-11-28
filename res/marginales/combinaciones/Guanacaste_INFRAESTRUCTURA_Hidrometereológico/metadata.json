@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_INFRAESTRUCTURA_Hidrometereol\u00f3gico",
+    "provincia": "Guanacaste",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.170670882319065,
+    "p_u": 0.11339285714285714,
+    "n_total": 2240,
+    "n_body": 1986,
+    "n_tail": 254,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}

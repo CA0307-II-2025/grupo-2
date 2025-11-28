@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_SOCIAL_Geol\u00f3gico",
+    "provincia": "Heredia",
+    "sector": "SOCIAL",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 21.075481246644497,
+    "p_u": 0.12276785714285714,
+    "n_total": 2240,
+    "n_body": 1965,
+    "n_tail": 275,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}

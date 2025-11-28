@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_OTROS",
+    "provincia": "Puntarenas",
+    "sector": "OTROS",
+    "categoria": null,
+    "u_opt": 22.435661131049624,
+    "p_u": 0.025892857142857145,
+    "n_total": 2240,
+    "n_body": 2182,
+    "n_tail": 58,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

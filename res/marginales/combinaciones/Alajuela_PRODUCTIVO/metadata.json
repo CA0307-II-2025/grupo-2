@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_PRODUCTIVO",
+    "provincia": "Alajuela",
+    "sector": "PRODUCTIVO",
+    "categoria": null,
+    "u_opt": 20.553397333399005,
+    "p_u": 0.18705357142857143,
+    "n_total": 2240,
+    "n_body": 1821,
+    "n_tail": 419,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}

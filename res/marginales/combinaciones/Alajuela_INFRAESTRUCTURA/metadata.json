@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_INFRAESTRUCTURA",
+    "provincia": "Alajuela",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": null,
+    "u_opt": 20.540202744241377,
+    "p_u": 0.1875,
+    "n_total": 2240,
+    "n_body": 1820,
+    "n_tail": 420,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

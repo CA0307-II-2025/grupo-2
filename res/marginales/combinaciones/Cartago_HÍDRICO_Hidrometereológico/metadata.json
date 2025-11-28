@@ -1,0 +1,13 @@
+{
+    "location": "Cartago_H\u00cdDRICO_Hidrometereol\u00f3gico",
+    "provincia": "Cartago",
+    "sector": "H\u00cdDRICO",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 18.88655237970268,
+    "p_u": 0.5120535714285714,
+    "n_total": 2240,
+    "n_body": 1093,
+    "n_tail": 1147,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

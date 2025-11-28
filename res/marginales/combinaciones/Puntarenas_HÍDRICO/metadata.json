@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_H\u00cdDRICO",
+    "provincia": "Puntarenas",
+    "sector": "H\u00cdDRICO",
+    "categoria": null,
+    "u_opt": 20.012288642653896,
+    "p_u": 0.2741071428571429,
+    "n_total": 2240,
+    "n_body": 1626,
+    "n_tail": 614,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

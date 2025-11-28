@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_Geol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": null,
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 22.651073025530334,
+    "p_u": 0.020089285714285716,
+    "n_total": 2240,
+    "n_body": 2195,
+    "n_tail": 45,
+    "best_body": "KDE-gaussian",
+    "best_tail": "Burr"
+}

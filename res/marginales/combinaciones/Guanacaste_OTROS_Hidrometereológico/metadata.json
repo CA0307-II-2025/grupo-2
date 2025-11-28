@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_OTROS_Hidrometereol\u00f3gico",
+    "provincia": "Guanacaste",
+    "sector": "OTROS",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.593216625321332,
+    "p_u": 0.18035714285714285,
+    "n_total": 2240,
+    "n_body": 1836,
+    "n_tail": 404,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

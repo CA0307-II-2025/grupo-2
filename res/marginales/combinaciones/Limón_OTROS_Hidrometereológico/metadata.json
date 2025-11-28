@@ -1,0 +1,13 @@
+{
+    "location": "Lim\u00f3n_OTROS_Hidrometereol\u00f3gico",
+    "provincia": "Lim\u00f3n",
+    "sector": "OTROS",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.838125715366573,
+    "p_u": 0.053125,
+    "n_total": 2240,
+    "n_body": 2121,
+    "n_tail": 119,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

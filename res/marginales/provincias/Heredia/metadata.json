@@ -1,0 +1,13 @@
+{
+    "location": "Heredia",
+    "provincia": "Heredia",
+    "sector": null,
+    "categoria": null,
+    "u_opt": 20.409481232951773,
+    "p_u": 0.19491525423728814,
+    "n_total": 118,
+    "n_body": 95,
+    "n_tail": 23,
+    "best_body": "KDE-exponential",
+    "best_tail": "Burr"
+}

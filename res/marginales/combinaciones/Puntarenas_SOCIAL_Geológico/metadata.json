@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_SOCIAL_Geol\u00f3gico",
+    "provincia": "Puntarenas",
+    "sector": "SOCIAL",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 20.618131284532964,
+    "p_u": 0.17723214285714287,
+    "n_total": 2240,
+    "n_body": 1843,
+    "n_tail": 397,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

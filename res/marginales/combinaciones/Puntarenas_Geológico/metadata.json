@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_Geol\u00f3gico",
+    "provincia": "Puntarenas",
+    "sector": null,
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 21.878299010064907,
+    "p_u": 0.05044642857142857,
+    "n_total": 2240,
+    "n_body": 2127,
+    "n_tail": 113,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

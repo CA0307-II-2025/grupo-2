@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_PRODUCTIVO",
+    "provincia": "Puntarenas",
+    "sector": "PRODUCTIVO",
+    "categoria": null,
+    "u_opt": 19.686684533770432,
+    "p_u": 0.32767857142857143,
+    "n_total": 2240,
+    "n_body": 1506,
+    "n_tail": 734,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

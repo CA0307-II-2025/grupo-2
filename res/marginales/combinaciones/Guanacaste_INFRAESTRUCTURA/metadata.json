@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_INFRAESTRUCTURA",
+    "provincia": "Guanacaste",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": null,
+    "u_opt": 20.547540783049683,
+    "p_u": 0.1875,
+    "n_total": 2240,
+    "n_body": 1820,
+    "n_tail": 420,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

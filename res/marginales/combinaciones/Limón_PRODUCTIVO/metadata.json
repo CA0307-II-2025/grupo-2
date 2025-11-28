@@ -1,0 +1,13 @@
+{
+    "location": "Lim\u00f3n_PRODUCTIVO",
+    "provincia": "Lim\u00f3n",
+    "sector": "PRODUCTIVO",
+    "categoria": null,
+    "u_opt": 23.375728742320703,
+    "p_u": 0.006696428571428571,
+    "n_total": 2240,
+    "n_body": 2225,
+    "n_tail": 15,
+    "best_body": "KDE-gaussian",
+    "best_tail": "Pareto"
+}

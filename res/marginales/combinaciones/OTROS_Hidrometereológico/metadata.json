@@ -1,0 +1,13 @@
+{
+    "location": "OTROS_Hidrometereol\u00f3gico",
+    "provincia": null,
+    "sector": "OTROS",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.913692322644177,
+    "p_u": 0.1375,
+    "n_total": 2240,
+    "n_body": 1932,
+    "n_tail": 308,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}

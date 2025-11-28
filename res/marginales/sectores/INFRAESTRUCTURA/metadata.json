@@ -1,0 +1,13 @@
+{
+    "location": "INFRAESTRUCTURA",
+    "provincia": null,
+    "sector": "INFRAESTRUCTURA",
+    "categoria": null,
+    "u_opt": 20.999536825102645,
+    "p_u": 0.1595959595959596,
+    "n_total": 990,
+    "n_body": 832,
+    "n_tail": 158,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}

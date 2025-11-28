@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_Hidrometereol\u00f3gico",
+    "provincia": "Puntarenas",
+    "sector": null,
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.10369592609893,
+    "p_u": 0.12008928571428572,
+    "n_total": 2240,
+    "n_body": 1971,
+    "n_tail": 269,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}

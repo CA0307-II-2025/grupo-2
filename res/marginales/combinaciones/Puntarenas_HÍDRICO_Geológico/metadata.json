@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_H\u00cdDRICO_Geol\u00f3gico",
+    "provincia": "Puntarenas",
+    "sector": "H\u00cdDRICO",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 18.991762659841292,
+    "p_u": 0.4589285714285714,
+    "n_total": 2240,
+    "n_body": 1212,
+    "n_tail": 1028,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

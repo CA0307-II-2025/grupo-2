@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_H\u00cdDRICO_Geol\u00f3gico",
+    "provincia": "Heredia",
+    "sector": "H\u00cdDRICO",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 18.828007970191024,
+    "p_u": 0.5200892857142857,
+    "n_total": 2240,
+    "n_body": 1075,
+    "n_tail": 1165,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

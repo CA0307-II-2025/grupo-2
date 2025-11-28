@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_SOCIAL",
+    "provincia": "Guanacaste",
+    "sector": "SOCIAL",
+    "categoria": null,
+    "u_opt": 19.971167601020703,
+    "p_u": 0.2785714285714286,
+    "n_total": 2240,
+    "n_body": 1616,
+    "n_tail": 624,
+    "best_body": "KDE-tophat",
+    "best_tail": "LN_tail"
+}

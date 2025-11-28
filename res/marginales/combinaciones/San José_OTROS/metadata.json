@@ -1,0 +1,13 @@
+{
+    "location": "San Jos\u00e9_OTROS",
+    "provincia": "San Jos\u00e9",
+    "sector": "OTROS",
+    "categoria": null,
+    "u_opt": 20.356708473590327,
+    "p_u": 0.21294642857142856,
+    "n_total": 2240,
+    "n_body": 1763,
+    "n_tail": 477,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

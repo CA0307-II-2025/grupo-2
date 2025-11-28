@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_SOCIAL_Hidrometereol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": "SOCIAL",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 19.806214827409494,
+    "p_u": 0.3107142857142857,
+    "n_total": 2240,
+    "n_body": 1544,
+    "n_tail": 696,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

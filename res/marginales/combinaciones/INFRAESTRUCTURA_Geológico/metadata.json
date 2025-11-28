@@ -1,0 +1,13 @@
+{
+    "location": "INFRAESTRUCTURA_Geol\u00f3gico",
+    "provincia": null,
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 20.179187843773626,
+    "p_u": 0.24330357142857142,
+    "n_total": 2240,
+    "n_body": 1695,
+    "n_tail": 545,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

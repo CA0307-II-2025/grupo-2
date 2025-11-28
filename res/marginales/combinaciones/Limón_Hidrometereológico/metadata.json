@@ -1,0 +1,13 @@
+{
+    "location": "Lim\u00f3n_Hidrometereol\u00f3gico",
+    "provincia": "Lim\u00f3n",
+    "sector": null,
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.9877521023353,
+    "p_u": 0.13080357142857144,
+    "n_total": 2240,
+    "n_body": 1947,
+    "n_tail": 293,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

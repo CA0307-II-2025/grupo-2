@@ -1,0 +1,13 @@
+{
+    "location": "San Jos\u00e9_Hidrometereol\u00f3gico",
+    "provincia": "San Jos\u00e9",
+    "sector": null,
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.406110076081255,
+    "p_u": 0.20357142857142857,
+    "n_total": 2240,
+    "n_body": 1784,
+    "n_tail": 456,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_INFRAESTRUCTURA",
+    "provincia": "Heredia",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": null,
+    "u_opt": 22.103116448373395,
+    "p_u": 0.038392857142857145,
+    "n_total": 2240,
+    "n_body": 2154,
+    "n_tail": 86,
+    "best_body": "KDE-gaussian",
+    "best_tail": "GPD"
+}

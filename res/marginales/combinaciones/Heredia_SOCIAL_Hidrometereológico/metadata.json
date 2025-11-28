@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_SOCIAL_Hidrometereol\u00f3gico",
+    "provincia": "Heredia",
+    "sector": "SOCIAL",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.16430478122625,
+    "p_u": 0.24598214285714284,
+    "n_total": 2240,
+    "n_body": 1689,
+    "n_tail": 551,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

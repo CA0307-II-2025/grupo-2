@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_H\u00cdDRICO_Hidrometereol\u00f3gico",
+    "provincia": "Guanacaste",
+    "sector": "H\u00cdDRICO",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.09149521886621,
+    "p_u": 0.121875,
+    "n_total": 2240,
+    "n_body": 1967,
+    "n_tail": 273,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}
