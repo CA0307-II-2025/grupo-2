@@ -139,6 +139,7 @@ pburr <- function(q, shape1, shape2, scale) {
 
 qburr <- function(p, shape1, shape2, scale) {
   scale * (((1 - p)^(-1/shape2) - 1))^(1/shape1)
+  scale * (( (1 - p)^(-1/shape2) - 1 ))^(1/shape1)
 }
 
 pgpd <- function(x, xi, beta, u0) {
@@ -155,7 +156,6 @@ qgpd <- function(p, xi, beta, u0) {
   u0 + beta * ((1 - p)^(-xi) - 1) / xi
 }
 
-
 ppareto <- function(x, shape, scale) {
   1 - (scale / x)^shape
 }
@@ -169,7 +169,6 @@ qpareto <- function(p, shape, scale) {
 
 ```{r}
 leer_marginal <- function(path_dir) {
-
   archivos <- list.files(path_dir, full.names = TRUE)
   tail_files <- archivos[grepl("tail", archivos, ignore.case = TRUE)]
 
@@ -178,6 +177,11 @@ leer_marginal <- function(path_dir) {
   }
 
   # Seleccionar archivo más reciente
+  archivos <- list.files(path_dir, full.names = TRUE)
+  
+  body_files <- archivos[grepl("body", archivos, ignore.case = TRUE)]
+  tail_files <- archivos[grepl("tail", archivos, ignore.case = TRUE)]
+  
   seleccionar_ultimo <- function(files) {
     info <- file.info(files)
     files[which.max(info$mtime)]
@@ -312,6 +316,67 @@ transformar_a_U <- function(x, marginal) {
     Fx <- approx(
       x = xgrid,
       y = cumsum(fgrid) / sum(fgrid),
+  
+  # PRIORIDAD 1 → TAIL (riesgo extremo)
+  if (length(tail_files) >= 1) {
+    tail_file <- seleccionar_ultimo(tail_files)
+    message("[Marginal] Seleccionado TAIL: ", basename(tail_file))
+    
+    df_tail <- read.csv(tail_file)
+    
+    return(list(
+      model_type = "tail",
+      model_name = unique(df_tail$model_name)[1],
+      param1 = df_tail$Burr_param1[1],
+      param2 = df_tail$Burr_param2[1],
+      param3 = df_tail$Burr_param3[1],
+      p_u    = df_tail$p_u[1],
+      u_opt  = df_tail$u_opt[1]
+    ))
+  }
+  
+  # PRIORIDAD 2 → BODY (KDE si no hay tail)
+  if (length(body_files) >= 1) {
+    body_file <- seleccionar_ultimo(body_files)
+    message("[Marginal] Seleccionado BODY: ", basename(body_file))
+    
+    df_body <- read.csv(body_file)
+    
+    return(list(
+      model_type = "body",
+      model_name = unique(df_body$model_name)[1],
+      x = df_body$x,
+      dens = df_body$f
+    ))
+  }
+  
+  stop("No se encontraron archivos marginales BODY o TAIL en: ", path_dir)
+}
+
+transformar_a_U <- function(x, marginal) {
+  
+  tipo   <- tolower(marginal$model_type)
+  nombre <- tolower(marginal$model_name)
+  
+
+  # =======================================
+  # 1. BODY / KDE
+  # =======================================
+  if (tipo %in% c("kde", "body")) {
+
+    if (is.null(marginal$x) || is.null(marginal$dens) ||
+        length(marginal$x) < 2 ||
+        length(marginal$dens) < 2 ||
+        sum(!is.na(marginal$x)) < 2 ||
+        sum(!is.na(marginal$dens)) < 2) {
+
+      message("[Aviso] BODY inválido → usando U empírica.")
+      return(rank(x) / (length(x) + 1))
+    }
+
+    Fx <- approx(
+      x = marginal$x,
+      y = cumsum(marginal$dens) / sum(marginal$dens),
       xout = x,
       rule = 2
     )$y
@@ -330,6 +395,63 @@ transformar_a_U <- function(x, marginal) {
   ks <- suppressWarnings(ks.test(Fx, "punif"))
   if (ks$p.value < 0.05) {
     message("[Aviso] KS no pasa → usando U empírica.")
+
+  # =======================================
+  # 2. TAIL / PARAMÉTRICO
+  # =======================================
+  else if (tipo %in% c("tail", "param")) {
+
+    if (nombre == "burr") {
+      Fx <- pburr(
+        q      = x,
+        shape1 = marginal$param1,
+        shape2 = marginal$param2,
+        scale  = marginal$param3
+      )
+    }
+
+    else if (nombre == "gpd") {
+      Fx <- pgpd(
+        x    = x,
+        xi   = marginal$param1,
+        beta = marginal$param2,
+        u0   = marginal$u_opt
+      )
+    }
+
+    else if (nombre == "pareto") {
+      Fx <- ppareto(
+        x     = x,
+        shape = marginal$param1,
+        scale = marginal$param2
+      )
+    }
+
+    else if (nombre == "ln_tail" || nombre == "lognormal") {
+      Fx <- plnorm(
+        x,
+        meanlog = marginal$param1,
+        sdlog   = marginal$param2
+      )
+    }
+
+    else {
+      stop("Distribución paramétrica no implementada: ", marginal$model_name)
+    }
+  }
+
+  else {
+    stop("Tipo marginal desconocido: ", marginal$model_type)
+  }
+
+
+  # =======================================
+  # 3. Validación KS + fallback empírico
+  # =======================================
+  ks <- suppressWarnings(ks.test(Fx, "punif"))
+
+  if (ks$p.value < 0.05 || any(is.na(Fx)) || any(is.infinite(Fx))) {
+    message("[Aviso] KS no pasa o Fx inválido → usando U empírica.")
     Fx <- rank(x) / (length(x) + 1)
   }
 
@@ -344,13 +466,43 @@ transformar_desde_U <- function(U, marginal) {
   params <- marginal$params
 
   if (tipo == "tail") {
+  tipo   <- tolower(marginal$model_type)
+  nombre <- tolower(marginal$model_name)
+
+
+  # =======================================
+  # 1. BODY / KDE  → aproximación inversa
+  # =======================================
+  if (tipo %in% c("kde", "body")) {
+
+    x <- marginal$x
+    f <- marginal$dens
+    dx <- x[2] - x[1]
+
+    cdf <- cumsum(f) * dx
+    cdf <- cdf / max(cdf)
+
+    qfun <- approxfun(cdf, x, rule = 2)
+
+    return(qfun(U))
+  }
+
+
+  # =======================================
+  # 2. TAIL paramétrico
+  # =======================================
+  if (tipo %in% c("tail", "param")) {
 
     if (nombre == "burr") {
       return(qburr(
         p      = U,
+
         shape1 = params[1],
         shape2 = params[2],
-        scale  = params[3]
+        scale  = params[3],
+        shape1 = marginal$param1,
+        shape2 = marginal$param2,
+        scale  = marginal$param3
       ))
     }
 
@@ -359,6 +511,8 @@ transformar_desde_U <- function(U, marginal) {
         p    = U,
         xi   = params[1],
         beta = params[2],
+        xi   = marginal$param1,
+        beta = marginal$param2,
         u0   = marginal$u_opt
       ))
     }
@@ -367,7 +521,9 @@ transformar_desde_U <- function(U, marginal) {
       return(qpareto(
         p     = U,
         shape = params[1],
-        scale = params[2]
+        scale = params[2],
+        shape = marginal$param1,
+        scale = marginal$param2
       ))
     }
 
@@ -394,6 +550,19 @@ transformar_desde_U <- function(U, marginal) {
 
   stop("Tipo marginal desconocido.")
 }
+
+        meanlog = marginal$param1,
+        sdlog   = marginal$param2
+      ))
+    }
+
+    stop("Tail paramétrico no implementado: ", marginal$model_name)
+  }
+
+  stop("Tipo marginal desconocido: ", marginal$model_type)
+}
+
+
 
 ```
 
@@ -622,6 +791,7 @@ tab
 ```
 
 ```{r}
+
 tab_prov_sec <- expand.grid(
   prov = colnames(df_evento_provincias)[-1],
   sec  = colnames(df_evento_sectores)[-1],
@@ -638,6 +808,11 @@ res_prov_sec <- purrr::map2_df(
       .y, 
       "provincias", 
       "sectores") )
+  tab_prov_sec$prov,
+  tab_prov_sec$sec,
+  ~ simular_par(df_evento_provincias, df_evento_sectores,
+                .x, .y, "provincias", "sectores")
+)
 
 tab_prov_cat <- expand.grid(
   prov = colnames(df_evento_provincias)[-1],
@@ -655,6 +830,7 @@ res_prov_cat <- purrr::map2_df(
       .y, 
       "provincias", 
       "categorias") )
+
 
 tab_sec_cat <- expand.grid(
   sec = colnames(df_evento_sectores)[-1],
@@ -813,10 +989,12 @@ res_sec_cat_riesgo <- res_sec_cat %>%
   unnest_wider(riesgo) %>% 
   ungroup()
 
+
 ```
 
 
 ```{r}
+
 write.csv(res_prov_sec_riesgo, '../res/copulas/VAR_provincia_sector.csv')
 write.csv(res_prov_cat_riesgo, '../res/copulas/VAR_provincia_categoria.csv')
 write.csv(res_sec_cat_riesgo, '../res/copulas/VAR_sector_categoria.csv')
@@ -1201,5 +1379,7 @@ plot_heatmap_metric(res_prov_cat_riesgo, "CVaR_Cop_99",
 plot_heatmap_metric(res_sec_cat_riesgo, "CVaR_Cop_99",
                     "CVaR conjunto 99%")
 
+
+tab_prov_cat
 ```
 
