@@ -1,0 +1,13 @@
+{
+    "location": "Cartago_PRODUCTIVO_Hidrometereol\u00f3gico",
+    "provincia": "Cartago",
+    "sector": "PRODUCTIVO",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 19.598881997321477,
+    "p_u": 0.34598214285714285,
+    "n_total": 2240,
+    "n_body": 1465,
+    "n_tail": 775,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

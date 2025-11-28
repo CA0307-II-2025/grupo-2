@@ -1,0 +1,13 @@
+{
+    "location": "SOCIAL",
+    "provincia": null,
+    "sector": "SOCIAL",
+    "categoria": null,
+    "u_opt": 20.138867469302358,
+    "p_u": 0.18337408312958436,
+    "n_total": 409,
+    "n_body": 334,
+    "n_tail": 75,
+    "best_body": "KDE-gaussian",
+    "best_tail": "GPD"
+}

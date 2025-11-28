@@ -1,0 +1,13 @@
+{
+    "location": "San Jos\u00e9_PRODUCTIVO",
+    "provincia": "San Jos\u00e9",
+    "sector": "PRODUCTIVO",
+    "categoria": null,
+    "u_opt": 18.971867260618374,
+    "p_u": 0.4602678571428571,
+    "n_total": 2240,
+    "n_body": 1209,
+    "n_tail": 1031,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

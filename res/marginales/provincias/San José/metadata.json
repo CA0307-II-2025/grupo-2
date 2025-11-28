@@ -1,0 +1,13 @@
+{
+    "location": "San Jos\u00e9",
+    "provincia": "San Jos\u00e9",
+    "sector": null,
+    "categoria": null,
+    "u_opt": 20.406110076081255,
+    "p_u": 0.19402985074626866,
+    "n_total": 469,
+    "n_body": 378,
+    "n_tail": 91,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

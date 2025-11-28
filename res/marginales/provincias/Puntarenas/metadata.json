@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas",
+    "provincia": "Puntarenas",
+    "sector": null,
+    "categoria": null,
+    "u_opt": 21.113256862584006,
+    "p_u": 0.18599562363238512,
+    "n_total": 457,
+    "n_body": 372,
+    "n_tail": 85,
+    "best_body": "Weibull",
+    "best_tail": "Burr"
+}

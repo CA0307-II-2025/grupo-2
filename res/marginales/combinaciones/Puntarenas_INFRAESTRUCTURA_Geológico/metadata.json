@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_INFRAESTRUCTURA_Geol\u00f3gico",
+    "provincia": "Puntarenas",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 21.550018426660326,
+    "p_u": 0.075,
+    "n_total": 2240,
+    "n_body": 2072,
+    "n_tail": 168,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

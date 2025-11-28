@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_PRODUCTIVO_Hidrometereol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": "PRODUCTIVO",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 19.95612216768636,
+    "p_u": 0.28169642857142857,
+    "n_total": 2240,
+    "n_body": 1609,
+    "n_tail": 631,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

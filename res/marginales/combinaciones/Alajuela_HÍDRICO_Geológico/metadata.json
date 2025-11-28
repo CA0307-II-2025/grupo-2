@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_H\u00cdDRICO_Geol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": "H\u00cdDRICO",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 19.32528102322701,
+    "p_u": 0.39955357142857145,
+    "n_total": 2240,
+    "n_body": 1345,
+    "n_tail": 895,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_PRODUCTIVO",
+    "provincia": "Heredia",
+    "sector": "PRODUCTIVO",
+    "categoria": null,
+    "u_opt": 19.785067833009652,
+    "p_u": 0.31339285714285714,
+    "n_total": 2240,
+    "n_body": 1538,
+    "n_tail": 702,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

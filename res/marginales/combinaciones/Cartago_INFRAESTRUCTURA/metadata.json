@@ -1,0 +1,13 @@
+{
+    "location": "Cartago_INFRAESTRUCTURA",
+    "provincia": "Cartago",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": null,
+    "u_opt": 21.07443210054949,
+    "p_u": 0.12276785714285714,
+    "n_total": 2240,
+    "n_body": 1965,
+    "n_tail": 275,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

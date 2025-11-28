@@ -1,0 +1,13 @@
+{
+    "location": "H\u00cdDRICO_Geol\u00f3gico",
+    "provincia": null,
+    "sector": "H\u00cdDRICO",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 18.663861872965725,
+    "p_u": 0.5459821428571429,
+    "n_total": 2240,
+    "n_body": 1017,
+    "n_tail": 1223,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

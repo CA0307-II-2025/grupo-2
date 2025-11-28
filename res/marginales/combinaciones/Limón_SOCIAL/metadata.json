@@ -1,0 +1,13 @@
+{
+    "location": "Lim\u00f3n_SOCIAL",
+    "provincia": "Lim\u00f3n",
+    "sector": "SOCIAL",
+    "categoria": null,
+    "u_opt": 19.95700045227425,
+    "p_u": 0.28169642857142857,
+    "n_total": 2240,
+    "n_body": 1609,
+    "n_tail": 631,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

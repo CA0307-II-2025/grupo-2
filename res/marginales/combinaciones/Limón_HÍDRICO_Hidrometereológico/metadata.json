@@ -1,0 +1,13 @@
+{
+    "location": "Lim\u00f3n_H\u00cdDRICO_Hidrometereol\u00f3gico",
+    "provincia": "Lim\u00f3n",
+    "sector": "H\u00cdDRICO",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.521096982297998,
+    "p_u": 0.07767857142857143,
+    "n_total": 2240,
+    "n_body": 2066,
+    "n_tail": 174,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

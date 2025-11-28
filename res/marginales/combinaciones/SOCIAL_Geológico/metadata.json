@@ -1,0 +1,13 @@
+{
+    "location": "SOCIAL_Geol\u00f3gico",
+    "provincia": null,
+    "sector": "SOCIAL",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 21.08900736100385,
+    "p_u": 0.121875,
+    "n_total": 2240,
+    "n_body": 1967,
+    "n_tail": 273,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

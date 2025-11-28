@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_H\u00cdDRICO_Geol\u00f3gico",
+    "provincia": "Guanacaste",
+    "sector": "H\u00cdDRICO",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 18.294971496046735,
+    "p_u": 0.6245535714285714,
+    "n_total": 2240,
+    "n_body": 841,
+    "n_tail": 1399,
+    "best_body": "KDE-tophat",
+    "best_tail": "LN_tail"
+}

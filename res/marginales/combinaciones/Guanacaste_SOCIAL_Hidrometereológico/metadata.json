@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_SOCIAL_Hidrometereol\u00f3gico",
+    "provincia": "Guanacaste",
+    "sector": "SOCIAL",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.225002839859844,
+    "p_u": 0.234375,
+    "n_total": 2240,
+    "n_body": 1715,
+    "n_tail": 525,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

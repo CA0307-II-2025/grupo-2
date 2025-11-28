@@ -1,0 +1,13 @@
+{
+    "location": "Lim\u00f3n",
+    "provincia": "Lim\u00f3n",
+    "sector": null,
+    "categoria": null,
+    "u_opt": 20.9877521023353,
+    "p_u": 0.1645021645021645,
+    "n_total": 231,
+    "n_body": 193,
+    "n_tail": 38,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

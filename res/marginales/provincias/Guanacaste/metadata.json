@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste",
+    "provincia": "Guanacaste",
+    "sector": null,
+    "categoria": null,
+    "u_opt": 20.3918080850436,
+    "p_u": 0.19014084507042253,
+    "n_total": 426,
+    "n_body": 345,
+    "n_tail": 81,
+    "best_body": "Weibull",
+    "best_tail": "Burr"
+}

@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela",
+    "provincia": "Alajuela",
+    "sector": null,
+    "categoria": null,
+    "u_opt": 20.32429151328136,
+    "p_u": 0.1928374655647383,
+    "n_total": 363,
+    "n_body": 293,
+    "n_tail": 70,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

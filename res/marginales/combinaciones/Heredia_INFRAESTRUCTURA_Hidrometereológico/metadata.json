@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_INFRAESTRUCTURA_Hidrometereol\u00f3gico",
+    "provincia": "Heredia",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.306443632324136,
+    "p_u": 0.09955357142857142,
+    "n_total": 2240,
+    "n_body": 2017,
+    "n_tail": 223,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

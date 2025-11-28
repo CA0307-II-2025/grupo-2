@@ -1,0 +1,13 @@
+{
+    "location": "Hidrometereol\u00f3gico",
+    "provincia": null,
+    "sector": null,
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.524933284093084,
+    "p_u": 0.07659372026641294,
+    "n_total": 2102,
+    "n_body": 1941,
+    "n_tail": 161,
+    "best_body": "Weibull",
+    "best_tail": "Burr"
+}

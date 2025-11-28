@@ -1,0 +1,13 @@
+{
+    "location": "INFRAESTRUCTURA_Hidrometereol\u00f3gico",
+    "provincia": null,
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.999644881069024,
+    "p_u": 0.1299107142857143,
+    "n_total": 2240,
+    "n_body": 1949,
+    "n_tail": 291,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

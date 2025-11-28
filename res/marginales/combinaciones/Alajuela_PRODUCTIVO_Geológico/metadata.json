@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_PRODUCTIVO_Geol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": "PRODUCTIVO",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 22.752408326657964,
+    "p_u": 0.01875,
+    "n_total": 2240,
+    "n_body": 2198,
+    "n_tail": 42,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

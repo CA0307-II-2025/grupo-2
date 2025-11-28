@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_OTROS_Geol\u00f3gico",
+    "provincia": "Guanacaste",
+    "sector": "OTROS",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 21.49087085868524,
+    "p_u": 0.08035714285714286,
+    "n_total": 2240,
+    "n_body": 2060,
+    "n_tail": 180,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

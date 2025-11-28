@@ -1,0 +1,640 @@
+---
+title: "copulas_en_R"
+format: html
+---
+
+
+## Principal = Librerias y data frame
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(readxl)
+library(stringr)
+library(copula)
+library(VineCopula)
+library(actuar)
+
+df <- read.csv('../data/clean/datos_limpios_log.csv')
+
+clasificar_evento <- function(texto) {
+  texto <- tolower(texto)
+
+  dplyr::case_when(
+    str_detect(texto, "huracán|hurricane|otto|eta|julia") ~ "Huracan",
+    str_detect(texto, "tormenta tropical|bonnie") ~ "Tormenta_Tropical",
+    str_detect(texto, "temporal|lluvia|baja presión|onda tropical|zci|vertiente") ~ "Temporal_Lluvias",
+    str_detect(texto, "frente frío|frente frio|frente") ~ "Frente_Frío",
+    str_detect(texto, "sequía|deficit hídrico|sequ\\?a") ~ "Sequía",
+    str_detect(texto, "sismo|terremoto|deslizamiento") ~ "Sismo_Deslizamiento",
+    str_detect(texto, "covid|epidemia|dengue|virus|enfermedad") ~ "Epidemia",
+    TRUE ~ "Otros"
+  )
+}
+
+df_eventos <- df %>%
+  mutate(
+    evento_tipo = clasificar_evento(evento),
+    evento_id   = dplyr::group_indices(., ano, evento)
+  )
+
+df_evento_provincias <- df_eventos %>%
+  group_by(evento_id, provincia) %>%
+  summarise(total = sum(total), .groups = "drop") %>%
+  tidyr::pivot_wider(names_from = provincia, values_from = total)
+
+df_evento_sectores <- df_eventos %>%
+  group_by(evento_id, sector) %>%
+  summarise(total = sum(total), .groups = "drop") %>%
+  tidyr::pivot_wider(names_from = sector, values_from = total)
+
+```
+
+### Dataframes conjuntos
+
+```{r}
+construir_par_prov_sector <- function(df_prov, df_sec,
+                                      provincia, sector,
+                                      min_n = 20,
+                                      quitar_todo_cero = TRUE) {
+  
+  df_pair <- df_prov %>%
+    select(evento_id, !!provincia := all_of(provincia)) %>%
+    inner_join(
+      df_sec %>%
+        select(evento_id, !!sector := all_of(sector)),
+      by = "evento_id"
+    )
+  
+  df_pair[[provincia]][is.na(df_pair[[provincia]])] <- 0
+  df_pair[[sector]][is.na(df_pair[[sector]])] <- 0
+  
+  if (quitar_todo_cero) {
+    df_pair <- df_pair %>%
+      filter((.data[[provincia]] != 0) | (.data[[sector]] != 0))
+  }
+  
+  if (nrow(df_pair) < min_n) {
+    message("[Info] Menos de ", min_n, 
+            " observaciones para ", provincia, " - ", sector,
+            ". Se omite este par.")
+    return(NULL)
+  }
+  
+  df_out <- df_pair %>%
+    transmute(
+      evento_id,
+      X = .data[[provincia]],
+      Y = .data[[sector]]
+    )
+  
+  df_out
+}
+
+
+construir_par <- function(df_A, df_B, varA, varB, min_n = 20, quitar_todo_cero = TRUE) {
+  
+  varA <- as.character(varA)
+  varB <- as.character(varB)
+
+
+  df_pair <- df_A %>%
+    select(evento_id, !!varA := all_of(varA)) %>%
+    inner_join(
+      df_B %>% select(evento_id, !!varB := all_of(varB)),
+      by = "evento_id"
+    )
+  
+  df_pair[[varA]][is.na(df_pair[[varA]])] <- 0
+  df_pair[[varB]][is.na(df_pair[[varB]])] <- 0
+  
+  if (quitar_todo_cero) {
+    df_pair <- df_pair %>%
+      filter((.data[[varA]] != 0) | (.data[[varB]] != 0))
+  }
+  
+  if (nrow(df_pair) < min_n) {
+    message("[Info] Observaciones insuficientes para ", varA, " - ", varB)
+    return(NULL)
+  }
+
+  df_out <- df_pair %>% transmute(
+    evento_id,
+    X = .data[[varA]],
+    Y = .data[[varB]]
+  )
+
+  return(df_out)
+}
+
+```
+
+## Cargar marginales
+
+```{r}
+pburr <- function(q, shape1, shape2, scale) {
+  1 - (1 + (q/scale)^shape1)^(-shape2)
+}
+
+qburr <- function(p, shape1, shape2, scale) {
+  scale * (( (1 - p)^(-1/shape2) - 1 ))^(1/shape1)
+}
+
+pgpd <- function(x, xi, beta, u0) {
+  if (abs(xi) < 1e-8) {
+    return(1 - exp(-(x - u0) / beta))
+  }
+  1 - (1 + xi * (x - u0) / beta)^(-1/xi)
+}
+
+qgpd <- function(p, xi, beta, u0) {
+  if (abs(xi) < 1e-8) {
+    return(u0 - beta * log(1 - p))
+  }
+  u0 + beta * ((1 - p)^(-xi) - 1) / xi
+}
+
+ppareto <- function(x, shape, scale) {
+  1 - (scale / x)^shape
+}
+
+qpareto <- function(p, shape, scale) {
+  scale / (1 - p)^(1/shape)
+}
+
+```
+
+
+```{r}
+leer_marginal <- function(path_dir) {
+  archivos <- list.files(path_dir, full.names = TRUE)
+  
+  body_files <- archivos[grepl("body", archivos, ignore.case = TRUE)]
+  tail_files <- archivos[grepl("tail", archivos, ignore.case = TRUE)]
+  
+  seleccionar_ultimo <- function(files) {
+    info <- file.info(files)
+    files[which.max(info$mtime)]
+  }
+  
+  # PRIORIDAD 1 → TAIL (riesgo extremo)
+  if (length(tail_files) >= 1) {
+    tail_file <- seleccionar_ultimo(tail_files)
+    message("[Marginal] Seleccionado TAIL: ", basename(tail_file))
+    
+    df_tail <- read.csv(tail_file)
+    
+    return(list(
+      model_type = "tail",
+      model_name = unique(df_tail$model_name)[1],
+      param1 = df_tail$Burr_param1[1],
+      param2 = df_tail$Burr_param2[1],
+      param3 = df_tail$Burr_param3[1],
+      p_u    = df_tail$p_u[1],
+      u_opt  = df_tail$u_opt[1]
+    ))
+  }
+  
+  # PRIORIDAD 2 → BODY (KDE si no hay tail)
+  if (length(body_files) >= 1) {
+    body_file <- seleccionar_ultimo(body_files)
+    message("[Marginal] Seleccionado BODY: ", basename(body_file))
+    
+    df_body <- read.csv(body_file)
+    
+    return(list(
+      model_type = "body",
+      model_name = unique(df_body$model_name)[1],
+      x = df_body$x,
+      dens = df_body$f
+    ))
+  }
+  
+  stop("No se encontraron archivos marginales BODY o TAIL en: ", path_dir)
+}
+
+transformar_a_U <- function(x, marginal) {
+  
+  tipo   <- tolower(marginal$model_type)
+  nombre <- tolower(marginal$model_name)
+  
+
+  # =======================================
+  # 1. BODY / KDE
+  # =======================================
+  if (tipo %in% c("kde", "body")) {
+
+    if (is.null(marginal$x) || is.null(marginal$dens) ||
+        length(marginal$x) < 2 ||
+        length(marginal$dens) < 2 ||
+        sum(!is.na(marginal$x)) < 2 ||
+        sum(!is.na(marginal$dens)) < 2) {
+
+      message("[Aviso] BODY inválido → usando U empírica.")
+      return(rank(x) / (length(x) + 1))
+    }
+
+    Fx <- approx(
+      x = marginal$x,
+      y = cumsum(marginal$dens) / sum(marginal$dens),
+      xout = x,
+      rule = 2
+    )$y
+  }
+
+
+  # =======================================
+  # 2. TAIL / PARAMÉTRICO
+  # =======================================
+  else if (tipo %in% c("tail", "param")) {
+
+    if (nombre == "burr") {
+      Fx <- pburr(
+        q      = x,
+        shape1 = marginal$param1,
+        shape2 = marginal$param2,
+        scale  = marginal$param3
+      )
+    }
+
+    else if (nombre == "gpd") {
+      Fx <- pgpd(
+        x    = x,
+        xi   = marginal$param1,
+        beta = marginal$param2,
+        u0   = marginal$u_opt
+      )
+    }
+
+    else if (nombre == "pareto") {
+      Fx <- ppareto(
+        x     = x,
+        shape = marginal$param1,
+        scale = marginal$param2
+      )
+    }
+
+    else if (nombre == "ln_tail" || nombre == "lognormal") {
+      Fx <- plnorm(
+        x,
+        meanlog = marginal$param1,
+        sdlog   = marginal$param2
+      )
+    }
+
+    else {
+      stop("Distribución paramétrica no implementada: ", marginal$model_name)
+    }
+  }
+
+  else {
+    stop("Tipo marginal desconocido: ", marginal$model_type)
+  }
+
+
+  # =======================================
+  # 3. Validación KS + fallback empírico
+  # =======================================
+  ks <- suppressWarnings(ks.test(Fx, "punif"))
+
+  if (ks$p.value < 0.05 || any(is.na(Fx)) || any(is.infinite(Fx))) {
+    message("[Aviso] KS no pasa o Fx inválido → usando U empírica.")
+    Fx <- rank(x) / (length(x) + 1)
+  }
+
+  return(Fx)
+}
+
+
+transformar_desde_U <- function(U, marginal) {
+
+  tipo   <- tolower(marginal$model_type)
+  nombre <- tolower(marginal$model_name)
+
+
+  # =======================================
+  # 1. BODY / KDE  → aproximación inversa
+  # =======================================
+  if (tipo %in% c("kde", "body")) {
+
+    x <- marginal$x
+    f <- marginal$dens
+    dx <- x[2] - x[1]
+
+    cdf <- cumsum(f) * dx
+    cdf <- cdf / max(cdf)
+
+    qfun <- approxfun(cdf, x, rule = 2)
+
+    return(qfun(U))
+  }
+
+
+  # =======================================
+  # 2. TAIL paramétrico
+  # =======================================
+  if (tipo %in% c("tail", "param")) {
+
+    if (nombre == "burr") {
+      return(qburr(
+        p      = U,
+        shape1 = marginal$param1,
+        shape2 = marginal$param2,
+        scale  = marginal$param3
+      ))
+    }
+
+    if (nombre == "gpd") {
+      return(qgpd(
+        p    = U,
+        xi   = marginal$param1,
+        beta = marginal$param2,
+        u0   = marginal$u_opt
+      ))
+    }
+
+    if (nombre == "pareto") {
+      return(qpareto(
+        p     = U,
+        shape = marginal$param1,
+        scale = marginal$param2
+      ))
+    }
+
+    if (nombre == "ln_tail" || nombre == "lognormal") {
+      return(qlnorm(
+        p      = U,
+        meanlog = marginal$param1,
+        sdlog   = marginal$param2
+      ))
+    }
+
+    stop("Tail paramétrico no implementado: ", marginal$model_name)
+  }
+
+  stop("Tipo marginal desconocido: ", marginal$model_type)
+}
+
+
+
+```
+
+## Pipes para correr todo
+
+```{r}
+simular_provincia_sector <- function(
+    provincia,
+    sector,
+    df_evento_provincias,
+    df_evento_sectores,
+    path_marg = "../res/marginales",
+    n_sim = 50000,
+    alpha = 0.95
+){
+
+  message("\n========== SIMULACIÓN PROVINCIA–SECTOR ==========")
+  message("Provincia: ", provincia, " — Sector: ", sector)
+
+  df_pair <- construir_par_prov_sector(
+    df_evento_provincias,
+    df_evento_sectores,
+    provincia,
+    sector
+  )
+
+  if (is.null(df_pair) || nrow(df_pair) < 10) {
+    message("[Aviso] Muy pocos datos para esta combinación.")
+    return(NULL)
+  }
+
+  m_prov <- leer_marginal(file.path(path_marg, "provincias", provincia))
+  m_sec  <- leer_marginal(file.path(path_marg, "sectores",   sector))
+
+  U1 <- transformar_a_U(df_pair$X, m_prov)
+  U2 <- transformar_a_U(df_pair$Y, m_sec)
+
+  U <- cbind(U1, U2)
+  colnames(U) <- c("U1", "U2")
+
+  fit <- BiCopSelect(
+    u1 = U[,1],
+    u2 = U[,2],
+    familyset = c(1,2,3,4,5),
+    selectioncrit = "AIC"
+  )
+
+  message("Cópula seleccionada: ", 
+          BiCopName(fit$family),
+          " (par = ", round(fit$par, 3), ")")
+
+  U_sim <- BiCopSim(
+    N      = n_sim,
+    family = fit$family,
+    par    = fit$par,
+    par2   = fit$par2
+  )
+
+  X_sim <- transformar_desde_U(U_sim[,1], m_prov)
+  Y_sim <- transformar_desde_U(U_sim[,2], m_sec)
+
+  S_sim <- X_sim + Y_sim
+
+  VaR_X <- quantile(X_sim, alpha, na.rm = TRUE)
+  VaR_Y <- quantile(Y_sim, alpha, na.rm = TRUE)
+  VaR_S <- quantile(S_sim, alpha, na.rm = TRUE)
+
+  CVaR_S <- mean(S_sim[S_sim > VaR_S], na.rm = TRUE)
+
+  list(
+    provincia = provincia,
+    sector    = sector,
+    fit   = fit,
+    U     = U,
+    U_sim = U_sim,
+    X_sim = X_sim,
+    Y_sim = Y_sim,
+    VaR_X = VaR_X,
+    VaR_Y = VaR_Y,
+    VaR_S = VaR_S,
+    CVaR_S = CVaR_S
+  )
+}
+
+
+simular_par <- function(
+  df_A, df_B,
+  varA, varB,
+  tipoA, tipoB,      # "provincias", "sectores", "categorias"
+  path_marg = "../res/marginales",
+  alpha = 0.95,
+  n_sim = 50000
+){
+
+  message("\n====== SIMULACIÓN ", tipoA, " – ", tipoB, " ======")
+  message(varA, " — ", varB)
+
+  # 1. Construir par
+  df_pair <- construir_par(df_A, df_B, varA, varB)
+  if (is.null(df_pair)) return(NULL)
+
+  # 2. Leer marginales
+  mA <- leer_marginal(file.path(path_marg, tipoA, varA))
+  mB <- leer_marginal(file.path(path_marg, tipoB, varB))
+
+  # 3. Transformación a U
+  U1 <- transformar_a_U(df_pair$X, mA)
+  U2 <- transformar_a_U(df_pair$Y, mB)
+
+  U <- cbind(U1, U2)
+
+  # 4. Ajustar cópula
+  fit <- BiCopSelect(
+    u1 = U[,1], u2 = U[,2],
+    familyset = c(1,2,3,4,5),
+    selectioncrit = "AIC"
+  )
+
+  # 5. Simulación
+  U_sim <- BiCopSim(
+    N = n_sim,
+    family = fit$family,
+    par = fit$par,
+    par2 = fit$par2
+  )
+
+  # 6. Transformación inversa
+  X_sim <- transformar_desde_U(U_sim[,1], mA)
+  Y_sim <- transformar_desde_U(U_sim[,2], mB)
+
+  S <- X_sim + Y_sim
+
+  # 7. Métricas
+  list(
+    tipoA = tipoA, tipoB = tipoB,
+    varA = varA, varB = varB,
+    copula = BiCopName(fit$family),
+    par = fit$par,
+    tau = BiCopPar2Tau(fit$family, fit$par),
+    VaR_A = quantile(X_sim, alpha),
+    VaR_B = quantile(Y_sim, alpha),
+    VaR_S = quantile(S, alpha),
+    CVaR_S = mean(S[S > quantile(S, alpha)], na.rm = TRUE)
+  )
+}
+
+
+
+tabla_dependencias_prov_sector <- function(
+    df_evento_provincias,
+    df_evento_sectores,
+    path_marg = "../res/marginales"
+){
+
+  resultados <- list()
+
+  for (prov in colnames(df_evento_provincias)[-1]) {
+    for (sec in colnames(df_evento_sectores)[-1]) {
+
+      fit_ps <- try(
+        simular_provincia_sector(
+          provincia = prov,
+          sector    = sec,
+          df_evento_provincias = df_evento_provincias,
+          df_evento_sectores   = df_evento_sectores,
+          path_marg = path_marg,
+          n_sim     = 2000
+        ),
+        silent = TRUE
+      )
+
+      if (inherits(fit_ps, "try-error") || is.null(fit_ps)) next
+
+      tau <- BiCopPar2Tau(fit_ps$fit$family, fit_ps$fit$par)
+
+      resultados[[paste(prov,sec,sep="_")]] <- data.frame(
+        provincia = prov,
+        sector    = sec,
+        copula    = BiCopName(fit_ps$fit$family),
+        par       = fit_ps$fit$par,
+        tau       = tau
+      )
+    }
+  }
+
+  dplyr::bind_rows(resultados)
+}
+
+
+graficar_sim_vs_real <- function(result){
+  par(mfrow=c(1,3))
+  hist(result$X_sim, main=paste("Sim X -", result$provincia), col="skyblue")
+  hist(result$Y_sim, main=paste("Sim Y -", result$sector),    col="salmon")
+  hist(result$X_sim + result$Y_sim, main="Suma simulada",     col="orchid")
+}
+
+graficar_heatmap_tau <- function(tab){
+  mat <- tidyr::pivot_wider(
+    tab,
+    names_from = sector,
+    values_from = tau,
+    id_cols = provincia
+  )
+
+  m <- as.matrix(mat[,-1])
+  rownames(m) <- mat$provincia
+
+  heatmap(m, Rowv=NA, Colv=NA, scale="none",
+          col=colorRampPalette(c("white","red"))(20))
+}
+
+```
+
+
+## Uso
+
+```{r}
+tab_ps <- tabla_dependencias_prov_sector(
+  df_evento_provincias,
+  df_evento_sectores
+)
+```
+
+```{r}
+tab
+```
+
+```{r}
+
+tab_prov_sec <- expand.grid(
+  prov = colnames(df_evento_provincias)[-1],
+  sec  = colnames(df_evento_sectores)[-1],
+  KEEP.OUT.ATTRS = FALSE
+)
+
+res_prov_sec <- purrr::map2_df(
+  tab_prov_sec$prov,
+  tab_prov_sec$sec,
+  ~ simular_par(df_evento_provincias, df_evento_sectores,
+                .x, .y, "provincias", "sectores")
+)
+
+tab_prov_cat <- expand.grid(
+  prov = colnames(df_evento_provincias)[-1],
+  cat  = colnames(df_evento_categorias)[-1],
+  KEEP.OUT.ATTRS = FALSE
+)
+
+tab_sec_cat <- expand.grid(
+  sec = colnames(df_evento_sectores)[-1],
+  cat = colnames(df_evento_categorias)[-1],
+  KEEP.OUT.ATTRS = FALSE
+)
+
+
+```
+
+
+```{r}
+tab_prov_cat
+```
+

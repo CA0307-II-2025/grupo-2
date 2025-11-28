@@ -1,0 +1,13 @@
+{
+    "location": "Cartago",
+    "provincia": "Cartago",
+    "sector": null,
+    "categoria": null,
+    "u_opt": 20.133396419609447,
+    "p_u": 0.1534090909090909,
+    "n_total": 176,
+    "n_body": 149,
+    "n_tail": 27,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

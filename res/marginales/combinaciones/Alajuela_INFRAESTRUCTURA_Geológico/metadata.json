@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_INFRAESTRUCTURA_Geol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 20.16331199270829,
+    "p_u": 0.24598214285714284,
+    "n_total": 2240,
+    "n_body": 1689,
+    "n_tail": 551,
+    "best_body": "KDE-tophat",
+    "best_tail": "LN_tail"
+}

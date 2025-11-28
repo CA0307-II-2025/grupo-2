@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_H\u00cdDRICO",
+    "provincia": "Heredia",
+    "sector": "H\u00cdDRICO",
+    "categoria": null,
+    "u_opt": 20.929732975750134,
+    "p_u": 0.13616071428571427,
+    "n_total": 2240,
+    "n_body": 1935,
+    "n_tail": 305,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}

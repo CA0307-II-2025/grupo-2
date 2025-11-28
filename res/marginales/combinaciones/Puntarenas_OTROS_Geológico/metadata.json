@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_OTROS_Geol\u00f3gico",
+    "provincia": "Puntarenas",
+    "sector": "OTROS",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 23.13982718454705,
+    "p_u": 0.0125,
+    "n_total": 2240,
+    "n_body": 2212,
+    "n_tail": 28,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

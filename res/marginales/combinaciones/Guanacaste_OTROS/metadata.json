@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_OTROS",
+    "provincia": "Guanacaste",
+    "sector": "OTROS",
+    "categoria": null,
+    "u_opt": 20.24727657815111,
+    "p_u": 0.23035714285714284,
+    "n_total": 2240,
+    "n_body": 1724,
+    "n_tail": 516,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

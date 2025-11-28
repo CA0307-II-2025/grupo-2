@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_SOCIAL",
+    "provincia": "Alajuela",
+    "sector": "SOCIAL",
+    "categoria": null,
+    "u_opt": 20.70091375523088,
+    "p_u": 0.1669642857142857,
+    "n_total": 2240,
+    "n_body": 1866,
+    "n_tail": 374,
+    "best_body": "Weibull",
+    "best_tail": "Burr"
+}

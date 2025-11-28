@@ -1,0 +1,13 @@
+{
+    "location": "PRODUCTIVO",
+    "provincia": null,
+    "sector": "PRODUCTIVO",
+    "categoria": null,
+    "u_opt": 19.855326498474106,
+    "p_u": 0.18181818181818182,
+    "n_total": 264,
+    "n_body": 216,
+    "n_tail": 48,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

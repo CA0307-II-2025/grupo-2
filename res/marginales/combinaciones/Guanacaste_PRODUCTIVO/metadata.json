@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_PRODUCTIVO",
+    "provincia": "Guanacaste",
+    "sector": "PRODUCTIVO",
+    "categoria": null,
+    "u_opt": 20.040042351293366,
+    "p_u": 0.26875,
+    "n_total": 2240,
+    "n_body": 1638,
+    "n_tail": 602,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

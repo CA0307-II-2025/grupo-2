@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_OTROS_Geol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": "OTROS",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 19.58592895002123,
+    "p_u": 0.34910714285714284,
+    "n_total": 2240,
+    "n_body": 1458,
+    "n_tail": 782,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

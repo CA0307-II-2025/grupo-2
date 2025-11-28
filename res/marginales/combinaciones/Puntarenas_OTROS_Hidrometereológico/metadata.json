@@ -1,0 +1,13 @@
+{
+    "location": "Puntarenas_OTROS_Hidrometereol\u00f3gico",
+    "provincia": "Puntarenas",
+    "sector": "OTROS",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.39793168391183,
+    "p_u": 0.090625,
+    "n_total": 2240,
+    "n_body": 2037,
+    "n_tail": 203,
+    "best_body": "Weibull",
+    "best_tail": "GPD"
+}

@@ -1,0 +1,13 @@
+{
+    "location": "H\u00cdDRICO_Hidrometereol\u00f3gico",
+    "provincia": null,
+    "sector": "H\u00cdDRICO",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.344063556232722,
+    "p_u": 0.21696428571428572,
+    "n_total": 2240,
+    "n_body": 1754,
+    "n_tail": 486,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

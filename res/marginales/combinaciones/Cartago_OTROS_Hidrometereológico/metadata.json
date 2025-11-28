@@ -1,0 +1,13 @@
+{
+    "location": "Cartago_OTROS_Hidrometereol\u00f3gico",
+    "provincia": "Cartago",
+    "sector": "OTROS",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.16691022266791,
+    "p_u": 0.24598214285714284,
+    "n_total": 2240,
+    "n_body": 1689,
+    "n_tail": 551,
+    "best_body": "KDE-tophat",
+    "best_tail": "GPD"
+}

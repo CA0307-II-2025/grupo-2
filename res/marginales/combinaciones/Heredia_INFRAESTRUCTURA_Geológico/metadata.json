@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_INFRAESTRUCTURA_Geol\u00f3gico",
+    "provincia": "Heredia",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 19.90682341082813,
+    "p_u": 0.29196428571428573,
+    "n_total": 2240,
+    "n_body": 1586,
+    "n_tail": 654,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

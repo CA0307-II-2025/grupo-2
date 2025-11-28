@@ -1,0 +1,13 @@
+{
+    "location": "San Jos\u00e9_OTROS_Hidrometereol\u00f3gico",
+    "provincia": "San Jos\u00e9",
+    "sector": "OTROS",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.356708473590327,
+    "p_u": 0.21294642857142856,
+    "n_total": 2240,
+    "n_body": 1763,
+    "n_tail": 477,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

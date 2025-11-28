@@ -1,0 +1,13 @@
+{
+    "location": "Guanacaste_H\u00cdDRICO",
+    "provincia": "Guanacaste",
+    "sector": "H\u00cdDRICO",
+    "categoria": null,
+    "u_opt": 19.70040350881001,
+    "p_u": 0.3267857142857143,
+    "n_total": 2240,
+    "n_body": 1508,
+    "n_tail": 732,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "LN_tail"
+}

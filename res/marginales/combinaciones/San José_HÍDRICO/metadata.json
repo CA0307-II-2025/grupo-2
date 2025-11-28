@@ -1,0 +1,13 @@
+{
+    "location": "San Jos\u00e9_H\u00cdDRICO",
+    "provincia": "San Jos\u00e9",
+    "sector": "H\u00cdDRICO",
+    "categoria": null,
+    "u_opt": 20.775950163913457,
+    "p_u": 0.153125,
+    "n_total": 2240,
+    "n_body": 1897,
+    "n_tail": 343,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_OTROS_Hidrometereol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": "OTROS",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 21.84832754631529,
+    "p_u": 0.05267857142857143,
+    "n_total": 2240,
+    "n_body": 2122,
+    "n_tail": 118,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}

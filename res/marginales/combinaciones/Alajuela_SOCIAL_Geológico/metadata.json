@@ -1,0 +1,13 @@
+{
+    "location": "Alajuela_SOCIAL_Geol\u00f3gico",
+    "provincia": "Alajuela",
+    "sector": "SOCIAL",
+    "categoria": "Geol\u00f3gico",
+    "u_opt": 20.995412887622624,
+    "p_u": 0.13080357142857144,
+    "n_total": 2240,
+    "n_body": 1947,
+    "n_tail": 293,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "Burr"
+}

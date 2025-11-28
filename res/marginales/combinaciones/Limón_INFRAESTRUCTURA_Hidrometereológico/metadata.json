@@ -1,0 +1,13 @@
+{
+    "location": "Lim\u00f3n_INFRAESTRUCTURA_Hidrometereol\u00f3gico",
+    "provincia": "Lim\u00f3n",
+    "sector": "INFRAESTRUCTURA",
+    "categoria": "Hidrometereol\u00f3gico",
+    "u_opt": 20.846194092611448,
+    "p_u": 0.14732142857142858,
+    "n_total": 2240,
+    "n_body": 1910,
+    "n_tail": 330,
+    "best_body": "KDE-tophat",
+    "best_tail": "Burr"
+}

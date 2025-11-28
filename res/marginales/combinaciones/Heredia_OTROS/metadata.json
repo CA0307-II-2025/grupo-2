@@ -1,0 +1,13 @@
+{
+    "location": "Heredia_OTROS",
+    "provincia": "Heredia",
+    "sector": "OTROS",
+    "categoria": null,
+    "u_opt": 20.221980560878926,
+    "p_u": 0.23482142857142857,
+    "n_total": 2240,
+    "n_body": 1714,
+    "n_tail": 526,
+    "best_body": "KDE-epanechnikov",
+    "best_tail": "GPD"
+}
