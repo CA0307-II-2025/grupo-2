@@ -1,4 +1,5 @@
 import dash
+import dash_bootstrap_components as dbc
 from dash import dcc, html
 import pandas as pd
 import numpy as np
@@ -7,30 +8,42 @@ import plotly.graph_objects as go
 import json
 from scipy.stats import lognorm
 import os
+PRIMARY = "#005DA4"   
+SECONDARY = "#00A37A" 
+ACCENT = "#F39C12"    
+BACKGROUND = "#f7f7f7"
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 os.chdir(CURRENT_DIR)
 df = pd.read_csv(r"../../data/clean/datos_limpios.csv")
-df = pd.read_csv(
-    r"../../data/clean/datos_limpios.csv"
-)
+FIG_DIR = os.path.join(CURRENT_DIR, "assets", "figuras")
+fig_files = []
+if os.path.exists(FIG_DIR):
+    for fname in os.listdir(FIG_DIR):
+        if fname.lower().endswith((".png", ".jpg", ".jpeg")):
+            fig_files.append(fname)
 
+fig_meta = []
+for fname in fig_files:
+    name, ext = os.path.splitext(fname)
+    parts = name.split("_")
+    tipo = parts[0]  
+    detalle = "_".join(parts[1:]) if len(parts) > 1 else ""
+    fig_meta.append({"file": fname, "tipo": tipo, "detalle": detalle})
+fig_df = pd.DataFrame(fig_meta)
+if not fig_df.empty:
+    all_tipos_fig = sorted(fig_df["tipo"].unique())
+else:
+    all_tipos_fig = []
 df = df[df["total"] > 0]
-
 with open(
     r"../../data/provincias.json",
     "r",
 ) as f:
     geojson = json.load(f)
-
-# Precalcular información para gráficos estáticos (Inferencia, Modelos, Cópulas):
-
-# 1. Matriz de correlaciones entre pérdidas anuales por provincia (para tab "Cópulas")
 prov_year = df.groupby(["ano", "provincia"])["total"].sum().reset_index()
 prov_pivot = prov_year.pivot(index="ano", columns="provincia", values="total").fillna(0)
 prov_corr = prov_pivot.corr()
-
-# Crear figura de heatmap de correlación entre provincias
 fig_copula = px.imshow(
     prov_corr,
     text_auto=".2f",
@@ -46,14 +59,10 @@ fig_copula.update_layout(
 )
 fig_copula.update_xaxes(
     side="bottom"
-)  # Colocar etiquetas de provincias en el eje X abajo
-
-# 2. Distribución de cola de pérdidas (CCDF en escala log-log) para tab "Inferencia"
-# Calcular fracción de excedencia: P(X > x)
-losses = np.sort(df["total"].values)  # pérdidas ordenadas ascendentemente
+)  
+losses = np.sort(df["total"].values)  
 n = len(losses)
 exceed_prob = [(n - i) / n for i in range(n)]  # P(X > losses[i])
-# Crear figura de scatter log-log de la cola de distribución
 fig_tail = go.Figure()
 fig_tail.add_trace(
     go.Scatter(x=losses, y=exceed_prob, mode="markers", marker_size=4, name="Datos")
@@ -61,19 +70,11 @@ fig_tail.add_trace(
 fig_tail.update_xaxes(type="log", title_text="Pérdida (colones)")
 fig_tail.update_yaxes(type="log", title_text="P(X > x)")
 fig_tail.update_layout(title="Función de excedencia de pérdidas (escala log-log)")
-
-# 3. Simulación Monte Carlo de pérdidas anuales (usando distribución ajustada a datos históricos)
-# Calcular pérdidas totales por año
 year_totals = df.groupby("ano")["total"].sum().values
-# Ajustar una distribución lognormal a las pérdidas anuales totales
 shape, loc, scale = lognorm.fit(year_totals, floc=0)
-# Generar simulaciones aleatorias de pérdidas anuales
 sims = lognorm.rvs(shape, loc=loc, scale=scale, size=10000, random_state=0)
-# Limitar valores extremos para visualización (cortar al percentil 99.9 para evitar cola muy larga)
 cutoff = np.quantile(sims, 0.999)
 sims_plot = sims[sims <= cutoff]
-
-# Crear figura del histograma de pérdidas anuales simuladas
 fig_mc = px.histogram(
     sims_plot,
     nbins=50,
@@ -84,7 +85,6 @@ fig_mc.update_layout(
 )
 fig_mc.update_xaxes(title_text="Pérdida anual (colones)")
 fig_mc.update_yaxes(title_text="Frecuencia")
-# Añadir línea vertical para percentil 95
 p95 = np.percentile(sims, 95)
 fig_mc.add_vline(
     x=p95,
@@ -93,79 +93,137 @@ fig_mc.add_vline(
     annotation_text="Percentil 95",
     annotation_position="top right",
 )
-
-# Calcular estadísticas de simulación para texto explicativo (en miles de millones de colones)
 mean_loss = sims.mean()
 perc95 = np.percentile(sims, 95)
 perc99 = np.percentile(sims, 99)
 mean_loss_b = mean_loss / 1e9  # valor en mil millones
 perc95_b = perc95 / 1e9  # valor en mil millones
 perc99_b = perc99 / 1e9  # valor en mil millones
-
-# Definir la aplicación Dash
-app = dash.Dash(__name__)
+external_stylesheets = [dbc.themes.FLATLY]
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = "Dashboard Pérdidas CR"
-
-# Listas de opciones únicas para filtros globales
 all_provinces = sorted(df["provincia"].unique())
 all_categories = sorted(df["categoria"].unique())
 all_years = sorted(df["ano"].unique())
+all_sectors = sorted(df["sector"].unique())
 
-# Layout de la aplicación
+navbar = dbc.Navbar(
+    dbc.Container(
+        [
+            # Logo UCR
+            html.A(
+                dbc.Row(
+                    [
+                        dbc.Col(html.Img(src=app.get_asset_url("ucr_logo.png"), height="45px")),
+                        dbc.Col(
+                            html.Div(
+                                [
+                                    html.Div("Universidad de Costa Rica", style={"fontWeight": "bold", "fontSize": "18px"}),
+                                    html.Div("Proyecto Estadística · Grupo 2", style={"fontSize": "13px"}),
+                                ]
+                            ),
+                            className="ms-2",
+                        ),
+                    ],
+                    align="center",
+                    className="g-0",
+                ),
+                href="#",
+                style={"textDecoration": "none", "color": "white"},
+            ),
+        ],
+        fluid=True,
+    ),
+    color="dark",
+    dark=True,
+    sticky="top",
+)
 app.layout = html.Div(
     [
-        html.H1("Dashboard de Pérdidas por Desastres Naturales en Costa Rica"),
-        html.P(
-            "Este tablero interactivo presenta información histórica sobre las pérdidas económicas causadas por desastres naturales en Costa Rica. Puede filtrar los datos por rango de años, por provincia y por categoría de daño para explorar distintos aspectos."
-        ),
-        # Filtros globales
-        html.Div(
+        navbar, 
+
+        dbc.Container(
             [
-                # Filtro de rango de años
-                html.Label("Años:", style={"margin-right": "10px"}),
-                dcc.RangeSlider(
-                    id="year-range",
-                    min=min(all_years),
-                    max=max(all_years),
-                    value=[min(all_years), max(all_years)],
-                    marks={int(year): str(int(year)) for year in all_years},
-                    step=None,  # solo permitir selección de años disponibles
-                    allowCross=False,
+                html.H1(
+                    "Dependencia espacial y severidad extrema de pérdidas económicas por desastres naturales en Costa Rica",
+                    className="mt-4 mb-2"
                 ),
-                html.Br(),
-                # Filtro de provincias (multiselección)
-                html.Label("Provincias:", style={"margin-right": "10px"}),
-                dcc.Dropdown(
-                    id="prov-filter",
-                    options=[{"label": prov, "value": prov} for prov in all_provinces],
-                    value=all_provinces,  # por defecto todas las provincias
-                    multi=True,
-                    placeholder="Seleccione provincia(s)",
+
+                html.P(
+                    "Este tablero interactivo presenta información histórica sobre las pérdidas económicas causadas por desastres naturales en Costa Rica.",
+                    className="text-muted"
                 ),
-                # Filtro de categorías (multiselección)
-                html.Label(
-                    "Categorías:",
-                    style={"margin": "0px 0px 0px 20px", "padding-right": "10px"},
+
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Filtros", className="card-title"),
+
+                            html.Br(),
+                            html.Label("Años:", className="fw-bold"),
+                            dcc.RangeSlider(
+                                id="year-range",
+                                min=min(all_years),
+                                max=max(all_years),
+                                value=[min(all_years), max(all_years)],
+                                marks={int(y): str(int(y)) for y in all_years},
+                                step=None,
+                            ),
+
+                            html.Br(),
+
+                            html.Div(
+                                [
+                                    # provincias
+                                    html.Div(
+                                        [
+                                            html.Label("Provincias:", className="fw-bold"),
+                                            dcc.Dropdown(
+                                                id="prov-filter",
+                                                options=[{"label": p, "value": p} for p in all_provinces],
+                                                value=all_provinces,
+                                                multi=True,
+                                            ),
+                                        ],
+                                        className="col-md-4",
+                                    ),
+                                    # categorias
+                                    html.Div(
+                                        [
+                                            html.Label("Categorías:", className="fw-bold"),
+                                            dcc.Dropdown(
+                                                id="cat-filter",
+                                                options=[{"label": c, "value": c} for c in all_categories],
+                                                value=all_categories,
+                                                multi=True,
+                                            ),
+                                        ],
+                                        className="col-md-4",
+                                    ),
+                                    # sector
+                                    html.Div(
+                                        [
+                                            html.Label("Tipo de daño (sector):", className="fw-bold"),
+                                            dcc.Dropdown(
+                                                id="sector-filter",
+                                                options=[{"label": s, "value": s} for s in all_sectors],
+                                                value=all_sectors,
+                                                multi=True,
+                                            ),
+                                        ],
+                                        className="col-md-4",
+                                    ),
+                                ],
+                                className="row g-3",
+                            ),
+                        ]
+                    ),
+                    className="shadow-sm mb-4",
                 ),
-                dcc.Dropdown(
-                    id="cat-filter",
-                    options=[{"label": cat, "value": cat} for cat in all_categories],
-                    value=all_categories,  # por defecto todas las categorías
-                    multi=True,
-                    placeholder="Seleccione categoría(s)",
-                ),
-            ],
-            style={
-                "background-color": "#F9F9F9",
-                "border": "1px solid #CCC",
-                "padding": "10px",
-                "border-radius": "5px",
-                "margin-bottom": "20px",
-            },
-        ),
-        # Pestañas de visualización
-        dcc.Tabs(
-            [
+                dbc.Card(
+                    dbc.CardBody(
+                        dcc.Tabs(
+                            [
                 dcc.Tab(
                     label="Mapa Interactivo",
                     children=[
@@ -173,7 +231,6 @@ app.layout = html.Div(
                         html.P(
                             "Mapa de Costa Rica que muestra las pérdidas económicas totales acumuladas por provincia en el período seleccionado. El color más oscuro indica mayores pérdidas. Pase el cursor sobre una provincia para ver el monto exacto."
                         ),
-                        # Mapa y gráfica de frecuencia de eventos por provincia, dispuestos en fila
                         html.Div(
                             [
                                 dcc.Graph(
@@ -221,27 +278,7 @@ app.layout = html.Div(
                         dcc.Graph(id="cat-graph"),
                     ],
                 ),
-                dcc.Tab(
-                    label="Exploratorio",
-                    children=[
-                        html.H3("Análisis Exploratorio de Distribuciones"),
-                        html.P(
-                            "Se examina la distribución de las pérdidas por evento individual. A la izquierda se presenta un histograma de las pérdidas (con eje X en escala logarítmica para resaltar la cola de la distribución) y a la derecha un diagrama de caja comparando la distribución de pérdidas por categoría de daño."
-                        ),
-                        html.Div(
-                            [
-                                dcc.Graph(
-                                    id="hist-graph",
-                                    style={"display": "inline-block", "width": "50%"},
-                                ),
-                                dcc.Graph(
-                                    id="box-graph",
-                                    style={"display": "inline-block", "width": "50%"},
-                                ),
-                            ]
-                        ),
-                    ],
-                ),
+            
                 dcc.Tab(
                     label="Inferencia",
                     children=[
@@ -330,58 +367,117 @@ app.layout = html.Div(
                         ),
                     ],
                 ),
+                dcc.Tab(
+                    label="Figuras EVT / Colas",
+                    children=[
+                        html.H3("Figuras pre-generadas (colas, umbrales, histogramas)"),
+                        html.P(
+                            "Seleccione el tipo de figura y el detalle (provincia, categoría o total) para visualizar las gráficas generadas en el análisis de colas y umbrales."
+                        ),
+                        html.Div(
+                            [
+                                html.Label("Tipo de figura:"),
+                                dcc.Dropdown(
+                                    id="fig-tipo",
+                                    options=[
+                                        {"label": t.capitalize(), "value": t}
+                                        for t in all_tipos_fig
+                                    ],
+                                    value=all_tipos_fig[0] if all_tipos_fig else None,
+                                    clearable=False,
+                                    placeholder="Seleccione tipo de figura",
+                                ),
+                                html.Br(),
+                                html.Label("Detalle (provincia / total / categoría):"),
+                                dcc.Dropdown(
+                                    id="fig-detalle",
+                                    options=[],  
+                                    value=None,
+                                    placeholder="Seleccione qué quiere ver ",
+                                ),
+                            ],
+                            style={
+                                "background-color": "#F9F9F9",
+                                "border": "1px solid #CCC",
+                                "padding": "10px",
+                                "border-radius": "5px",
+                                "margin-bottom": "20px",
+                                "maxWidth": "600px",
+                            },
+                        ),
+                        html.Div(
+                            id="fig-container",
+                            style={"textAlign": "center", "marginTop": "20px"},
+                        ),
+                    ],
+                ),
             ]
+                        )
+                    ),
+                    className="shadow-sm"
+                ),
+
+                html.Hr(),
+                html.Div(
+                    [
+                        html.Div("Desarrollado por Grupo 2 – Estadística UCR", className="fw-bold"),
+                        html.Div(
+                            "Autores: Jose Andrey Prado Rojas, Joseph Romero , Dixon Montero , Holmar Rivera.",
+                            className="text-muted",
+                            style={"fontSize": "13px"},
+                        ),
+                        html.Div(
+                            "II Semestre 2025 · Escuela de Matemática",
+                            className="text-muted",
+                            style={"fontSize": "12px"},
+                        ),
+                    ],
+                    className="text-center mt-4 mb-4",
+                ),
+            ],
+            fluid=True,
         ),
-        # Créditos / autoría
-        html.Div(
-            "Desarrollado por Grupo 2 - Universidad de Costa Rica (Autores originales: Jose Andrey Prado Rojas y colaboradores).",
-            style={
-                "fontSize": "12px",
-                "color": "gray",
-                "margin-top": "15px",
-                "textAlign": "center",
-            },
-        ),
-    ],
-    style={"fontFamily": "Arial, sans-serif", "margin": "20px"},
+    ]
 )
 
-# Definir colores fijos para categorías (para consistencia en los gráficos)
+
+
+
 color_map = {
-    "INFRAESTRUCTURA": "#d62728",  # rojo oscuro
-    "PRODUCTIVO": "#1f77b4",  # azul
-    "SOCIAL": "#2ca02c",  # verde
-    "HÍDRICO": "#9467bd",  # púrpura
-    "OTROS": "#8c564b",  # café/marrón
+    "INFRAESTRUCTURA": PRIMARY,
+    "PRODUCTIVO": SECONDARY,
+    "SOCIAL": "#2980B9",  
+    "HÍDRICO": "#16A085", 
+    "OTROS": "#7F8C8D",    
 }
 
 
-# Callback para actualizar los gráficos interactivos según los filtros
+
 @app.callback(
     [
         dash.dependencies.Output("map-graph", "figure"),
         dash.dependencies.Output("year-graph", "figure"),
         dash.dependencies.Output("cat-graph", "figure"),
-        dash.dependencies.Output("hist-graph", "figure"),
-        dash.dependencies.Output("box-graph", "figure"),
         dash.dependencies.Output("freq-graph", "figure"),
     ],
     [
         dash.dependencies.Input("year-range", "value"),
         dash.dependencies.Input("prov-filter", "value"),
         dash.dependencies.Input("cat-filter", "value"),
+        dash.dependencies.Input("sector-filter", "value"), 
     ],
 )
-def update_graphs(year_range, selected_provs, selected_cats):
-    # Filtrar datos según la selección del usuario
+def update_graphs(year_range, selected_provs, selected_cats, selected_sectors): 
+
     start_year, end_year = year_range
     dff = df[
         (df["ano"] >= start_year)
         & (df["ano"] <= end_year)
         & (df["provincia"].isin(selected_provs))
         & (df["categoria"].isin(selected_cats))
+        & (df["sector"].isin(selected_sectors))   
     ]
-    # Si no hay datos después del filtrado, devolver figuras vacías con mensaje
+
     if dff.empty:
         fig_empty = go.Figure()
         fig_empty.update_xaxes(showgrid=False, visible=False)
@@ -395,9 +491,8 @@ def update_graphs(year_range, selected_provs, selected_cats):
             x=0.5,
             y=0.5,
         )
-        return fig_empty, fig_empty, fig_empty, fig_empty, fig_empty, fig_empty
+        return fig_empty, fig_empty, fig_empty, fig_empty
 
-    # 1. Mapa coroplético por provincia (total de pérdidas por provincia)
     prov_data = dff.groupby("provincia", as_index=False)["total"].sum()
     fig_map = px.choropleth(
         prov_data,
@@ -405,16 +500,13 @@ def update_graphs(year_range, selected_provs, selected_cats):
         locations="provincia",
         featureidkey="properties.name",
         color="total",
-        color_continuous_scale="OrRd",
+        color_continuous_scale="Blues",
         labels={"provincia": "Provincia", "total": "Pérdidas (colones)"},
     )
     fig_map.update_geos(fitbounds="locations", visible=False)
     fig_map.update_coloraxes(colorbar_title="Colones", colorbar_tickformat=",.0f")
     fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-
-    # 2. Pérdidas por año (barras) con número de eventos (línea)
     yearly = dff.groupby("ano", as_index=False)["total"].sum().sort_values("ano")
-    # Calcular número de eventos únicos por año (considerando eventos identificados por combinación de año+ubicación)
     unique_events = dff.drop_duplicates(
         subset=["ano", "provincia", "canton", "latitud", "longitud"]
     )
@@ -427,7 +519,7 @@ def update_graphs(year_range, selected_provs, selected_cats):
             x=yearly["ano"],
             y=yearly["total"],
             name="Pérdidas (colones)",
-            marker_color="#C0392B",
+            marker_color=PRIMARY,
         )
     )
     fig_year.add_trace(
@@ -436,76 +528,32 @@ def update_graphs(year_range, selected_provs, selected_cats):
             y=events_by_year.values,
             mode="lines+markers",
             name="Número de eventos",
-            marker_color="#2ca02c",
+            marker_color=SECONDARY,
             yaxis="y2",
         )
     )
+
     fig_year.update_layout(
         xaxis=dict(dtick=1, title="Año"),
         yaxis=dict(title="Pérdidas (colones)", tickformat=",.0f"),
         yaxis2=dict(title="Número de eventos", overlaying="y", side="right"),
         legend=dict(y=1.15, x=0.01),
     )
-
-    # 3. Pérdidas por categoría (barras)
     cat_sum = (
-        dff.groupby("categoria", as_index=False)["total"]
+        dff.groupby("sector", as_index=False)["total"]
         .sum()
         .sort_values("total", ascending=False)
     )
     fig_cat = px.bar(
         cat_sum,
-        x="categoria",
+        x="sector",
         y="total",
-        labels={"categoria": "Categoría", "total": "Pérdidas (colones)"},
-        color="categoria",
+        labels={"sector": "Tipo de daño (sector)", "total": "Pérdidas (colones)"},
+        color="sector",
         color_discrete_map=color_map,
     )
     fig_cat.update_layout(showlegend=False)
     fig_cat.update_yaxes(title_text="Pérdidas (colones)", tickformat=",.0f")
-
-    # 4. Histograma de distribución de pérdidas por evento
-    filtered_totals = dff["total"]
-    filtered_totals = filtered_totals[filtered_totals > 0]
-
-    if filtered_totals.empty:
-        fig_hist = go.Figure()
-        fig_hist.update_layout(
-            title="No hay datos válidos para el histograma",
-            xaxis_title="Pérdida por evento (colones) [escala log]",
-            yaxis_title="Frecuencia",
-        )
-    else:
-        fig_hist = px.histogram(
-            filtered_totals,
-            nbins=50,
-            log_x=True,
-            labels={"value": "Pérdida por evento (colones)"},
-        )
-        fig_hist.update_layout(
-            xaxis_title="Pérdida por evento (colones) [escala log]",
-            yaxis_title="Frecuencia",
-        )
-
-    # 5. Diagrama de caja de pérdidas por categoría
-    fig_box = px.box(
-        dff,
-        x="total",
-        y="categoria",
-        color="categoria",
-        color_discrete_map=color_map,
-        orientation="h",
-        log_x=True,
-        labels={"categoria": "Categoría", "total": "Pérdida (colones)"},
-    )
-    fig_box.update_layout(
-        xaxis_title="Pérdida por evento (colones) [escala log]",
-        yaxis_title="Categoría",
-        showlegend=False,
-    )
-
-    # 6. Frecuencia de eventos por provincia (barras horizontales)
-    # Contar eventos únicos por provincia (misma lógica: agrupar por provincia en datos filtrados únicos)
     events_by_prov = unique_events["provincia"].value_counts().reset_index()
     events_by_prov.columns = ["provincia", "count"]
     events_by_prov = events_by_prov.sort_values("count", ascending=False)
@@ -517,10 +565,57 @@ def update_graphs(year_range, selected_provs, selected_cats):
         labels={"count": "Número de eventos", "provincia": "Provincia"},
     )
     fig_freq.update_layout(margin={"l": 100, "r": 30, "b": 30, "t": 30})
+    return fig_map, fig_year, fig_cat, fig_freq
+from dash.dependencies import Input, Output, State
+@app.callback(
+    [Output("fig-detalle", "options"),
+     Output("fig-detalle", "value")],
+    Input("fig-tipo", "value"),
+)
+def actualizar_detalle_figuras(tipo_seleccionado):
+    if not tipo_seleccionado or fig_df.empty:
+        return [], None
+    sub = fig_df[fig_df["tipo"] == tipo_seleccionado]
+    opciones = []
+    for _, row in sub.iterrows():
+        if row["detalle"]:
+            etiqueta = row["detalle"].replace("_", " ").title()
+        else:
+            etiqueta = row["file"]
+        opciones.append({"label": etiqueta, "value": row["file"]})
+    valor_defecto = opciones[0]["value"] if opciones else None
+    return opciones, valor_defecto
 
-    return fig_map, fig_year, fig_cat, fig_hist, fig_box, fig_freq
+@app.callback(
+    Output("fig-container", "children"),
+    [Input("fig-detalle", "value"),
+     Input("fig-tipo", "value")],
+)
+def mostrar_figura_archivo(archivo_seleccionado, tipo_seleccionado):
+    if not archivo_seleccionado:
+        return html.P(
+            "Seleccione un tipo de figura y un detalle para visualizar la imagen.",
+            style={"fontStyle": "italic"},
+        )
+    img_src = app.get_asset_url(f"figuras/{archivo_seleccionado}")
+    titulo = f"Figura: {tipo_seleccionado} – {archivo_seleccionado}"
 
-
-# Ejecutar la aplicación (modo local)
+    return html.Div(
+        [
+            html.Img(
+                src=img_src,
+                style={
+                    "maxWidth": "100%",
+                    "height": "auto",
+                    "border": "1px solid #CCC",
+                    "borderRadius": "5px",
+                },
+            ),
+            html.P(
+                titulo,
+                style={"marginTop": "10px", "fontStyle": "italic", "color": "gray"},
+            ),
+        ]
+    )
 if __name__ == "__main__":
     app.run(debug=False)
