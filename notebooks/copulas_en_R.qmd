@@ -680,9 +680,526 @@ write.csv(res_prov_cat, '../res/copulas/provincia_categoria.csv')
 write.csv(res_sec_cat, '../res/copulas/sector_categoria.csv')
 ```
 
+```{r}
+res_prov_sec <- read.csv('../res/copulas/provincia_sector.csv')
+res_prov_cat <- read.csv('../res/copulas/provincia_categoria.csv')
+res_sec_cat <- read.csv('../res/copulas/sector_categoria.csv')
+
+```
+
+
+## VaR y CVaR
+
+```{r}
+riesgo_par <- function(nombre_x, nombre_y, carpeta_x, carpeta_y, fit,
+                       base_path = "../res/marginales",
+                       n = 50000, alpha = 0.95) {
+
+  # cargar marginal X
+  m1 <- leer_marginal(file.path(base_path, carpeta_x, nombre_x))
+
+  # cargar marginal Y
+  m2 <- leer_marginal(file.path(base_path, carpeta_y, nombre_y))
+  
+  # calcular riesgos
+  calcular_var_cvar_par(fit, m1, m2, n = n)
+}
+
+
+calcular_var_cvar_par <- function(fit, m1, m2, n = 50000) {
+  
+  # 1. Simular U desde la cópula
+  U_sim <- BiCopSim(
+    N      = n,
+    family = fit$family,
+    par    = fit$par,
+    par2   = fit$par2
+  )
+  
+  U1 <- U_sim[,1]
+  U2 <- U_sim[,2]
+  
+  # 2. Transformar a X,Y con las marginales
+  X_sim <- transformar_desde_U(U1, m1)
+  Y_sim <- transformar_desde_U(U2, m2)
+
+  # 3. Suma conjunta
+  S_sim <- X_sim + Y_sim
+
+  # --- niveles de confianza ---
+  alphas <- c(0.95, 0.99)
+
+  # --- listas de resultados ---
+  out <- list()
+
+  for (a in alphas) {
+
+    # VaR individuales
+    VaR_X <- quantile(X_sim, a, na.rm = TRUE)
+    VaR_Y <- quantile(Y_sim, a, na.rm = TRUE)
+
+    # VaR conjunto
+    VaR_S <- quantile(S_sim, a, na.rm = TRUE)
+
+    # CVaR conjunto
+    CVaR_S <- mean(S_sim[S_sim >= VaR_S], na.rm = TRUE)
+
+    # CVaR condicional: Y | X >= VaR_X
+    CVaR_cond <- mean(Y_sim[X_sim >= VaR_X], na.rm = TRUE)
+
+    # guardar con nombres específicos
+    suf <- ifelse(a == 0.95, "95", "99")
+
+    out[[paste0("VaR_X_", suf)]]       <- VaR_X
+    out[[paste0("VaR_Y_", suf)]]       <- VaR_Y
+    out[[paste0("VaR_Cop_", suf)]]     <- VaR_S
+    out[[paste0("CVaR_Cop_", suf)]]    <- CVaR_S
+    out[[paste0("CVaR_cond_", suf)]]   <- CVaR_cond
+  }
+
+  return(out)
+}
+
+
+```
+
+```{r}
+res_prov_sec_riesgo <- res_prov_sec %>%
+  rowwise() %>%
+  mutate(
+    riesgo = list(
+      riesgo_par(
+        nombre_x  = varA,
+        nombre_y  = varB,
+        carpeta_x = tipoA,
+        carpeta_y = tipoB,
+        fit       = fit
+      )
+    )
+  ) %>%
+  unnest_wider(riesgo) %>% 
+  ungroup()
+
+res_prov_cat_riesgo <- res_prov_cat %>%
+  rowwise() %>%
+  mutate(
+    riesgo = list(
+      riesgo_par(
+        nombre_x  = varA,
+        nombre_y  = varB,
+        carpeta_x = tipoA,
+        carpeta_y = tipoB,
+        fit       = fit
+      )
+    )
+  ) %>%
+  unnest_wider(riesgo) %>% 
+  ungroup()
+
+
+res_sec_cat_riesgo <- res_sec_cat %>%
+  rowwise() %>%
+  mutate(
+    riesgo = list(
+      riesgo_par(
+        nombre_x  = varA,
+        nombre_y  = varB,
+        carpeta_x = tipoA,
+        carpeta_y = tipoB,
+        fit       = fit
+      )
+    )
+  ) %>%
+  unnest_wider(riesgo) %>% 
+  ungroup()
+
+```
 
 
 ```{r}
-res_sec_cat
+write.csv(res_prov_sec_riesgo, '../res/copulas/VAR_provincia_sector.csv')
+write.csv(res_prov_cat_riesgo, '../res/copulas/VAR_provincia_categoria.csv')
+write.csv(res_sec_cat_riesgo, '../res/copulas/VAR_sector_categoria.csv')
+```
+
+## GRAFICOS
+
+```{r}
+colnames(res_prov_sec_riesgo)
+```
+```{r}
+
+library(ggplot2)
+
+plot_heatmap_tau <- function(df, titulo = "Mapa de correlación (tau)") {
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+
+  df_wide <- df %>%
+    select(varA, varB, tau) %>%
+    tidyr::pivot_wider(
+      names_from  = varB,
+      values_from = tau
+    )
+
+  df_long <- df_wide %>%
+    tidyr::pivot_longer(
+      cols      = -varA,
+      names_to  = "varB",
+      values_to = "tau"
+    )
+
+  ggplot(df_long, aes(x = varB, y = varA, fill = tau)) +
+    geom_tile(color = "white") +
+    # Paleta de amarillos
+    scale_fill_gradient(
+      low      = "#FFF9C4",  # amarillo muy claro
+      high     = "#FBC02D",  # amarillo intenso
+      na.value = "grey90"
+    ) +
+    # Etiquetas de valor encima de la casilla
+    geom_text(aes(label = round(tau, 2)),
+              color = "black",
+              size  = 3.5,
+              na.rm = TRUE) +
+    labs(
+      title = titulo,
+      x     = "Variable B",
+      y     = "Variable A",
+      fill  = "Tau"
+    ) +
+    theme_minimal(base_size = 13) +
+    theme(
+      axis.text.x  = element_text(angle = 45, hjust = 1),
+      panel.grid   = element_blank(),
+      plot.title   = element_text(face = "bold", hjust = 0.5)
+    )
+}
+
+
+```
+
+
+```{r}
+plot_heatmap_tau(res_prov_sec_riesgo, "Tau: Provincias vs Sectores")
+plot_heatmap_tau(res_prov_cat_riesgo, "Tau: Provincias vs Categorías")
+plot_heatmap_tau(res_sec_cat_riesgo, "Tau: Sectores vs Categorías")
+
+```
+
+```{r}
+library(VineCopula)
+
+copula_familia <- function(name){
+  switch(name,
+    "N"  = 1,
+    "t"  = 2,
+    "C"  = 3,
+    "G"  = 4,
+    "F"  = 5,
+    "SC" = 3,   # Clayton survival
+    "SG" = 4,   # Gumbel survival
+    0     # default
+  )
+}
+
+tail_dep <- function(family, par, par2 = NA) {
+
+  fam <- BiCopName(family, short = TRUE)
+
+  # Inicializar
+  lambda_L <- lambda_U <- 0
+
+  if (fam == "C") {           # Clayton
+    theta <- par
+    lambda_L <- 2^(-1/theta)
+    lambda_U <- 0
+  }
+  else if (fam == "G") {      # Gumbel
+    theta <- par
+    lambda_L <- 0
+    lambda_U <- 2 - 2^(1/theta)
+  }
+  else if (fam == "F") {      # Frank
+    lambda_L <- 0
+    lambda_U <- 0
+  }
+  else if (fam == "N") {      # Gaussian
+    lambda_L <- 0
+    lambda_U <- 0
+  }
+  else if (fam == "t") {      # Student t
+    rho <- par
+    nu  <- par2
+    t_val <- sqrt( ((nu + 1)*(1 - rho))/(1 + rho) )
+    lambda <- 2 * pt(-t_val, df = nu + 1)
+    lambda_L <- lambda
+    lambda_U <- lambda
+  }
+
+  return(list(lambda_L = lambda_L, lambda_U = lambda_U))
+}
+
+```
+
+
+```{r}
+res_prov_sec_tail <- res_prov_sec %>%
+  rowwise() %>%
+  mutate(
+    tail = list(
+      tail_dep(
+        family = copula_familia(copula),
+        par    = par,
+        par2   = ifelse("par2" %in% names(.), par2, NA)
+      )
+    )
+  ) %>%
+  unnest_wider(tail)
+
+res_prov_cat_tail <- res_prov_cat %>%
+  rowwise() %>%
+  mutate(
+    tail = list(
+      tail_dep(
+        family = copula_familia(copula),
+        par    = par,
+        par2   = ifelse("par2" %in% names(.), par2, NA)
+      )
+    )
+  ) %>%
+  unnest_wider(tail)
+
+
+res_sec_cat_tail <- res_sec_cat %>%
+  rowwise() %>%
+  mutate(
+    tail = list(
+      tail_dep(
+        family = copula_familia(copula),
+        par    = par,
+        par2   = ifelse("par2" %in% names(.), par2, NA)
+      )
+    )
+  ) %>%
+  unnest_wider(tail)
+
+
+```
+
+
+```{r}
+plot_heatmap_tail <- function(df,
+                              titulo = "Dependencia de cola"){
+
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  library(rlang)
+  
+  cola <- 'inferior'
+  col_sel <- 'lambda_L'
+
+  df_wide <- df %>%
+    dplyr::select(varA, varB, !!sym(col_sel)) %>%
+    tidyr::pivot_wider(
+      names_from  = varB,
+      values_from = !!sym(col_sel)
+    )
+
+  df_long <- df_wide %>%
+    tidyr::pivot_longer(
+      cols      = -varA,
+      names_to  = "varB",
+      values_to = "lambda"
+    )
+
+  ggplot(df_long, aes(x = varB, y = varA, fill = lambda)) +
+    geom_tile(color = "white") +
+    # Paleta de amarillos
+    scale_fill_gradient(
+      low      = "#FFF9C4",   # amarillo muy claro
+      high     = "#FBC02D",   # amarillo intenso
+      na.value = "grey90"
+    ) +
+    # Número sobre la casilla
+    geom_text(aes(label = round(lambda, 2)),
+              color = "black",
+              size  = 3.5,
+              na.rm = TRUE) +
+    labs(
+      title = titulo,
+      x     = "Variable B",
+      y     = "Variable A",
+      fill  = paste0("λ_", ifelse(cola=="inferior","L","U"))
+    ) +
+    theme_minimal(base_size = 13) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      panel.grid  = element_blank(),
+      plot.title  = element_text(face = "bold", hjust = 0.5)
+    )
+}
+
+```
+
+```{r}
+plot_heatmap_tail(res_prov_sec_tail,
+                  titulo = "Dependencia de cola superior (λ_U)")
+
+plot_heatmap_tail(res_prov_cat_tail, 
+                  titulo = "Dependencia de cola superior (λ_U)")
+
+plot_heatmap_tail(res_sec_cat_tail,
+                  titulo = "Dependencia de cola superior (λ_U)")
+
+
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(rlang)
+
+plot_heatmap_metric <- function(df, metric, titulo = NULL) {
+
+  if (is.null(titulo)) {
+    titulo <- paste("Heatmap de", metric)
+  }
+
+  df_wide <- df %>%
+    dplyr::select(varA, varB, !!sym(metric)) %>%
+    tidyr::pivot_wider(
+      names_from  = varB,
+      values_from = !!sym(metric)
+    )
+
+  df_long <- df_wide %>%
+    tidyr::pivot_longer(
+      cols      = -varA,
+      names_to  = "varB",
+      values_to = "value"
+    )
+
+  ggplot(df_long, aes(x = varB, y = varA, fill = value)) +
+    geom_tile(color = "white") +
+    # Paleta secuencial de rojos
+    scale_fill_gradient(
+      low      = "#FFEBEE",   # rojo muy claro
+      high     = "#C62828",   # rojo intenso
+      na.value = "grey90"
+    ) +
+    # Número sobre la casilla
+    geom_text(aes(label = round(value, 2)),
+              color = "black",
+              size  = 3.5,
+              na.rm = TRUE) +
+    labs(
+      title = titulo,
+      x     = "Variable B",
+      y     = "Variable A",
+      fill  = metric
+    ) +
+    theme_minimal(base_size = 13) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      panel.grid  = element_blank(),
+      plot.title  = element_text(face = "bold", hjust = 0.5)
+    )
+}
+
+
+```
+
+
+```{r}
+plot_heatmap_metric(res_prov_sec_riesgo, "VaR_Cop_95",
+                    "VaR conjunto 95%")
+plot_heatmap_metric(res_prov_cat_riesgo, "VaR_Cop_95",
+                    "VaR conjunto 95%")
+plot_heatmap_metric(res_sec_cat_riesgo, "VaR_Cop_95",
+                    "VaR conjunto 95%")
+
+plot_heatmap_metric(res_prov_sec_riesgo, "VaR_Cop_99",
+                    "VaR conjunto 99%")
+plot_heatmap_metric(res_prov_cat_riesgo, "VaR_Cop_99",
+                    "VaR conjunto 99%")
+plot_heatmap_metric(res_sec_cat_riesgo, "VaR_Cop_99",
+                    "VaR conjunto 99%")
+
+
+```
+
+```{r}
+plot_heatmap_metric <- function(df, metric, titulo = NULL) {
+
+  if (is.null(titulo)) {
+    titulo <- paste("Heatmap de", metric)
+  }
+
+  df_wide <- df %>%
+    dplyr::select(varA, varB, !!sym(metric)) %>%
+    tidyr::pivot_wider(
+      names_from  = varB,
+      values_from = !!sym(metric)
+    )
+
+  df_long <- df_wide %>%
+    tidyr::pivot_longer(
+      cols      = -varA,
+      names_to  = "varB",
+      values_to = "value"
+    )
+
+  ggplot(df_long, aes(x = varB, y = varA, fill = value)) +
+    geom_tile(color = "white") +
+    # Paleta secuencial de rojos
+    scale_fill_gradient(
+      low      = "#FFF3E0",   # naranja muy claro
+      high     = "#EF6C00",   # naranja intenso
+      na.value = "grey90"
+    ) +
+    # Número sobre la casilla
+    geom_text(aes(label = round(value, 2)),
+              color = "black",
+              size  = 3.5,
+              na.rm = TRUE) +
+    labs(
+      title = titulo,
+      x     = "Variable B",
+      y     = "Variable A",
+      fill  = metric
+    ) +
+    theme_minimal(base_size = 13) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      panel.grid  = element_blank(),
+      plot.title  = element_text(face = "bold", hjust = 0.5)
+    )
+}
+
+
+```
+
+
+
+
+```{r}
+plot_heatmap_metric(res_prov_sec_riesgo, "CVaR_Cop_95",
+                    "CVaR conjunto 95%")
+plot_heatmap_metric(res_prov_cat_riesgo, "CVaR_Cop_95",
+                    "CVaR conjunto 95%")
+plot_heatmap_metric(res_sec_cat_riesgo, "CVaR_Cop_95",
+                    "CVaR conjunto 95%")
+
+plot_heatmap_metric(res_prov_sec_riesgo, "CVaR_Cop_99",
+                    "CVaR conjunto 99%")
+plot_heatmap_metric(res_prov_cat_riesgo, "CVaR_Cop_99",
+                    "CVaR conjunto 99%")
+plot_heatmap_metric(res_sec_cat_riesgo, "CVaR_Cop_99",
+                    "CVaR conjunto 99%")
+
 ```
 
