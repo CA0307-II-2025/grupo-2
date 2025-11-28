@@ -231,6 +231,84 @@ desinventar2023}%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Gelman%
+\ \protect \BOthers {.}}{%
+Gelman%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2020}}%
+}]{%
+Gelman2020}
+\APACinsertmetastar {%
+Gelman2020}%
+\begin{APACrefauthors}%
+Gelman, A.%
+, Carlin, J\BPBI B.%
+, Stern, H\BPBI S.%
+, Dunson, D\BPBI B.%
+, Vehtari, A.%
+\BCBL {}\ \BBA {} Rubin, D\BPBI B.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2020}.
+\newblock
+\APACrefbtitle {Bayesian Data Analysis} {Bayesian data analysis}\
+  (\PrintOrdinal{3rd}\ \BEd).
+\newblock
+\APACaddressPublisher{Boca Raton, FL}{Chapman and Hall/CRC}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Joe%
+}{%
+Joe%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+Joe2014}
+\APACinsertmetastar {%
+Joe2014}%
+\begin{APACrefauthors}%
+Joe, H.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2014}.
+\newblock
+\APACrefbtitle {Dependence Modeling with Copulas} {Dependence modeling with
+  copulas}.
+\newblock
+\APACaddressPublisher{Boca Raton, FL}{Chapman and Hall/CRC}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Klugman%
+, Panjer%
+\BCBL {}\ \BBA {} Willmot%
+}{%
+Klugman%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2019}}%
+}]{%
+Klugman2019}
+\APACinsertmetastar {%
+Klugman2019}%
+\begin{APACrefauthors}%
+Klugman, S\BPBI A.%
+, Panjer, H\BPBI H.%
+\BCBL {}\ \BBA {} Willmot, G\BPBI E.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2019}.
+\newblock
+\APACrefbtitle {Loss Models: From Data to Decisions} {Loss models: From data to
+  decisions}\ (\PrintOrdinal{5th}\ \BEd).
+\newblock
+\APACaddressPublisher{Hoboken, New Jersey}{Wiley}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Krupskii%
 \ \BBA {} Joe%
 }{%
@@ -254,6 +332,29 @@ Krupskii, P.%
   copula models for multivariate data}.{\BBCQ}
 \newblock
 \APACjournalVolNumPages{Journal of Multivariate Analysis}{120}{}{85--101}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Nelsen%
+}{%
+Nelsen%
+}{%
+{\protect \APACyear {2006}}%
+}]{%
+Nelsen2006}
+\APACinsertmetastar {%
+Nelsen2006}%
+\begin{APACrefauthors}%
+Nelsen, R\BPBI B.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2006}.
+\newblock
+\APACrefbtitle {An Introduction to Copulas} {An introduction to copulas}\
+  (\PrintOrdinal{2nd}\ \BEd).
+\newblock
+\APACaddressPublisher{New York, NY}{Springer}.
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%

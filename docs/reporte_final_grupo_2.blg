@@ -25,45 +25,45 @@ Warning--entry type for "cepal2014" isn't style-file defined
 Warning--entry type for "pnud2014" isn't style-file defined
 --line 335 of file referencias.bib
 apacite.bst [2013/07/21 v6.03 APA bibliography style]
-You've used 19 entries,
+You've used 23 entries,
             6951 wiz_defined-function locations,
-            1412 strings with 14677 characters,
-and the built_in function-call counts, 35131 in all, are:
-= -- 4459
-> -- 240
-< -- 1673
-+ -- 1614
-- -- 50
-* -- 2175
-:= -- 6427
-add.period$ -- 83
-call.type$ -- 19
-change.case$ -- 325
+            1438 strings with 15126 characters,
+and the built_in function-call counts, 41836 in all, are:
+= -- 5298
+> -- 306
+< -- 1919
++ -- 1898
+- -- 58
+* -- 2555
+:= -- 7467
+add.period$ -- 99
+call.type$ -- 23
+change.case$ -- 393
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 812
-empty$ -- 1417
-format.name$ -- 384
-if$ -- 6756
+cite$ -- 46
+duplicate$ -- 1059
+empty$ -- 1737
+format.name$ -- 498
+if$ -- 8124
 int.to.chr$ -- 0
-int.to.str$ -- 57
+int.to.str$ -- 69
 missing$ -- 0
-newline$ -- 488
-num.names$ -- 152
-pop$ -- 651
+newline$ -- 585
+num.names$ -- 184
+pop$ -- 832
 preamble$ -- 1
-purify$ -- 78
+purify$ -- 94
 quote$ -- 0
-skip$ -- 2427
+skip$ -- 2843
 stack$ -- 0
-substring$ -- 1734
-swap$ -- 452
-text.length$ -- 46
+substring$ -- 2057
+swap$ -- 585
+text.length$ -- 54
 text.prefix$ -- 0
 top$ -- 1
-type$ -- 1880
+type$ -- 2200
 warning$ -- 0
-while$ -- 128
+while$ -- 167
 width$ -- 0
-write$ -- 564
+write$ -- 684
 (There were 5 warnings)
