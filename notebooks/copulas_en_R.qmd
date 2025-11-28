@@ -132,12 +132,13 @@ construir_par <- function(df_A, df_B, varA, varB, min_n = 20, quitar_todo_cero =
 ## Cargar marginales
 
 ```{r}
+
 pburr <- function(q, shape1, shape2, scale) {
   1 - (1 + (q/scale)^shape1)^(-shape2)
 }
 
 qburr <- function(p, shape1, shape2, scale) {
-  scale * (( (1 - p)^(-1/shape2) - 1 ))^(1/shape1)
+  scale * (((1 - p)^(-1/shape2) - 1))^(1/shape1)
 }
 
 pgpd <- function(x, xi, beta, u0) {
@@ -154,6 +155,7 @@ qgpd <- function(p, xi, beta, u0) {
   u0 + beta * ((1 - p)^(-xi) - 1) / xi
 }
 
+
 ppareto <- function(x, shape, scale) {
   1 - (scale / x)^shape
 }
@@ -167,138 +169,167 @@ qpareto <- function(p, shape, scale) {
 
 ```{r}
 leer_marginal <- function(path_dir) {
+
   archivos <- list.files(path_dir, full.names = TRUE)
-  
-  body_files <- archivos[grepl("body", archivos, ignore.case = TRUE)]
   tail_files <- archivos[grepl("tail", archivos, ignore.case = TRUE)]
-  
+
+  if (length(tail_files) == 0) {
+    stop("No se encontraron COLAS (tail) en ", path_dir)
+  }
+
+  # Seleccionar archivo más reciente
   seleccionar_ultimo <- function(files) {
     info <- file.info(files)
     files[which.max(info$mtime)]
   }
-  
-  # PRIORIDAD 1 → TAIL (riesgo extremo)
-  if (length(tail_files) >= 1) {
-    tail_file <- seleccionar_ultimo(tail_files)
-    message("[Marginal] Seleccionado TAIL: ", basename(tail_file))
-    
-    df_tail <- read.csv(tail_file)
-    
-    return(list(
-      model_type = "tail",
-      model_name = unique(df_tail$model_name)[1],
-      param1 = df_tail$Burr_param1[1],
-      param2 = df_tail$Burr_param2[1],
-      param3 = df_tail$Burr_param3[1],
-      p_u    = df_tail$p_u[1],
-      u_opt  = df_tail$u_opt[1]
-    ))
+
+  tail_file <- seleccionar_ultimo(tail_files)
+  message("[Marginal] Seleccionado TAIL: ", basename(tail_file))
+
+  df_tail <- read.csv(tail_file)
+
+  # ------------------------------------------------------------
+  # Detectar modelo
+  # ------------------------------------------------------------
+  model <- tolower(df_tail$model_name[1])
+
+  # ------------------------------------------------------------
+  # Detectar columnas de parámetros automáticamente
+  # ------------------------------------------------------------
+  # Busca columnas como GPD_param1, Burr_param1, LN_param1, etc.
+  param_cols <- grep("_param[0-9]+$", colnames(df_tail), value = TRUE)
+
+  if (length(param_cols) == 0) {
+    stop("No se detectaron columnas de parámetros en: ", tail_file)
   }
-  
-  # PRIORIDAD 2 → BODY (KDE si no hay tail)
-  if (length(body_files) >= 1) {
-    body_file <- seleccionar_ultimo(body_files)
-    message("[Marginal] Seleccionado BODY: ", basename(body_file))
-    
-    df_body <- read.csv(body_file)
-    
-    return(list(
-      model_type = "body",
-      model_name = unique(df_body$model_name)[1],
-      x = df_body$x,
-      dens = df_body$f
-    ))
+
+  # ------------------------------------------------------------
+  # Convertir a numeric toda la cadena
+  # ------------------------------------------------------------
+  vals <- df_tail[param_cols]
+
+  # Convertir strings y factores a numeric
+  vals <- sapply(vals, function(v) {
+    v <- as.character(v)
+    v[v %in% c("", " ", "NA", "NaN", "nan", "NULL")] <- NA
+    suppressWarnings(as.numeric(v))
+  })
+
+  vals <- as.data.frame(vals)
+
+  # ------------------------------------------------------------
+  # Promedio de toda la cadena (para cada parámetro)
+  # ------------------------------------------------------------
+  param_means <- colMeans(vals, na.rm = TRUE)
+
+  if (any(is.na(param_means))) {
+    stop("[ERROR] No se pudieron promediar parámetros en: ", basename(tail_file),
+         "\nValores detectados:", paste(param_cols, collapse = ","))
   }
-  
-  stop("No se encontraron archivos marginales BODY o TAIL en: ", path_dir)
+
+  # ------------------------------------------------------------
+  # Construir salida
+  # ------------------------------------------------------------
+  out <- list(
+    model_type = "tail",
+    model_name = model,
+    params = param_means
+  )
+
+  # incluir u_opt y p_u si existen
+  opt_fields <- c("u_opt", "p_u", "threshold")
+  for (f in opt_fields) {
+    if (f %in% colnames(df_tail)) {
+      out[[f]] <- df_tail[[f]][1]  # el threshold NO se promedia
+    }
+  }
+
+  return(out)
 }
 
 transformar_a_U <- function(x, marginal) {
-  
-  tipo   <- tolower(marginal$model_type)
+
+  tipo   <- marginal$model_type
   nombre <- tolower(marginal$model_name)
-  
+  params <- marginal$params
 
-  # =======================================
-  # 1. BODY / KDE
-  # =======================================
-  if (tipo %in% c("kde", "body")) {
+  # =====================
+  # TAIL PARAMÉTRICA
+  # =====================
+  if (tipo == "tail") {
 
-    if (is.null(marginal$x) || is.null(marginal$dens) ||
-        length(marginal$x) < 2 ||
-        length(marginal$dens) < 2 ||
-        sum(!is.na(marginal$x)) < 2 ||
-        sum(!is.na(marginal$dens)) < 2) {
-
-      message("[Aviso] BODY inválido → usando U empírica.")
-      return(rank(x) / (length(x) + 1))
+    # -------- BURR --------
+    if (nombre == "burr") {
+      Fx <- pburr(
+        q = x,
+        shape1 = params[1],
+        shape2 = params[2],
+        scale  = params[3]
+      )
     }
 
+    # -------- GPD --------
+    else if (nombre == "gpd") {
+      Fx <- pgpd(
+        x    = x,
+        xi   = params[1],
+        beta = params[2],
+        u0   = marginal$u_opt
+      )
+    }
+
+    # -------- PARETO --------
+    else if (nombre == "pareto") {
+      Fx <- ppareto(
+        x     = x,
+        shape = params[1],
+        scale = params[2]
+      )
+    }
+
+    # -------- LOGNORMAL _TAIL --------
+    else if (nombre == "ln_tail" || nombre == "lognormal") {
+      Fx <- plnorm(
+        x,
+        meanlog = params[1],
+        sdlog   = params[2]
+      )
+    }
+
+    else {
+      stop("Distribución tail no implementada: ", nombre)
+    }
+  }
+
+
+  # =====================
+  # BODY / KDE  (SI QUISIERAS USARLO)
+  # =====================
+  else if (tipo == "body") {
+
+    xgrid <- marginal$x
+    fgrid <- marginal$dens
     Fx <- approx(
-      x = marginal$x,
-      y = cumsum(marginal$dens) / sum(marginal$dens),
+      x = xgrid,
+      y = cumsum(fgrid) / sum(fgrid),
       xout = x,
       rule = 2
     )$y
   }
 
-
-  # =======================================
-  # 2. TAIL / PARAMÉTRICO
-  # =======================================
-  else if (tipo %in% c("tail", "param")) {
-
-    if (nombre == "burr") {
-      Fx <- pburr(
-        q      = x,
-        shape1 = marginal$param1,
-        shape2 = marginal$param2,
-        scale  = marginal$param3
-      )
-    }
-
-    else if (nombre == "gpd") {
-      Fx <- pgpd(
-        x    = x,
-        xi   = marginal$param1,
-        beta = marginal$param2,
-        u0   = marginal$u_opt
-      )
-    }
-
-    else if (nombre == "pareto") {
-      Fx <- ppareto(
-        x     = x,
-        shape = marginal$param1,
-        scale = marginal$param2
-      )
-    }
-
-    else if (nombre == "ln_tail" || nombre == "lognormal") {
-      Fx <- plnorm(
-        x,
-        meanlog = marginal$param1,
-        sdlog   = marginal$param2
-      )
-    }
-
-    else {
-      stop("Distribución paramétrica no implementada: ", marginal$model_name)
-    }
-  }
-
   else {
-    stop("Tipo marginal desconocido: ", marginal$model_type)
+    stop("Tipo marginal desconocido.")
   }
 
+  # VALIDACIÓN
+  if (any(is.na(Fx)) || any(is.infinite(Fx))) {
+    message("[Aviso] Fx inválido → usando U empírica.")
+    Fx <- rank(x) / (length(x) + 1)
+  }
 
-  # =======================================
-  # 3. Validación KS + fallback empírico
-  # =======================================
   ks <- suppressWarnings(ks.test(Fx, "punif"))
-
-  if (ks$p.value < 0.05 || any(is.na(Fx)) || any(is.infinite(Fx))) {
-    message("[Aviso] KS no pasa o Fx inválido → usando U empírica.")
+  if (ks$p.value < 0.05) {
+    message("[Aviso] KS no pasa → usando U empírica.")
     Fx <- rank(x) / (length(x) + 1)
   }
 
@@ -308,47 +339,26 @@ transformar_a_U <- function(x, marginal) {
 
 transformar_desde_U <- function(U, marginal) {
 
-  tipo   <- tolower(marginal$model_type)
+  tipo   <- marginal$model_type
   nombre <- tolower(marginal$model_name)
+  params <- marginal$params
 
-
-  # =======================================
-  # 1. BODY / KDE  → aproximación inversa
-  # =======================================
-  if (tipo %in% c("kde", "body")) {
-
-    x <- marginal$x
-    f <- marginal$dens
-    dx <- x[2] - x[1]
-
-    cdf <- cumsum(f) * dx
-    cdf <- cdf / max(cdf)
-
-    qfun <- approxfun(cdf, x, rule = 2)
-
-    return(qfun(U))
-  }
-
-
-  # =======================================
-  # 2. TAIL paramétrico
-  # =======================================
-  if (tipo %in% c("tail", "param")) {
+  if (tipo == "tail") {
 
     if (nombre == "burr") {
       return(qburr(
         p      = U,
-        shape1 = marginal$param1,
-        shape2 = marginal$param2,
-        scale  = marginal$param3
+        shape1 = params[1],
+        shape2 = params[2],
+        scale  = params[3]
       ))
     }
 
     if (nombre == "gpd") {
       return(qgpd(
         p    = U,
-        xi   = marginal$param1,
-        beta = marginal$param2,
+        xi   = params[1],
+        beta = params[2],
         u0   = marginal$u_opt
       ))
     }
@@ -356,26 +366,34 @@ transformar_desde_U <- function(U, marginal) {
     if (nombre == "pareto") {
       return(qpareto(
         p     = U,
-        shape = marginal$param1,
-        scale = marginal$param2
+        shape = params[1],
+        scale = params[2]
       ))
     }
 
     if (nombre == "ln_tail" || nombre == "lognormal") {
       return(qlnorm(
         p      = U,
-        meanlog = marginal$param1,
-        sdlog   = marginal$param2
+        meanlog = params[1],
+        sdlog   = params[2]
       ))
     }
 
-    stop("Tail paramétrico no implementado: ", marginal$model_name)
+    stop("Tail no implementado: ", nombre)
   }
 
-  stop("Tipo marginal desconocido: ", marginal$model_type)
+  else if (tipo == "body") {
+    xgrid <- marginal$x
+    fgrid <- marginal$dens
+    dx <- xgrid[2] - xgrid[1]
+    cdf <- cumsum(fgrid) * dx
+    cdf <- cdf / max(cdf)
+    qfun <- approxfun(cdf, xgrid, rule = 2)
+    return(qfun(U))
+  }
+
+  stop("Tipo marginal desconocido.")
 }
-
-
 
 ```
 
@@ -604,7 +622,6 @@ tab
 ```
 
 ```{r}
-
 tab_prov_sec <- expand.grid(
   prov = colnames(df_evento_provincias)[-1],
   sec  = colnames(df_evento_sectores)[-1],
@@ -612,11 +629,15 @@ tab_prov_sec <- expand.grid(
 )
 
 res_prov_sec <- purrr::map2_df(
-  tab_prov_sec$prov,
-  tab_prov_sec$sec,
-  ~ simular_par(df_evento_provincias, df_evento_sectores,
-                .x, .y, "provincias", "sectores")
-)
+  tab_prov_sec$prov, 
+  tab_prov_sec$sec, 
+  ~ simular_par(
+      df_evento_provincias, 
+      df_evento_sectores, 
+      .x, 
+      .y, 
+      "provincias", 
+      "sectores") )
 
 tab_prov_cat <- expand.grid(
   prov = colnames(df_evento_provincias)[-1],
@@ -624,17 +645,44 @@ tab_prov_cat <- expand.grid(
   KEEP.OUT.ATTRS = FALSE
 )
 
+res_prov_cat <- purrr::map2_df(
+  tab_prov_cat$prov, 
+  tab_prov_cat$cat, 
+  ~ simular_par(
+      df_evento_provincias, 
+      df_evento_categorias, 
+      .x, 
+      .y, 
+      "provincias", 
+      "categorias") )
+
 tab_sec_cat <- expand.grid(
   sec = colnames(df_evento_sectores)[-1],
   cat = colnames(df_evento_categorias)[-1],
   KEEP.OUT.ATTRS = FALSE
 )
 
+res_sec_cat <- purrr::map2_df(
+  tab_sec_cat$sec, 
+  tab_sec_cat$cat, 
+  ~ simular_par(
+      df_evento_sectores, 
+      df_evento_categorias, 
+      .x, 
+      .y, 
+      "sectores", 
+      "categorias") )
 
+```
+```{r}
+write.csv(res_prov_sec, '../res/copulas/provincia_sector.csv')
+write.csv(res_prov_cat, '../res/copulas/provincia_categoria.csv')
+write.csv(res_sec_cat, '../res/copulas/sector_categoria.csv')
 ```
 
 
+
 ```{r}
-tab_prov_cat
+res_sec_cat
 ```
 
