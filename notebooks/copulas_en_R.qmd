@@ -57,7 +57,7 @@ construir_par_prov_sector <- function(df_prov, df_sec,
                                       provincia, sector,
                                       min_n = 20,
                                       quitar_todo_cero = TRUE) {
-  
+
   df_pair <- df_prov %>%
     select(evento_id, !!provincia := all_of(provincia)) %>%
     inner_join(
@@ -65,35 +65,35 @@ construir_par_prov_sector <- function(df_prov, df_sec,
         select(evento_id, !!sector := all_of(sector)),
       by = "evento_id"
     )
-  
+
   df_pair[[provincia]][is.na(df_pair[[provincia]])] <- 0
   df_pair[[sector]][is.na(df_pair[[sector]])] <- 0
-  
+
   if (quitar_todo_cero) {
     df_pair <- df_pair %>%
       filter((.data[[provincia]] != 0) | (.data[[sector]] != 0))
   }
-  
+
   if (nrow(df_pair) < min_n) {
-    message("[Info] Menos de ", min_n, 
+    message("[Info] Menos de ", min_n,
             " observaciones para ", provincia, " - ", sector,
             ". Se omite este par.")
     return(NULL)
   }
-  
+
   df_out <- df_pair %>%
     transmute(
       evento_id,
       X = .data[[provincia]],
       Y = .data[[sector]]
     )
-  
+
   df_out
 }
 
 
 construir_par <- function(df_A, df_B, varA, varB, min_n = 20, quitar_todo_cero = TRUE) {
-  
+
   varA <- as.character(varA)
   varB <- as.character(varB)
 
@@ -104,15 +104,15 @@ construir_par <- function(df_A, df_B, varA, varB, min_n = 20, quitar_todo_cero =
       df_B %>% select(evento_id, !!varB := all_of(varB)),
       by = "evento_id"
     )
-  
+
   df_pair[[varA]][is.na(df_pair[[varA]])] <- 0
   df_pair[[varB]][is.na(df_pair[[varB]])] <- 0
-  
+
   if (quitar_todo_cero) {
     df_pair <- df_pair %>%
       filter((.data[[varA]] != 0) | (.data[[varB]] != 0))
   }
-  
+
   if (nrow(df_pair) < min_n) {
     message("[Info] Observaciones insuficientes para ", varA, " - ", varB)
     return(NULL)
@@ -441,7 +441,7 @@ simular_provincia_sector <- function(
     selectioncrit = "AIC"
   )
 
-  message("Cópula seleccionada: ", 
+  message("Cópula seleccionada: ",
           BiCopName(fit$family),
           " (par = ", round(fit$par, 3), ")")
 
@@ -629,14 +629,14 @@ tab_prov_sec <- expand.grid(
 )
 
 res_prov_sec <- purrr::map2_df(
-  tab_prov_sec$prov, 
-  tab_prov_sec$sec, 
+  tab_prov_sec$prov,
+  tab_prov_sec$sec,
   ~ simular_par(
-      df_evento_provincias, 
-      df_evento_sectores, 
-      .x, 
-      .y, 
-      "provincias", 
+      df_evento_provincias,
+      df_evento_sectores,
+      .x,
+      .y,
+      "provincias",
       "sectores") )
 
 tab_prov_cat <- expand.grid(
@@ -646,14 +646,14 @@ tab_prov_cat <- expand.grid(
 )
 
 res_prov_cat <- purrr::map2_df(
-  tab_prov_cat$prov, 
-  tab_prov_cat$cat, 
+  tab_prov_cat$prov,
+  tab_prov_cat$cat,
   ~ simular_par(
-      df_evento_provincias, 
-      df_evento_categorias, 
-      .x, 
-      .y, 
-      "provincias", 
+      df_evento_provincias,
+      df_evento_categorias,
+      .x,
+      .y,
+      "provincias",
       "categorias") )
 
 tab_sec_cat <- expand.grid(
@@ -663,14 +663,14 @@ tab_sec_cat <- expand.grid(
 )
 
 res_sec_cat <- purrr::map2_df(
-  tab_sec_cat$sec, 
-  tab_sec_cat$cat, 
+  tab_sec_cat$sec,
+  tab_sec_cat$cat,
   ~ simular_par(
-      df_evento_sectores, 
-      df_evento_categorias, 
-      .x, 
-      .y, 
-      "sectores", 
+      df_evento_sectores,
+      df_evento_categorias,
+      .x,
+      .y,
+      "sectores",
       "categorias") )
 
 ```
@@ -700,14 +700,14 @@ riesgo_par <- function(nombre_x, nombre_y, carpeta_x, carpeta_y, fit,
 
   # cargar marginal Y
   m2 <- leer_marginal(file.path(base_path, carpeta_y, nombre_y))
-  
+
   # calcular riesgos
   calcular_var_cvar_par(fit, m1, m2, n = n)
 }
 
 
 calcular_var_cvar_par <- function(fit, m1, m2, n = 50000) {
-  
+
   # 1. Simular U desde la cópula
   U_sim <- BiCopSim(
     N      = n,
@@ -715,10 +715,10 @@ calcular_var_cvar_par <- function(fit, m1, m2, n = 50000) {
     par    = fit$par,
     par2   = fit$par2
   )
-  
+
   U1 <- U_sim[,1]
   U2 <- U_sim[,2]
-  
+
   # 2. Transformar a X,Y con las marginales
   X_sim <- transformar_desde_U(U1, m1)
   Y_sim <- transformar_desde_U(U2, m2)
@@ -777,7 +777,7 @@ res_prov_sec_riesgo <- res_prov_sec %>%
       )
     )
   ) %>%
-  unnest_wider(riesgo) %>% 
+  unnest_wider(riesgo) %>%
   ungroup()
 
 res_prov_cat_riesgo <- res_prov_cat %>%
@@ -793,7 +793,7 @@ res_prov_cat_riesgo <- res_prov_cat %>%
       )
     )
   ) %>%
-  unnest_wider(riesgo) %>% 
+  unnest_wider(riesgo) %>%
   ungroup()
 
 
@@ -810,7 +810,7 @@ res_sec_cat_riesgo <- res_sec_cat %>%
       )
     )
   ) %>%
-  unnest_wider(riesgo) %>% 
+  unnest_wider(riesgo) %>%
   ungroup()
 
 ```
@@ -997,7 +997,7 @@ plot_heatmap_tail <- function(df,
   library(tidyr)
   library(ggplot2)
   library(rlang)
-  
+
   cola <- 'inferior'
   col_sel <- 'lambda_L'
 
@@ -1048,7 +1048,7 @@ plot_heatmap_tail <- function(df,
 plot_heatmap_tail(res_prov_sec_tail,
                   titulo = "Dependencia de cola superior (λ_U)")
 
-plot_heatmap_tail(res_prov_cat_tail, 
+plot_heatmap_tail(res_prov_cat_tail,
                   titulo = "Dependencia de cola superior (λ_U)")
 
 plot_heatmap_tail(res_sec_cat_tail,
@@ -1202,4 +1202,3 @@ plot_heatmap_metric(res_sec_cat_riesgo, "CVaR_Cop_99",
                     "CVaR conjunto 99%")
 
 ```
-

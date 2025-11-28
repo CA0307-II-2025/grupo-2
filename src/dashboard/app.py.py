@@ -8,9 +8,10 @@ import plotly.graph_objects as go
 import json
 from scipy.stats import lognorm
 import os
-PRIMARY = "#005DA4"   
-SECONDARY = "#00A37A" 
-ACCENT = "#F39C12"    
+
+PRIMARY = "#005DA4"
+SECONDARY = "#00A37A"
+ACCENT = "#F39C12"
 BACKGROUND = "#f7f7f7"
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -27,7 +28,7 @@ fig_meta = []
 for fname in fig_files:
     name, ext = os.path.splitext(fname)
     parts = name.split("_")
-    tipo = parts[0]  
+    tipo = parts[0]
     detalle = "_".join(parts[1:]) if len(parts) > 1 else ""
     fig_meta.append({"file": fname, "tipo": tipo, "detalle": detalle})
 fig_df = pd.DataFrame(fig_meta)
@@ -57,10 +58,8 @@ fig_copula.update_layout(
     margin={"t": 50, "b": 0},
     coloraxis_colorbar_title="Correlación",
 )
-fig_copula.update_xaxes(
-    side="bottom"
-)  
-losses = np.sort(df["total"].values)  
+fig_copula.update_xaxes(side="bottom")
+losses = np.sort(df["total"].values)
 n = len(losses)
 exceed_prob = [(n - i) / n for i in range(n)]  # P(X > losses[i])
 fig_tail = go.Figure()
@@ -114,12 +113,25 @@ navbar = dbc.Navbar(
             html.A(
                 dbc.Row(
                     [
-                        dbc.Col(html.Img(src=app.get_asset_url("ucr_logo.png"), height="45px")),
+                        dbc.Col(
+                            html.Img(
+                                src=app.get_asset_url("ucr_logo.png"), height="45px"
+                            )
+                        ),
                         dbc.Col(
                             html.Div(
                                 [
-                                    html.Div("Universidad de Costa Rica", style={"fontWeight": "bold", "fontSize": "18px"}),
-                                    html.Div("Proyecto Estadística · Grupo 2", style={"fontSize": "13px"}),
+                                    html.Div(
+                                        "Universidad de Costa Rica",
+                                        style={
+                                            "fontWeight": "bold",
+                                            "fontSize": "18px",
+                                        },
+                                    ),
+                                    html.Div(
+                                        "Proyecto Estadística · Grupo 2",
+                                        style={"fontSize": "13px"},
+                                    ),
                                 ]
                             ),
                             className="ms-2",
@@ -140,25 +152,21 @@ navbar = dbc.Navbar(
 )
 app.layout = html.Div(
     [
-        navbar, 
-
+        navbar,
         dbc.Container(
             [
                 html.H1(
                     "Dependencia espacial y severidad extrema de pérdidas económicas por desastres naturales en Costa Rica",
-                    className="mt-4 mb-2"
+                    className="mt-4 mb-2",
                 ),
-
                 html.P(
                     "Este tablero interactivo presenta información histórica sobre las pérdidas económicas causadas por desastres naturales en Costa Rica.",
-                    className="text-muted"
+                    className="text-muted",
                 ),
-
                 dbc.Card(
                     dbc.CardBody(
                         [
                             html.H4("Filtros", className="card-title"),
-
                             html.Br(),
                             html.Label("Años:", className="fw-bold"),
                             dcc.RangeSlider(
@@ -169,18 +177,21 @@ app.layout = html.Div(
                                 marks={int(y): str(int(y)) for y in all_years},
                                 step=None,
                             ),
-
                             html.Br(),
-
                             html.Div(
                                 [
                                     # provincias
                                     html.Div(
                                         [
-                                            html.Label("Provincias:", className="fw-bold"),
+                                            html.Label(
+                                                "Provincias:", className="fw-bold"
+                                            ),
                                             dcc.Dropdown(
                                                 id="prov-filter",
-                                                options=[{"label": p, "value": p} for p in all_provinces],
+                                                options=[
+                                                    {"label": p, "value": p}
+                                                    for p in all_provinces
+                                                ],
                                                 value=all_provinces,
                                                 multi=True,
                                             ),
@@ -190,10 +201,15 @@ app.layout = html.Div(
                                     # categorias
                                     html.Div(
                                         [
-                                            html.Label("Categorías:", className="fw-bold"),
+                                            html.Label(
+                                                "Categorías:", className="fw-bold"
+                                            ),
                                             dcc.Dropdown(
                                                 id="cat-filter",
-                                                options=[{"label": c, "value": c} for c in all_categories],
+                                                options=[
+                                                    {"label": c, "value": c}
+                                                    for c in all_categories
+                                                ],
                                                 value=all_categories,
                                                 multi=True,
                                             ),
@@ -203,10 +219,16 @@ app.layout = html.Div(
                                     # sector
                                     html.Div(
                                         [
-                                            html.Label("Tipo de daño (sector):", className="fw-bold"),
+                                            html.Label(
+                                                "Tipo de daño (sector):",
+                                                className="fw-bold",
+                                            ),
                                             dcc.Dropdown(
                                                 id="sector-filter",
-                                                options=[{"label": s, "value": s} for s in all_sectors],
+                                                options=[
+                                                    {"label": s, "value": s}
+                                                    for s in all_sectors
+                                                ],
                                                 value=all_sectors,
                                                 multi=True,
                                             ),
@@ -224,203 +246,222 @@ app.layout = html.Div(
                     dbc.CardBody(
                         dcc.Tabs(
                             [
-                dcc.Tab(
-                    label="Mapa Interactivo",
-                    children=[
-                        html.H3("Pérdidas Totales por Provincia"),
-                        html.P(
-                            "Mapa de Costa Rica que muestra las pérdidas económicas totales acumuladas por provincia en el período seleccionado. El color más oscuro indica mayores pérdidas. Pase el cursor sobre una provincia para ver el monto exacto."
-                        ),
-                        html.Div(
-                            [
-                                dcc.Graph(
-                                    id="map-graph",
-                                    style={
-                                        "flex": "1 1 60%",
-                                        "minWidth": "300px",
-                                        "height": "450px",
-                                    },
-                                ),
-                                dcc.Graph(
-                                    id="freq-graph",
-                                    style={
-                                        "flex": "1 1 35%",
-                                        "minWidth": "300px",
-                                        "height": "450px",
-                                    },
-                                ),
-                            ],
-                            style={
-                                "display": "flex",
-                                "flexWrap": "wrap",
-                                "justifyContent": "space-around",
-                            },
-                        ),
-                    ],
-                ),
-                dcc.Tab(
-                    label="Pérdidas por Año",
-                    children=[
-                        html.H3("Tendencia de Pérdidas por Año"),
-                        html.P(
-                            "Gráfico de barras de las pérdidas totales por año. Permite observar la tendencia temporal y detectar años con desastres particularmente costosos. También se incluye una línea (eje derecho) que muestra el número de eventos ocurridos cada año para visualizar la frecuencia de desastres."
-                        ),
-                        dcc.Graph(id="year-graph"),
-                    ],
-                ),
-                dcc.Tab(
-                    label="Pérdidas por Tipología",
-                    children=[
-                        html.H3("Pérdidas por Categoría de Daño"),
-                        html.P(
-                            "Pérdidas económicas totales acumuladas según la categoría de daño o tipología (Infraestructura, Social, Hídrico, Productivo u Otros). Este gráfico permite identificar qué tipos de daños han generado las mayores pérdidas en el período seleccionado."
-                        ),
-                        dcc.Graph(id="cat-graph"),
-                    ],
-                ),
-            
-                dcc.Tab(
-                    label="Inferencia",
-                    children=[
-                        html.H3("Resultados Inferenciales"),
-                        html.P(
-                            [
-                                "Mediante pruebas estadísticas se encontró que existen diferencias significativas en las pérdidas según la categoría de daño. Por ejemplo, las pérdidas en la categoría ",
-                                html.B("Infraestructura"),
-                                " tienden a ser mayores en promedio que en otras categorías, mientras que ",
-                                html.B("Social"),
-                                " presenta montos medios más bajos. También se observaron diferencias en la variabilidad: ciertas categorías muestran una dispersión de pérdidas más amplia (eventos muy extremos ocasionales).",
-                            ]
-                        ),
-                        html.P(
-                            [
-                                "El análisis de valores extremos (EVT) reveló que la distribución de pérdidas tiene ",
-                                html.B("cola pesada"),
-                                ". Esto significa que, aunque la mayoría de eventos tienen pérdidas moderadas, existe una probabilidad no despreciable de pérdidas extremadamente altas. Un caso ilustrativo es un evento en ",
-                                html.B("2009 (Alajuela)"),
-                                " con pérdidas ~2×10^11 colones, muy por encima del resto. Ajustando una distribución Pareto a los datos de cola, se estimó un parámetro de forma (~0.6) mayor que 0, lo que confirma la presencia de colas gruesas en la distribución de pérdidas.",
-                            ]
-                        ),
-                        html.P(
-                            "La siguiente gráfica muestra la fracción de eventos que exceden cierto monto de pérdida, en escala log-log. La porción aproximadamente lineal en el extremo derecho sugiere un comportamiento tipo Pareto en la cola de la distribución de pérdidas (es decir, una disminución lenta de la probabilidad para eventos de gran magnitud)."
-                        ),
-                        dcc.Graph(figure=fig_tail, id="tail-graph"),
-                    ],
-                ),
-                dcc.Tab(
-                    label="Modelos (simulación Monte Carlo)",
-                    children=[
-                        html.H3("Simulación Monte Carlo de Pérdidas Anuales"),
-                        html.P(
-                            [
-                                "Utilizando los datos históricos agregados por año, se calibró un modelo probabilístico para las pérdidas anuales totales y se realizaron simulaciones Monte Carlo para estimar escenarios futuros de pérdidas. ",
-                                html.B("Nota:"),
-                                " Esta simulación se basa en el conjunto completo de datos históricos (no se filtra por la selección del usuario).",
-                            ]
-                        ),
-                        html.P(
-                            "El histograma a continuación muestra la distribución simulada de las pérdidas anuales. La línea roja marca el percentil 95, es decir, un nivel de pérdidas que se alcanzaría o superaría aproximadamente 1 vez cada 20 años según el modelo."
-                        ),
-                        dcc.Graph(figure=fig_mc, id="mc-graph"),
-                        html.P(
-                            [
-                                "La pérdida anual esperada es aproximadamente ",
-                                html.B(f"{mean_loss_b:.0f} mil millones"),
-                                " de colones. El percentil 95 (escenario de 1 en 20 años) es alrededor de ",
-                                html.B(f"{perc95_b:.0f} mil millones"),
-                                ", y el percentil 99 (1 en 100 años) cerca de ",
-                                html.B(f"{perc99_b:.0f} mil millones"),
-                                " de colones (≈",
-                                f"{perc99 / 1e12:.2f}",
-                                " billones).",
-                            ]
-                        ),
-                    ],
-                ),
-                dcc.Tab(
-                    label="Cópulas",
-                    children=[
-                        html.H3("Dependencia entre Provincias (Análisis con Cópulas)"),
-                        html.P(
-                            "Se evaluó cómo las pérdidas por desastres se distribuyen simultáneamente entre provincias, para entender si ocurren eventos que afectan a múltiples regiones a la vez. La matriz de correlación presentada a continuación resume la relación entre las pérdidas anuales de cada par de provincias."
-                        ),
-                        html.P(
-                            [
-                                "Los colores ",
-                                html.B("rojizos"),
-                                " indican correlaciones positivas altas (pérdidas elevadas que suelen ocurrir juntas en esas provincias), mientras que los ",
-                                html.B("azulados"),
-                                " indican correlaciones negativas o bajas (cuando una provincia sufre pérdidas altas, la otra tiende a no sufrirlas simultáneamente). Se destacan, por ejemplo, pares con alta dependencia: ",
-                                html.B("San José-Puntarenas"),
-                                " y ",
-                                html.B("Heredia-Limón"),
-                                ", lo que sugiere eventos climáticos que impactan a ambas provincias a la vez.",
-                            ]
-                        ),
-                        dcc.Graph(figure=fig_copula, id="copula-graph"),
-                        html.P(
-                            [
-                                "Para modelar este tipo de riesgo multivariante, se utilizaron ",
-                                html.B("cópulas"),
-                                " (e.g., cópula t-Student) que permiten simular escenarios de pérdidas conjuntas coherentes con las dependencias observadas, mejorando la estimación de riesgos extremos simultáneos en múltiples regiones.",
-                            ]
-                        ),
-                    ],
-                ),
-                dcc.Tab(
-                    label="Figuras EVT / Colas",
-                    children=[
-                        html.H3("Figuras pre-generadas (colas, umbrales, histogramas)"),
-                        html.P(
-                            "Seleccione el tipo de figura y el detalle (provincia, categoría o total) para visualizar las gráficas generadas en el análisis de colas y umbrales."
-                        ),
-                        html.Div(
-                            [
-                                html.Label("Tipo de figura:"),
-                                dcc.Dropdown(
-                                    id="fig-tipo",
-                                    options=[
-                                        {"label": t.capitalize(), "value": t}
-                                        for t in all_tipos_fig
+                                dcc.Tab(
+                                    label="Mapa Interactivo",
+                                    children=[
+                                        html.H3("Pérdidas Totales por Provincia"),
+                                        html.P(
+                                            "Mapa de Costa Rica que muestra las pérdidas económicas totales acumuladas por provincia en el período seleccionado. El color más oscuro indica mayores pérdidas. Pase el cursor sobre una provincia para ver el monto exacto."
+                                        ),
+                                        html.Div(
+                                            [
+                                                dcc.Graph(
+                                                    id="map-graph",
+                                                    style={
+                                                        "flex": "1 1 60%",
+                                                        "minWidth": "300px",
+                                                        "height": "450px",
+                                                    },
+                                                ),
+                                                dcc.Graph(
+                                                    id="freq-graph",
+                                                    style={
+                                                        "flex": "1 1 35%",
+                                                        "minWidth": "300px",
+                                                        "height": "450px",
+                                                    },
+                                                ),
+                                            ],
+                                            style={
+                                                "display": "flex",
+                                                "flexWrap": "wrap",
+                                                "justifyContent": "space-around",
+                                            },
+                                        ),
                                     ],
-                                    value=all_tipos_fig[0] if all_tipos_fig else None,
-                                    clearable=False,
-                                    placeholder="Seleccione tipo de figura",
                                 ),
-                                html.Br(),
-                                html.Label("Detalle (provincia / total / categoría):"),
-                                dcc.Dropdown(
-                                    id="fig-detalle",
-                                    options=[],  
-                                    value=None,
-                                    placeholder="Seleccione qué quiere ver ",
+                                dcc.Tab(
+                                    label="Pérdidas por Año",
+                                    children=[
+                                        html.H3("Tendencia de Pérdidas por Año"),
+                                        html.P(
+                                            "Gráfico de barras de las pérdidas totales por año. Permite observar la tendencia temporal y detectar años con desastres particularmente costosos. También se incluye una línea (eje derecho) que muestra el número de eventos ocurridos cada año para visualizar la frecuencia de desastres."
+                                        ),
+                                        dcc.Graph(id="year-graph"),
+                                    ],
                                 ),
-                            ],
-                            style={
-                                "background-color": "#F9F9F9",
-                                "border": "1px solid #CCC",
-                                "padding": "10px",
-                                "border-radius": "5px",
-                                "margin-bottom": "20px",
-                                "maxWidth": "600px",
-                            },
-                        ),
-                        html.Div(
-                            id="fig-container",
-                            style={"textAlign": "center", "marginTop": "20px"},
-                        ),
-                    ],
-                ),
-            ]
+                                dcc.Tab(
+                                    label="Pérdidas por Tipología",
+                                    children=[
+                                        html.H3("Pérdidas por Categoría de Daño"),
+                                        html.P(
+                                            "Pérdidas económicas totales acumuladas según la categoría de daño o tipología (Infraestructura, Social, Hídrico, Productivo u Otros). Este gráfico permite identificar qué tipos de daños han generado las mayores pérdidas en el período seleccionado."
+                                        ),
+                                        dcc.Graph(id="cat-graph"),
+                                    ],
+                                ),
+                                dcc.Tab(
+                                    label="Inferencia",
+                                    children=[
+                                        html.H3("Resultados Inferenciales"),
+                                        html.P(
+                                            [
+                                                "Mediante pruebas estadísticas se encontró que existen diferencias significativas en las pérdidas según la categoría de daño. Por ejemplo, las pérdidas en la categoría ",
+                                                html.B("Infraestructura"),
+                                                " tienden a ser mayores en promedio que en otras categorías, mientras que ",
+                                                html.B("Social"),
+                                                " presenta montos medios más bajos. También se observaron diferencias en la variabilidad: ciertas categorías muestran una dispersión de pérdidas más amplia (eventos muy extremos ocasionales).",
+                                            ]
+                                        ),
+                                        html.P(
+                                            [
+                                                "El análisis de valores extremos (EVT) reveló que la distribución de pérdidas tiene ",
+                                                html.B("cola pesada"),
+                                                ". Esto significa que, aunque la mayoría de eventos tienen pérdidas moderadas, existe una probabilidad no despreciable de pérdidas extremadamente altas. Un caso ilustrativo es un evento en ",
+                                                html.B("2009 (Alajuela)"),
+                                                " con pérdidas ~2×10^11 colones, muy por encima del resto. Ajustando una distribución Pareto a los datos de cola, se estimó un parámetro de forma (~0.6) mayor que 0, lo que confirma la presencia de colas gruesas en la distribución de pérdidas.",
+                                            ]
+                                        ),
+                                        html.P(
+                                            "La siguiente gráfica muestra la fracción de eventos que exceden cierto monto de pérdida, en escala log-log. La porción aproximadamente lineal en el extremo derecho sugiere un comportamiento tipo Pareto en la cola de la distribución de pérdidas (es decir, una disminución lenta de la probabilidad para eventos de gran magnitud)."
+                                        ),
+                                        dcc.Graph(figure=fig_tail, id="tail-graph"),
+                                    ],
+                                ),
+                                dcc.Tab(
+                                    label="Modelos (simulación Monte Carlo)",
+                                    children=[
+                                        html.H3(
+                                            "Simulación Monte Carlo de Pérdidas Anuales"
+                                        ),
+                                        html.P(
+                                            [
+                                                "Utilizando los datos históricos agregados por año, se calibró un modelo probabilístico para las pérdidas anuales totales y se realizaron simulaciones Monte Carlo para estimar escenarios futuros de pérdidas. ",
+                                                html.B("Nota:"),
+                                                " Esta simulación se basa en el conjunto completo de datos históricos (no se filtra por la selección del usuario).",
+                                            ]
+                                        ),
+                                        html.P(
+                                            "El histograma a continuación muestra la distribución simulada de las pérdidas anuales. La línea roja marca el percentil 95, es decir, un nivel de pérdidas que se alcanzaría o superaría aproximadamente 1 vez cada 20 años según el modelo."
+                                        ),
+                                        dcc.Graph(figure=fig_mc, id="mc-graph"),
+                                        html.P(
+                                            [
+                                                "La pérdida anual esperada es aproximadamente ",
+                                                html.B(
+                                                    f"{mean_loss_b:.0f} mil millones"
+                                                ),
+                                                " de colones. El percentil 95 (escenario de 1 en 20 años) es alrededor de ",
+                                                html.B(f"{perc95_b:.0f} mil millones"),
+                                                ", y el percentil 99 (1 en 100 años) cerca de ",
+                                                html.B(f"{perc99_b:.0f} mil millones"),
+                                                " de colones (≈",
+                                                f"{perc99 / 1e12:.2f}",
+                                                " billones).",
+                                            ]
+                                        ),
+                                    ],
+                                ),
+                                dcc.Tab(
+                                    label="Cópulas",
+                                    children=[
+                                        html.H3(
+                                            "Dependencia entre Provincias (Análisis con Cópulas)"
+                                        ),
+                                        html.P(
+                                            "Se evaluó cómo las pérdidas por desastres se distribuyen simultáneamente entre provincias, para entender si ocurren eventos que afectan a múltiples regiones a la vez. La matriz de correlación presentada a continuación resume la relación entre las pérdidas anuales de cada par de provincias."
+                                        ),
+                                        html.P(
+                                            [
+                                                "Los colores ",
+                                                html.B("rojizos"),
+                                                " indican correlaciones positivas altas (pérdidas elevadas que suelen ocurrir juntas en esas provincias), mientras que los ",
+                                                html.B("azulados"),
+                                                " indican correlaciones negativas o bajas (cuando una provincia sufre pérdidas altas, la otra tiende a no sufrirlas simultáneamente). Se destacan, por ejemplo, pares con alta dependencia: ",
+                                                html.B("San José-Puntarenas"),
+                                                " y ",
+                                                html.B("Heredia-Limón"),
+                                                ", lo que sugiere eventos climáticos que impactan a ambas provincias a la vez.",
+                                            ]
+                                        ),
+                                        dcc.Graph(figure=fig_copula, id="copula-graph"),
+                                        html.P(
+                                            [
+                                                "Para modelar este tipo de riesgo multivariante, se utilizaron ",
+                                                html.B("cópulas"),
+                                                " (e.g., cópula t-Student) que permiten simular escenarios de pérdidas conjuntas coherentes con las dependencias observadas, mejorando la estimación de riesgos extremos simultáneos en múltiples regiones.",
+                                            ]
+                                        ),
+                                    ],
+                                ),
+                                dcc.Tab(
+                                    label="Figuras EVT / Colas",
+                                    children=[
+                                        html.H3(
+                                            "Figuras pre-generadas (colas, umbrales, histogramas)"
+                                        ),
+                                        html.P(
+                                            "Seleccione el tipo de figura y el detalle (provincia, categoría o total) para visualizar las gráficas generadas en el análisis de colas y umbrales."
+                                        ),
+                                        html.Div(
+                                            [
+                                                html.Label("Tipo de figura:"),
+                                                dcc.Dropdown(
+                                                    id="fig-tipo",
+                                                    options=[
+                                                        {
+                                                            "label": t.capitalize(),
+                                                            "value": t,
+                                                        }
+                                                        for t in all_tipos_fig
+                                                    ],
+                                                    value=all_tipos_fig[0]
+                                                    if all_tipos_fig
+                                                    else None,
+                                                    clearable=False,
+                                                    placeholder="Seleccione tipo de figura",
+                                                ),
+                                                html.Br(),
+                                                html.Label(
+                                                    "Detalle (provincia / total / categoría):"
+                                                ),
+                                                dcc.Dropdown(
+                                                    id="fig-detalle",
+                                                    options=[],
+                                                    value=None,
+                                                    placeholder="Seleccione qué quiere ver ",
+                                                ),
+                                            ],
+                                            style={
+                                                "background-color": "#F9F9F9",
+                                                "border": "1px solid #CCC",
+                                                "padding": "10px",
+                                                "border-radius": "5px",
+                                                "margin-bottom": "20px",
+                                                "maxWidth": "600px",
+                                            },
+                                        ),
+                                        html.Div(
+                                            id="fig-container",
+                                            style={
+                                                "textAlign": "center",
+                                                "marginTop": "20px",
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ]
                         )
                     ),
-                    className="shadow-sm"
+                    className="shadow-sm",
                 ),
-
                 html.Hr(),
                 html.Div(
                     [
-                        html.Div("Desarrollado por Grupo 2 – Estadística UCR", className="fw-bold"),
+                        html.Div(
+                            "Desarrollado por Grupo 2 – Estadística UCR",
+                            className="fw-bold",
+                        ),
                         html.Div(
                             "Autores: Jose Andrey Prado Rojas, Joseph Romero , Dixon Montero , Holmar Rivera.",
                             className="text-muted",
@@ -441,16 +482,13 @@ app.layout = html.Div(
 )
 
 
-
-
 color_map = {
     "INFRAESTRUCTURA": PRIMARY,
     "PRODUCTIVO": SECONDARY,
-    "SOCIAL": "#2980B9",  
-    "HÍDRICO": "#16A085", 
-    "OTROS": "#7F8C8D",    
+    "SOCIAL": "#2980B9",
+    "HÍDRICO": "#16A085",
+    "OTROS": "#7F8C8D",
 }
-
 
 
 @app.callback(
@@ -464,18 +502,17 @@ color_map = {
         dash.dependencies.Input("year-range", "value"),
         dash.dependencies.Input("prov-filter", "value"),
         dash.dependencies.Input("cat-filter", "value"),
-        dash.dependencies.Input("sector-filter", "value"), 
+        dash.dependencies.Input("sector-filter", "value"),
     ],
 )
-def update_graphs(year_range, selected_provs, selected_cats, selected_sectors): 
-
+def update_graphs(year_range, selected_provs, selected_cats, selected_sectors):
     start_year, end_year = year_range
     dff = df[
         (df["ano"] >= start_year)
         & (df["ano"] <= end_year)
         & (df["provincia"].isin(selected_provs))
         & (df["categoria"].isin(selected_cats))
-        & (df["sector"].isin(selected_sectors))   
+        & (df["sector"].isin(selected_sectors))
     ]
 
     if dff.empty:
@@ -566,10 +603,13 @@ def update_graphs(year_range, selected_provs, selected_cats, selected_sectors):
     )
     fig_freq.update_layout(margin={"l": 100, "r": 30, "b": 30, "t": 30})
     return fig_map, fig_year, fig_cat, fig_freq
-from dash.dependencies import Input, Output, State
+
+
+from dash.dependencies import Input, Output
+
+
 @app.callback(
-    [Output("fig-detalle", "options"),
-     Output("fig-detalle", "value")],
+    [Output("fig-detalle", "options"), Output("fig-detalle", "value")],
     Input("fig-tipo", "value"),
 )
 def actualizar_detalle_figuras(tipo_seleccionado):
@@ -586,10 +626,10 @@ def actualizar_detalle_figuras(tipo_seleccionado):
     valor_defecto = opciones[0]["value"] if opciones else None
     return opciones, valor_defecto
 
+
 @app.callback(
     Output("fig-container", "children"),
-    [Input("fig-detalle", "value"),
-     Input("fig-tipo", "value")],
+    [Input("fig-detalle", "value"), Input("fig-tipo", "value")],
 )
 def mostrar_figura_archivo(archivo_seleccionado, tipo_seleccionado):
     if not archivo_seleccionado:
@@ -617,5 +657,7 @@ def mostrar_figura_archivo(archivo_seleccionado, tipo_seleccionado):
             ),
         ]
     )
+
+
 if __name__ == "__main__":
     app.run(debug=False)

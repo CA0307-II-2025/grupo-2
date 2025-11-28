@@ -43,61 +43,61 @@
     {\large \today\par}
 \end{titlepage}
 \section*{Resumen}
-El análisis de fenómenos naturales extremos requiere metodologías que permitan capturar 
-tanto la variabilidad individual de las variables involucradas como la compleja 
-estructura de dependencia que las vincula. En este estudio se desarrolla un enfoque 
-probabilístico multivariado orientado a la evaluación del riesgo asociado a desastres 
-naturales en Costa Rica, considerando eventos como inundaciones, deslizamientos y sismos. 
-El proceso inicia con un análisis exploratorio exhaustivo que permite caracterizar la 
-estructura de los datos, identificar patrones relevantes y garantizar su calidad antes 
+El análisis de fenómenos naturales extremos requiere metodologías que permitan capturar
+tanto la variabilidad individual de las variables involucradas como la compleja
+estructura de dependencia que las vincula. En este estudio se desarrolla un enfoque
+probabilístico multivariado orientado a la evaluación del riesgo asociado a desastres
+naturales en Costa Rica, considerando eventos como inundaciones, deslizamientos y sismos.
+El proceso inicia con un análisis exploratorio exhaustivo que permite caracterizar la
+estructura de los datos, identificar patrones relevantes y garantizar su calidad antes
 del modelado estadístico.
 
-Posteriormente, se implementa el método de simulación Monte Carlo para generar un 
-conjunto amplio de escenarios estocásticos que representan la variabilidad potencial de 
-los fenómenos estudiados. Esto posibilita la estimación de distribuciones empíricas y 
-métricas de riesgo como el Valor en Riesgo (VaR) a distintos niveles de confianza. Para 
-capturar adecuadamente la dependencia entre variables, se ajustan diferentes modelos de 
-cópulas, lo que permite representar relaciones no lineales y comportamientos de cola 
+Posteriormente, se implementa el método de simulación Monte Carlo para generar un
+conjunto amplio de escenarios estocásticos que representan la variabilidad potencial de
+los fenómenos estudiados. Esto posibilita la estimación de distribuciones empíricas y
+métricas de riesgo como el Valor en Riesgo (VaR) a distintos niveles de confianza. Para
+capturar adecuadamente la dependencia entre variables, se ajustan diferentes modelos de
+cópulas, lo que permite representar relaciones no lineales y comportamientos de cola
 que los métodos tradicionales no logran reflejar.
 
-Adicionalmente, se emplean transformaciones empíricas y técnicas vinculadas a la teoría 
-de valores extremos, lo que facilita el análisis diferenciado por provincia y categoría, 
-así como la construcción de métricas de riesgo específicas para cada región. Finalmente, 
-se elaboran visualizaciones y estructuras comparativas que permiten identificar patrones 
+Adicionalmente, se emplean transformaciones empíricas y técnicas vinculadas a la teoría
+de valores extremos, lo que facilita el análisis diferenciado por provincia y categoría,
+así como la construcción de métricas de riesgo específicas para cada región. Finalmente,
+se elaboran visualizaciones y estructuras comparativas que permiten identificar patrones
 espaciales y sectoriales de riesgo.
 
-En conjunto, la metodología desarrollada proporciona una evaluación integral y precisa 
-de los fenómenos extremos, ofreciendo una base sólida para la toma de decisiones en 
+En conjunto, la metodología desarrollada proporciona una evaluación integral y precisa
+de los fenómenos extremos, ofreciendo una base sólida para la toma de decisiones en
 gestión del riesgo y planificación ante eventos catastróficos.
 
 \newpage
 \section*{Introducción}
 
-El estudio de fenómenos extremos asociados a catástrofes naturales, tales como 
-inundaciones, deslizamientos o sismos, ha experimentado un notable desarrollo gracias 
-a la incorporación de enfoques probabilísticos multivariados capaces de representar con 
-mayor precisión la compleja interacción entre variables físicas clave. Dichos enfoques 
-permiten abordar la incertidumbre inherente a los eventos extremos mediante técnicas que 
-separan el análisis marginal del estudio de la dependencia, ofreciendo así una estructura 
-metodológica más flexible y coherente. En este marco, las cópulas se han consolidado 
-como una herramienta fundamental, pues permiten construir distribuciones conjuntas a 
-partir de distribuciones marginales arbitrarias, capturando dependencias no lineales y 
-comportamientos en cola que los métodos tradicionales basados exclusivamente en 
+El estudio de fenómenos extremos asociados a catástrofes naturales, tales como
+inundaciones, deslizamientos o sismos, ha experimentado un notable desarrollo gracias
+a la incorporación de enfoques probabilísticos multivariados capaces de representar con
+mayor precisión la compleja interacción entre variables físicas clave. Dichos enfoques
+permiten abordar la incertidumbre inherente a los eventos extremos mediante técnicas que
+separan el análisis marginal del estudio de la dependencia, ofreciendo así una estructura
+metodológica más flexible y coherente. En este marco, las cópulas se han consolidado
+como una herramienta fundamental, pues permiten construir distribuciones conjuntas a
+partir de distribuciones marginales arbitrarias, capturando dependencias no lineales y
+comportamientos en cola que los métodos tradicionales basados exclusivamente en
 correlación no logran reflejar adecuadamente \cite{DelfinerGutierrez2025,PerezGarcia2004}.
 
-Paralelamente, la teoría de valores extremos (Extreme Value Theory, EVT) constituye un 
-pilar esencial para el modelado de eventos raros y de alto impacto, proporcionando 
-herramientas rigurosas para caracterizar el comportamiento de las colas de distribución 
+Paralelamente, la teoría de valores extremos (Extreme Value Theory, EVT) constituye un
+pilar esencial para el modelado de eventos raros y de alto impacto, proporcionando
+herramientas rigurosas para caracterizar el comportamiento de las colas de distribución
 y estimar la probabilidad de ocurrencia de fenómenos extraordinarios \cite{Siddiqui2022}. La combinación de EVT con modelos de dependencia basados en cópulas amplía significativamente la capacidad analítica, al permitir la evaluación conjunta de múltiples variables extremas, como la intensidad y duración de precipitaciones, o la simultaneidad de aceleraciones sísmicas en diversas direcciones estructurales.
 
-Diversos estudios han demostrado la utilidad de esta integración metodológica en áreas 
-como la hidrología y la ingeniería sísmica. Por ejemplo, en el análisis de riesgos de 
-inundación, el empleo de vine copulas ha permitido modelar de manera precisa la 
-dependencia entre la duración, el volumen y el pico de una crecida, obteniéndose 
-probabilidades conjuntas más realistas y mejor fundamentadas que las que se derivarían 
-de un análisis univariado \cite{DelfinerGutierrez2025}. De igual forma, en ingeniería 
-estructural, la evaluación probabilística de la demanda sísmica basada en cópulas ha 
-demostrado reducir la sobreestimación del riesgo que típicamente surge cuando se ignora 
+Diversos estudios han demostrado la utilidad de esta integración metodológica en áreas
+como la hidrología y la ingeniería sísmica. Por ejemplo, en el análisis de riesgos de
+inundación, el empleo de vine copulas ha permitido modelar de manera precisa la
+dependencia entre la duración, el volumen y el pico de una crecida, obteniéndose
+probabilidades conjuntas más realistas y mejor fundamentadas que las que se derivarían
+de un análisis univariado \cite{DelfinerGutierrez2025}. De igual forma, en ingeniería
+estructural, la evaluación probabilística de la demanda sísmica basada en cópulas ha
+demostrado reducir la sobreestimación del riesgo que típicamente surge cuando se ignora
 la dependencia entre aceleraciones espectrales en distintos modos de vibración \cite{Siddiqui2022}.
 
 El ámbito asegurador también ha incorporado estas metodologías para mejorar la cuantificación de pérdidas asociadas a catástrofes naturales. La integración de cópulas con técnicas de simulación, particularmente con el método de Monte Carlo, ha permitido caracterizar escenarios de pérdidas extremas y estimar métricas de riesgo como el Valor en Riesgo (VaR), proporcionando una base más sólida para el establecimiento de primas y para la gestión estratégica del riesgo financiero \cite{PerezGarcia2004}.
@@ -132,44 +132,44 @@ En síntesis, el estudio de los desastres naturales y los gastos que estos impli
 
 \section*{Metodología}
 
-La metodología empleada en el presente estudio se basó en una combinación de técnicas 
-estadísticas avanzadas orientadas al análisis de datos, la simulación estocástica y el 
-modelado de dependencias. El proceso inició con un análisis exploratorio exhaustivo de 
-la base de datos con el propósito de comprender la estructura de la información, 
-identificar patrones relevantes y evaluar la presencia de valores atípicos, 
-inconsistencias o posibles problemas de calidad. Durante esta etapa se examinaron 
-distribuciones marginales, se generaron representaciones gráficas como histogramas, 
-diagramas de cajas y mapas de correlación, y se efectuaron las transformaciones y 
-limpiezas necesarias para garantizar la integridad de los datos utilizados en las fases 
+La metodología empleada en el presente estudio se basó en una combinación de técnicas
+estadísticas avanzadas orientadas al análisis de datos, la simulación estocástica y el
+modelado de dependencias. El proceso inició con un análisis exploratorio exhaustivo de
+la base de datos con el propósito de comprender la estructura de la información,
+identificar patrones relevantes y evaluar la presencia de valores atípicos,
+inconsistencias o posibles problemas de calidad. Durante esta etapa se examinaron
+distribuciones marginales, se generaron representaciones gráficas como histogramas,
+diagramas de cajas y mapas de correlación, y se efectuaron las transformaciones y
+limpiezas necesarias para garantizar la integridad de los datos utilizados en las fases
 posteriores.
 
-Posteriormente, se implementó el método de simulación Monte Carlo con el fin de modelar 
-la variabilidad inherente a las variables de interés y generar escenarios alternativos 
-que permitieran aproximar el comportamiento estocástico del sistema bajo estudio. Para 
-ello, se ajustaron distribuciones a los datos observados y se efectuó un número elevado 
-de simulaciones, lo que permitió obtener distribuciones empíricas de resultados, 
-cuantificar la incertidumbre y estimar medidas de riesgo como el Valor en Riesgo (VaR) 
+Posteriormente, se implementó el método de simulación Monte Carlo con el fin de modelar
+la variabilidad inherente a las variables de interés y generar escenarios alternativos
+que permitieran aproximar el comportamiento estocástico del sistema bajo estudio. Para
+ello, se ajustaron distribuciones a los datos observados y se efectuó un número elevado
+de simulaciones, lo que permitió obtener distribuciones empíricas de resultados,
+cuantificar la incertidumbre y estimar medidas de riesgo como el Valor en Riesgo (VaR)
 bajo diversos niveles de confianza.
 
-Con el objetivo de capturar la estructura de dependencia entre las variables, se 
-procedió al ajuste de diferentes modelos de cópulas, los cuales resultan especialmente 
-adecuados para representar relaciones no lineales y comportamientos de cola que no 
-pueden ser descritos mediante la correlación tradicional. Este procedimiento incluyó la 
-selección de familias de cópulas apropiadas, la estimación de sus parámetros mediante 
-métodos de máxima verosimilitud y el análisis de medidas de dependencia como el 
-coeficiente $\tau$ de Kendall. A partir de estas cópulas ajustadas se generaron simulaciones 
+Con el objetivo de capturar la estructura de dependencia entre las variables, se
+procedió al ajuste de diferentes modelos de cópulas, los cuales resultan especialmente
+adecuados para representar relaciones no lineales y comportamientos de cola que no
+pueden ser descritos mediante la correlación tradicional. Este procedimiento incluyó la
+selección de familias de cópulas apropiadas, la estimación de sus parámetros mediante
+métodos de máxima verosimilitud y el análisis de medidas de dependencia como el
+coeficiente $\tau$ de Kendall. A partir de estas cópulas ajustadas se generaron simulaciones
 conjuntas que preservan la estructura dependiente observada en los datos originales.
 
-Finalmente, se aplicaron técnicas de Transformación de Variables Empíricas (TVE) para 
-analizar de manera más precisa las dependencias entre categorías y provincias específicas, 
-complementando así el modelado previo. Esta etapa permitió transformar las variables a 
-una escala uniforme, calcular matrices de dependencia diferenciadas y estimar el Valor 
-en Riesgo tanto al 95 \% como al 99 \% para cada combinación de provincia y categoría. 
-Con base en estos resultados se elaboraron representaciones visuales como mapas de calor, 
-que facilitaron la identificación de patrones espaciales y sectoriales en los niveles de 
-riesgo. En conjunto, todas estas etapas proporcionaron un enfoque metodológico robusto y 
-coherente, permitiendo analizar de forma integral el comportamiento de las variables 
-bajo estudio y obtener conclusiones fundamentadas en técnicas cuantitativas de alta 
+Finalmente, se aplicaron técnicas de Transformación de Variables Empíricas (TVE) para
+analizar de manera más precisa las dependencias entre categorías y provincias específicas,
+complementando así el modelado previo. Esta etapa permitió transformar las variables a
+una escala uniforme, calcular matrices de dependencia diferenciadas y estimar el Valor
+en Riesgo tanto al 95 \% como al 99 \% para cada combinación de provincia y categoría.
+Con base en estos resultados se elaboraron representaciones visuales como mapas de calor,
+que facilitaron la identificación de patrones espaciales y sectoriales en los niveles de
+riesgo. En conjunto, todas estas etapas proporcionaron un enfoque metodológico robusto y
+coherente, permitiendo analizar de forma integral el comportamiento de las variables
+bajo estudio y obtener conclusiones fundamentadas en técnicas cuantitativas de alta
 precisión.
 
 \section*{Resultados}
