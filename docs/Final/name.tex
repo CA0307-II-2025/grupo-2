@@ -1,0 +1,85 @@
+\documentclass{uofa-eng-assignment}
+
+% Bibliography and citations
+\usepackage[style=mexican]{csquotes}
+\usepackage[style=apa, sortcites=true, backend=biber]{biblatex}
+\addbibresource{referencias.bib}
+
+% Language and encoding
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math packages
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+
+% Graphics and figures
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+% Colors
+\usepackage[dvipsnames]{xcolor}
+\definecolor{poster}{HTML}{2f606a}
+
+% Hyperlinks
+\usepackage{hyperref}
+\hypersetup{%
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=black,
+  urlcolor=blue,
+  linkbordercolor={0 0 1}
+}
+
+% Colored boxes for theorems
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+
+% Page formatting
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+\begin{document}
+\begin{center}
+	\Large{Dependencia espacial y severidad extrema de pérdidas por desastres naturales en Costa Rica}\par 
+	\vspace{0.15cm}
+ \large{CA0307 Estadística Actuarial II, Escuela de Matemática, Universidad de Costa Rica Sede Rodrigo Facio, San José, Costa Rica}
+ \\ \vspace{0.3cm}
+	\normalsize
+	\raggedleft
+	Jose Andrey Prado Rojas C36174$^{*1}$, Joseph Romero Chinchilla C37006$^{*2}$\par
+	Holmar Adrian Rivera Castellón B86564$^{*3}$, Dixon Montero Hernández B99109$^{*4}$\par 
+	\vspace{0.15cm}
+	\centering
+	\textit{$^*$Estudiante de Ciencias Actuariales, Escuela de Matemática, Universidad de Costa Rica. San José, Costa Rica. Noviembre, 2025}\par 
+	\vspace{0.15cm}
+	\raggedright
+	\textit{$^1$\href{joseandrey.prado@ucr.ac.cr}{joseandrey.prado@ucr.ac.cr}}, \textit{$2$\href{joseph.romero@ucr.ac.cr}{joseph.romero@ucr.ac.cr}}, \textit{$^3$\href{holmar.rivera@ucr.ac.cr}{holmar.rivera@ucr.ac.cr}}, \textit{$^4$\href{dixon.montero@ucr.ac.cr}{dixon.montero@ucr.ac.cr}}
+	\noindent
+	\rule{\linewidth}{0.5mm}
+\end{center}
+
+\section*{Resumen}
+
+El análisis de fenómenos naturales extremos como inundaciones, deslizamientos y sismos en Costa Rica exige metodologías estadísticas capaces de capturar tanto la variabilidad individual de los daños económicos reportados como la compleja estructura de dependencia entre ellos. Este estudio desarrolla un marco probabilístico multivariado orientado a la evaluación del riesgo financiero asociado a estos eventos, utilizando datos históricos de pérdidas económicas provistos por la Comisión Nacional de Emergencias para el periodo 2005-2023. Se realiza un exhaustivo análisis exploratorio para caracterizar la distribución de los daños, detectar patrones espaciales y sectoriales, y garantizar la calidad de la información. Posteriormente, mediante técnicas bayesianas y el algoritmo de Metropolis-Hastings, se ajustan distribuciones marginales y cópulas para modelar dependencias, permitiendo la estimación de métricas de riesgo como el Valor en Riesgo (VaR) y Valor en Riesgo Condicional (CVaR) en escenarios conjuntos.
+\par
+\textbf{Palabras Clave:} desastres naturales, teoría de valores extremos, cópulas, simulación de Monte Carlo, Valor en Riesgo, Costa Rica.
+
+\section*{Introducción}
+
+En el mundo, los desastres naturales constituyen una de las principales fuentes de riesgo físico y económico, tanto por los daños directos a la infraestructura como por sus efectos sobre el desarrollo y las finanzas públicas. En el caso de Costa Rica, su localización en una zona de alta actividad sísmica y volcánica, aunada a la exposición recurrente a fenómenos hidrometeorológicos como inundaciones y deslizamientos, implica que los eventos extremos representen una carga relevante para el presupuesto gubernamental, al punto de requerir reasignaciones de recursos y la creación de mecanismos específicos de financiamiento para la prevención y la atención de emergencias \parencite{ministerio_hacienda_riesgos_desastres_2020}.
+\par
+Diversos estudios han documentado que estos eventos han provocado daños recurrentes en infraestructura, viviendas y actividades productivas, generando impactos fiscales y sociales significativos a lo largo de las últimas décadas \parencite{ministerio_hacienda_riesgos_desastres_2020}. En particular, \textcite{mideplan_impacto_fenomenos_2019} muestra que, para el período 1988–2018 y considerando los daños asociados a sismos y fenómenos hidrometeorológicos, las provincias costeras de Limón y Puntarenas concentran una proporción importante del costo económico total, con montos acumulados del orden de miles de millones de colones.\footnote{Las cifras exactas pueden variar según la metodología de valoración empleada en cada estudio.} Cuando se analizan únicamente los eventos hidrometeorológicos, como lluvias intensas y sequías, Puntarenas, Limón, Guanacaste y San José figuran entre las provincias más afectadas \parencite{mideplan_impacto_fenomenos_2019}.
+\par 
+A nivel sectorial, la evidencia disponible indica que la infraestructura vial y el sector agropecuario se encuentran entre los más vulnerables, registrando pérdidas que superan los miles de millones de colones en el período de estudio, lo que refleja la dependencia del país de actividades fuertemente expuestas a las variaciones climáticas y a los eventos extremos \parencite{mideplan_impacto_fenomenos_2019}. Estos resultados subrayan la importancia de contar con herramientas cuantitativas que permitan evaluar de forma integrada la frecuencia y severidad de los desastres, así como su distribución espacial y sectorial, con el fin de apoyar la toma de decisiones en materia de inversión en infraestructura resiliente, seguros y políticas de reducción del riesgo \parencite{ministerio_hacienda_riesgos_desastres_2020}.​
+\par
+Frente a este panorama, Costa Rica ha impulsado marcos institucionales y de política pública orientados a la gestión prospectiva y correctiva del riesgo, entre ellos el Plan Nacional de Gestión del Riesgo 2021–2025 liderado por la Comisión Nacional de Prevención de Riesgos y Atención de Emergencias (CNE). Paralelamente, diversas entidades han desarrollado módulos y estudios específicos para cuantificar las pérdidas históricas ocasionadas por fenómenos naturales, con el fin de dimensionar su efecto sobre el desarrollo y orientar decisiones de inversión y aseguramiento. Estos esfuerzos resaltan la importancia de pasar de una lógica reactiva, centrada en la atención de emergencias, a un enfoque preventivo apoyado en evidencia estadística y modelos de riesgo robustos.
+
+\section*{Metodología}
+
+
+\section*{Resultados y Discusión}
+\section*{Bibliografía}
+
+
+
+\end{document}

@@ -1,0 +1,217 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{apa/apasortcite//global/global/global}
+    \entry{mideplan_impacto_fenomenos_2019}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=db0735f55a27a462bd5dbab61b3a613b}{%
+           family={MIDEPLAN},
+           familyi={M\bibinitperiod},
+           given={SEPSA},
+           giveni={S\bibinitperiod},
+           givenun=0,
+           suffix={MAG},
+           suffixi={M\bibinitperiod},
+           suffixun=0}}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \list{location}{1}{%
+        {San José, Costa Rica}%
+      }
+      \list{publisher}{1}{%
+        {Ministerio de Agricultura y Ganadería}%
+      }
+      \strng{namehash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{fullhash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{fullhashraw}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{bibnamehash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{authorbibnamehash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{authornamehash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{authorfullhash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{authorfullhashraw}{db0735f55a27a462bd5dbab61b3a613b}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-9977-73-164-3}
+      \field{month}{11}
+      \field{title}{Costa Rica: Impacto de los Fenómenos Naturales para el período 1988-2018, por sectores, provincias, cantones y distritos: Compendio}
+      \field{urlday}{28}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://documentos.mideplan.go.cr/share/s/MQOaFN8jQTGMfuNRKR_IOg
+      \endverb
+      \verb{url}
+      \verb https://documentos.mideplan.go.cr/share/s/MQOaFN8jQTGMfuNRKR_IOg
+      \endverb
+    \endentry
+    \entry{ministerio_hacienda_riesgos_desastres_2020}{report}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=cebe14c45771db4bb892353f5a668fc5}{%
+           family={{Ministerio de Hacienda}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Ministerio de Hacienda, Dirección de Crédito Público, Departamento de Política de Endeudamiento Público}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \strng{namehash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{fullhash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{fullhashraw}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{bibnamehash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{authorbibnamehash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{authornamehash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{authorfullhash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{authorfullhashraw}{cebe14c45771db4bb892353f5a668fc5}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{12}
+      \field{title}{Informe de Riesgos: Desastres Naturales}
+      \field{type}{Informe de riesgos}
+      \field{urlday}{28}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{year}{2020}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.hacienda.go.cr/docs/InformeRiesgosFiscalesDesastresNaturales.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.hacienda.go.cr/docs/InformeRiesgosFiscalesDesastresNaturales.pdf
+      \endverb
+    \endentry
+  \enddatalist
+  \datalist[entry]{apa/global//global/global/global}
+    \entry{mideplan_impacto_fenomenos_2019}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=db0735f55a27a462bd5dbab61b3a613b}{%
+           family={MIDEPLAN},
+           familyi={M\bibinitperiod},
+           given={SEPSA},
+           giveni={S\bibinitperiod},
+           givenun=0,
+           suffix={MAG},
+           suffixi={M\bibinitperiod},
+           suffixun=0}}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \list{location}{1}{%
+        {San José, Costa Rica}%
+      }
+      \list{publisher}{1}{%
+        {Ministerio de Agricultura y Ganadería}%
+      }
+      \strng{namehash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{fullhash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{fullhashraw}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{bibnamehash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{authorbibnamehash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{authornamehash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{authorfullhash}{db0735f55a27a462bd5dbab61b3a613b}
+      \strng{authorfullhashraw}{db0735f55a27a462bd5dbab61b3a613b}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-9977-73-164-3}
+      \field{month}{11}
+      \field{title}{Costa Rica: Impacto de los Fenómenos Naturales para el período 1988-2018, por sectores, provincias, cantones y distritos: Compendio}
+      \field{urlday}{28}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://documentos.mideplan.go.cr/share/s/MQOaFN8jQTGMfuNRKR_IOg
+      \endverb
+      \verb{url}
+      \verb https://documentos.mideplan.go.cr/share/s/MQOaFN8jQTGMfuNRKR_IOg
+      \endverb
+    \endentry
+    \entry{ministerio_hacienda_riesgos_desastres_2020}{report}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=cebe14c45771db4bb892353f5a668fc5}{%
+           family={{Ministerio de Hacienda}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Ministerio de Hacienda, Dirección de Crédito Público, Departamento de Política de Endeudamiento Público}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \strng{namehash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{fullhash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{fullhashraw}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{bibnamehash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{authorbibnamehash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{authornamehash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{authorfullhash}{cebe14c45771db4bb892353f5a668fc5}
+      \strng{authorfullhashraw}{cebe14c45771db4bb892353f5a668fc5}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{12}
+      \field{title}{Informe de Riesgos: Desastres Naturales}
+      \field{type}{Informe de riesgos}
+      \field{urlday}{28}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{year}{2020}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.hacienda.go.cr/docs/InformeRiesgosFiscalesDesastresNaturales.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.hacienda.go.cr/docs/InformeRiesgosFiscalesDesastresNaturales.pdf
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
