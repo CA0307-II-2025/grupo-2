@@ -3071,13 +3071,58 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">referencias.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1" intorder="1">ministerio_hacienda_riesgos_desastres_2020</bcf:citekey>
-    <bcf:citekey order="2" intorder="1">ministerio_hacienda_riesgos_desastres_2020</bcf:citekey>
-    <bcf:citekey order="3" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
-    <bcf:citekey order="4" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
-    <bcf:citekey order="5" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
-    <bcf:citekey order="6" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="1" intorder="1">cne_datosabiertos</bcf:citekey>
+    <bcf:citekey order="2" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="2" intorder="2">ministerio_hacienda_riesgos_desastres_2020</bcf:citekey>
+    <bcf:citekey order="3" intorder="1">embrechts_modelling_1997</bcf:citekey>
+    <bcf:citekey order="3" intorder="2">mcneil_quantitative_2015</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">robert_monte_2004</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">nelsen_introduction_2006</bcf:citekey>
+    <bcf:citekey order="5" intorder="2">joe_dependence_2014</bcf:citekey>
+    <bcf:citekey order="5" intorder="3">patton_copula-based_2012</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">ministerio_hacienda_riesgos_desastres_2020</bcf:citekey>
     <bcf:citekey order="7" intorder="1">ministerio_hacienda_riesgos_desastres_2020</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">ministerio_hacienda_riesgos_desastres_2020</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">cne_datosabiertos</bcf:citekey>
+    <bcf:citekey order="14" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="15" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="16" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="17" intorder="1">mideplan_impacto_fenomenos_2019</bcf:citekey>
+    <bcf:citekey order="17" intorder="2">ministerio_hacienda_riesgos_desastres_2020</bcf:citekey>
+    <bcf:citekey order="18" intorder="1">mcneil_quantitative_2015</bcf:citekey>
+    <bcf:citekey order="19" intorder="1">silverman_density_1986</bcf:citekey>
+    <bcf:citekey order="20" intorder="1">silverman_density_1986</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">klugman_loss_2012</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">klugman_loss_2012</bcf:citekey>
+    <bcf:citekey order="23" intorder="1">embrechts_modelling_1997</bcf:citekey>
+    <bcf:citekey order="23" intorder="2">mcneil_quantitative_2015</bcf:citekey>
+    <bcf:citekey order="24" intorder="1">embrechts_modelling_1997</bcf:citekey>
+    <bcf:citekey order="25" intorder="1">robert_monte_2004</bcf:citekey>
+    <bcf:citekey order="26" intorder="1">burnham_model_2002</bcf:citekey>
+    <bcf:citekey order="27" intorder="1">nelsen_introduction_2006</bcf:citekey>
+    <bcf:citekey order="27" intorder="2">joe_dependence_2014</bcf:citekey>
+    <bcf:citekey order="28" intorder="1">nelsen_introduction_2006</bcf:citekey>
+    <bcf:citekey order="28" intorder="2">joe_dependence_2014</bcf:citekey>
+    <bcf:citekey order="29" intorder="1">patton_copula-based_2012</bcf:citekey>
+    <bcf:citekey order="30" intorder="1">mcneil_quantitative_2015</bcf:citekey>
+    <bcf:citekey order="31" intorder="1">embrechts_modelling_1997</bcf:citekey>
+    <bcf:citekey order="31" intorder="2">mcneil_quantitative_2015</bcf:citekey>
+    <bcf:citekey order="32" intorder="1">gomez_teoria_2009</bcf:citekey>
+    <bcf:citekey order="32" intorder="2">mora_construccion_2013</bcf:citekey>
+    <bcf:citekey order="33" intorder="1">nelsen_introduction_2006</bcf:citekey>
+    <bcf:citekey order="33" intorder="2">joe_dependence_2014</bcf:citekey>
+    <bcf:citekey order="34" intorder="1">mcneil_quantitative_2015</bcf:citekey>
+    <bcf:citekey order="34" intorder="2">6</bcf:citekey>
+    <bcf:citekey order="34" intorder="3">5</bcf:citekey>
+    <bcf:citekey order="35" intorder="1">nelsen_introduction_2006</bcf:citekey>
+    <bcf:citekey order="35" intorder="2">joe_dependence_2014</bcf:citekey>
+    <bcf:citekey order="36" intorder="1">mcneil_quantitative_2015</bcf:citekey>
+    <bcf:citekey order="36" intorder="2">gomez_teoria_2009</bcf:citekey>
+    <bcf:citekey order="36" intorder="3">mora_construccion_2013</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="apa">
@@ -3128,6 +3173,16 @@
                 type="entry"
                 sortingtemplatename="apa"
                 sortingnamekeytemplatename="apasortcite"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global"
+                namehashtemplatename="global">
+  </bcf:datalist>
+  <bcf:datalist section="0"
+                name="apa/global//global/global/global"
+                type="entry"
+                sortingtemplatename="apa"
+                sortingnamekeytemplatename="global"
                 labelprefix=""
                 uniquenametemplatename="global"
                 labelalphanametemplatename="global"
