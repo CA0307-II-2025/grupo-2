@@ -3,18 +3,19 @@
 # Autor: Dixon Montero Hernández
 # Requisitos: pandas, numpy, scipy, matplotlib, statsmodels, copulas
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy import stats
-from copulas.bivariate import (
-    GaussianCopula,
-    StudentTCopula,
-    ClaytonCopula,
-    GumbelCopula,
-    FrankCopula,
-)
 import warnings
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from copulas.bivariate import (
+    ClaytonCopula,
+    FrankCopula,
+    GaussianCopula,
+    GumbelCopula,
+    StudentTCopula,
+)
+from scipy import stats
 
 warnings.filterwarnings("ignore")
 
