@@ -37,7 +37,7 @@ load_tail <- function(name, carpeta) {
 F_hybrid <- function(x, body_sample, tail) {
   u <- tail$u_opt[1]     # umbral
   p_u <- tail$p_u[1] # prob. de excedencia
-  
+
   if (x <= u) {
     mean(body_sample <= x) * (1 - p_u)
   } else {
@@ -56,7 +56,7 @@ F_hybrid <- function(x, body_sample, tail) {
 Q_hybrid <- function(p, body_sample, tail) {
   u  <- tail$u_opt[1]
   p_u <- tail$p_u[1]
-  
+
   if (p <= (1 - p_u)) {
     quantile(body_sample, probs = p / (1 - p_u))
   } else {
@@ -74,12 +74,12 @@ Q_hybrid <- function(p, body_sample, tail) {
 U_variable <- function(x, name, carpeta) {
   body <- load_body(name, carpeta)
   tail <- load_tail(name, carpeta)
-  
+
   u <- tail$u_opt[1]
-  
+
   body_sample <- x[x <= u]
   U <- map_dbl(x, ~ F_hybrid(.x, body_sample, tail))
-  
+
   list(U = U, body_sample = body_sample, tail = tail)
 }
 
@@ -89,19 +89,19 @@ U_variable <- function(x, name, carpeta) {
 
 fit_copulas <- function(U1, U2) {
   datos <- cbind(U1, U2)
-  
+
   # Copula t
   cop_t <- tCopula(dim = 2, dispstr = "un")
   fit_t <- fitCopula(cop_t, datos, method="ml")
   aic_t <- AIC(fit_t)
-  
+
   # Copula Gumbel
   cop_g <- gumbelCopula(dim = 2)
   fit_g <- fitCopula(cop_g, datos, method="ml")
   aic_g <- AIC(fit_g)
-  
+
   winner <- ifelse(aic_t < aic_g, "t", "gumbel")
-  
+
   list(winner = winner, fit_t = fit_t, fit_g = fit_g)
 }
 
@@ -145,26 +145,26 @@ dependencia_y_riesgo <- function(df, col1, v1, carpeta1,
                                  col2, v2, carpeta2,
                                  n_sims = 200000,
                                  alphas = c(0.95, 0.99)) {
-  
+
   df_pair <- df %>% filter(!!sym(col1) == v1, !!sym(col2) == v2)
   if (nrow(df_pair) < 50) return(NULL)
-  
+
   # Marginal 1
   m1 <- U_variable(df_pair$total, v1, carpeta1)
-  
+
   # Marginal 2
   m2 <- U_variable(df_pair$total, v2, carpeta2)
-  
+
   # Ajustar cópulas
   fit <- fit_copulas(m1$U, m2$U)
-  
+
   # Simular cópula
   U_sim <- simulate_copula(fit, n_sims)
-  
+
   # Transformar a pérdidas
   S <- simulate_joint_losses(U_sim, m1$body_sample, m1$tail,
                              m2$body_sample, m2$tail)
-  
+
   # VaR y CVaR
   res <- tibble(
     col1 = col1, valor1 = v1,
@@ -175,7 +175,7 @@ dependencia_y_riesgo <- function(df, col1, v1, carpeta1,
     VaR_99 = var_cvar(S, alphas[2])$VaR,
     CVaR_99 = var_cvar(S, alphas[2])$CVaR
   )
-  
+
   res
 }
 
@@ -187,9 +187,9 @@ todas_dependencias <- function(df, provincias, categorias, sectores,
                                carpeta_prov, carpeta_cat, carpeta_sec,
                                n_sims = 200000,
                                alphas = c(0.95, 0.99)) {
-  
+
   resultados <- list()
-  
+
   # provincia-sector
   for (p in provincias) {
     for (s in sectores) {
@@ -202,7 +202,7 @@ todas_dependencias <- function(df, provincias, categorias, sectores,
       }
     }
   }
-  
+
   # provincia-categoria
   for (p in provincias) {
     for (c in categorias) {
@@ -215,7 +215,7 @@ todas_dependencias <- function(df, provincias, categorias, sectores,
       }
     }
   }
-  
+
   # categoria-sector
   for (c in categorias) {
     for (s in sectores) {
@@ -228,7 +228,7 @@ todas_dependencias <- function(df, provincias, categorias, sectores,
       }
     }
   }
-  
+
   bind_rows(resultados)
 }
 
@@ -363,47 +363,47 @@ get_params_from_tail <- function(tail_row) {
 F_hybrid <- function(x, body_sample, tail) {
   # tail: data.frame de UNA fila con columnas:
   # model_name, model_type, u_opt, p_u, ..._param1, ..._param2, ...
-  
+
   u   <- tail$u_opt[1]
   p_u <- tail$p_u[1]
   model <- tolower(tail$model_name[1])
-  
+
   # Parte "body" empírica
   if (x <= u) {
     # Escalamos por (1 - p_u) para que justo antes de u la masa sea 1 - p_u
     return(mean(body_sample <= x, na.rm = TRUE) * (1 - p_u))
   }
-  
+
   # Excedencia en la cola
   y <- x - u
   params <- get_params_from_tail(tail)
-  
+
   # Cola según modelo
   F_exc <- switch(
     model,
-    
+
     "gpd" = F_exc_gpd(y, sigma = params[1], xi = params[2]),
-    
+
     "burr" = F_exc_burr(y, c = params[1], k = params[2], lambda = params[3]),
-    
+
     "pareto" = F_exc_pareto(y, xm = params[1], alpha = params[2]),
-    
+
     "pareto_max" = {  # aquí la definimos en escala X directamente
       # params = (alpha, y0)
       # Ojo: aquí ignoramos y=x-u y usamos x en F_total_hibrida
       return((1 - p_u) + p_u * F_pareto_max(x, alpha = params[1], y0 = params[2]))
     },
-    
+
     "ln_tail" = F_exc_lognormal(y, mu = params[1], sigma = params[2]),
-    
+
     "lognormal" = F_exc_lognormal(y, mu = params[1], sigma = params[2]),
-    
+
     "gamma" = F_exc_gamma(y, shape = params[1], scale = params[2]),
-    
+
     "weibull" = F_exc_weibull(y, shape = params[1], scale = params[2]),
-    
+
     "fisk" = F_exc_fisk(y, shape = params[1], scale = params[2]),
-    
+
     # KDE (cualquier kernel "KDE-xxx")
     {
       if (startsWith(model, "kde")) {
@@ -415,7 +415,7 @@ F_hybrid <- function(x, body_sample, tail) {
       }
     }
   )
-  
+
   # Combinación con el peso de la cola
   (1 - p_u) + p_u * F_exc
 }
@@ -424,44 +424,44 @@ Q_hybrid <- function(p, body_sample, tail) {
   u   <- tail$u_opt[1]
   p_u <- tail$p_u[1]
   model <- tolower(tail$model_name[1])
-  
+
   p <- pmin(pmax(p, 1e-12), 1 - 1e-12)
-  
+
   # Parte del cuerpo empírico
   if (p <= (1 - p_u)) {
     # Cuantil reescalado dentro del cuerpo
     return(as.numeric(quantile(body_sample, probs = p / (1 - p_u), na.rm = TRUE)))
   }
-  
+
   # Parte excedente
   p_exc <- (p - (1 - p_u)) / p_u
   params <- get_params_from_tail(tail)
-  
+
   # Quantil de la cola según modelo
   q_exc <- switch(
     model,
-    
+
     "gpd" = Q_exc_gpd(p_exc, sigma = params[1], xi = params[2]),
-    
+
     "burr" = Q_exc_burr(p_exc, c = params[1], k = params[2], lambda = params[3]),
-    
+
     "pareto" = Q_exc_pareto(p_exc, xm = params[1], alpha = params[2]),
-    
+
     "pareto_max" = {
       # aquí trabajamos en escala X
       return(Q_pareto_max(p, alpha = params[1], y0 = params[2]))
     },
-    
+
     "ln_tail" = Q_exc_lognormal(p_exc, mu = params[1], sigma = params[2]),
-    
+
     "lognormal" = Q_exc_lognormal(p_exc, mu = params[1], sigma = params[2]),
-    
+
     "gamma" = Q_exc_gamma(p_exc, shape = params[1], scale = params[2]),
-    
+
     "weibull" = Q_exc_weibull(p_exc, shape = params[1], scale = params[2]),
-    
+
     "fisk" = Q_exc_fisk(p_exc, shape = params[1], scale = params[2]),
-    
+
     {
       if (startsWith(model, "kde")) {
         xs <- tail$x
@@ -472,7 +472,7 @@ Q_hybrid <- function(p, body_sample, tail) {
       }
     }
   )
-  
+
   # En casi todas las colas trabajamos en y=x-u, así que sumamos u
   u + q_exc
 }
@@ -522,4 +522,3 @@ tabla <- todas_dependencias(
 print(tabla)
 
 ```
-

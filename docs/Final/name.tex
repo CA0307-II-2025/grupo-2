@@ -40,17 +40,17 @@
 
 \begin{document}
 \begin{center}
-	\Large{Dependencia espacial y severidad extrema de pérdidas por desastres naturales en Costa Rica}\par 
+	\Large{Dependencia espacial y severidad extrema de pérdidas por desastres naturales en Costa Rica}\par
 	\vspace{0.15cm}
  \large{CA0307 Estadística Actuarial II, Escuela de Matemática, Universidad de Costa Rica Sede Rodrigo Facio, San José, Costa Rica}
  \\ \vspace{0.3cm}
 	\normalsize
 	\raggedleft
 	Jose Andrey Prado Rojas C36174$^{*1}$, Joseph Romero Chinchilla C37006$^{*2}$\par
-	Holmar Adrian Rivera Castellón B86564$^{*3}$, Dixon Montero Hernández B99109$^{*4}$\par 
+	Holmar Adrian Rivera Castellón B86564$^{*3}$, Dixon Montero Hernández B99109$^{*4}$\par
 	\vspace{0.15cm}
 	\centering
-	\textit{$^*$Estudiante de Ciencias Actuariales, Escuela de Matemática, Universidad de Costa Rica. San José, Costa Rica. Noviembre, 2025}\par 
+	\textit{$^*$Estudiante de Ciencias Actuariales, Escuela de Matemática, Universidad de Costa Rica. San José, Costa Rica. Noviembre, 2025}\par
 	\vspace{0.15cm}
 	\raggedright
 	\textit{$^1$\href{mailto:joseandrey.prado@ucr.ac.cr}{joseandrey.prado@ucr.ac.cr}}, \textit{$^2$\href{mailto:joseph.romero@ucr.ac.cr}{joseph.romero@ucr.ac.cr}}, \textit{$^3$\href{mailto:holmar.rivera@ucr.ac.cr}{holmar.rivera@ucr.ac.cr}}, \textit{$^4$\href{mailto:dixon.montero@ucr.ac.cr}{dixon.montero@ucr.ac.cr}}
@@ -123,7 +123,7 @@ La estructura de dependencia estimada se utilizó posteriormente para generar si
 
 En esta sección se presentan los resultados del ajuste de las distribuciones marginales de severidad para algunas combinaciones representativas de provincia, sector y categoría de desastre. Para cada caso se evaluaron múltiples modelos para el cuerpo (Weibull, gamma, lognormal, Fisk y estimadores kernel) y para la cola (GPD, Burr, Pareto, Pareto máximo, lognormal en cola y kernels), seleccionando el modelo final con base en la prueba de Kolmogorov--Smirnov y en criterios de información como el AIC y el BIC.
 
-A nivel de categorías, para los eventos hidrometeorológicos el cuerpo de la distribución fue mejor representado por un modelo Weibull, mientras que la cola se ajustó mediante una distribución de Burr. Este resultado es coherente con la presencia de una parte central relativamente flexible y una cola pesada, donde la probabilidad de observar pérdidas muy grandes decrece lentamente \parencite{embrechts_modelling_1997,mcneil_quantitative_2015}. 
+A nivel de categorías, para los eventos hidrometeorológicos el cuerpo de la distribución fue mejor representado por un modelo Weibull, mientras que la cola se ajustó mediante una distribución de Burr. Este resultado es coherente con la presencia de una parte central relativamente flexible y una cola pesada, donde la probabilidad de observar pérdidas muy grandes decrece lentamente \parencite{embrechts_modelling_1997,mcneil_quantitative_2015}.
 
 En el ámbito espacial, los resultados por provincia muestran cierta heterogeneidad en la forma del cuerpo, pero un patrón relativamente consistente en la cola. Para Limón, el cuerpo se describió mejor con un estimador kernel de tipo tophat y la cola con una distribución GPD, mientras que para Puntarenas y San José el cuerpo fue capturado por modelos Weibull y kernel Epanechnikov, respectivamente, y la cola nuevamente por distribuciones de tipo Burr o GPD. Estos hallazgos refuerzan la idea de que, aunque la parte central de la distribución puede variar entre provincias, la región extrema presenta sistemáticamente colas pesadas, consistentes con la naturaleza catastrófica de las pérdidas.
 
@@ -160,7 +160,7 @@ En cuanto a la forma del cuerpo de la distribución, se observa una mayor hetero
 
 En conjunto, los resultados de la tabla \ref{tab:marginal_resumen} muestran que, aunque el comportamiento central de las pérdidas puede variar entre regiones, sectores y categorías, la estructura extrema es notablemente estable y está dominada por colas pesadas. Esto tiene implicaciones directas para la cuantificación del riesgo de desastres naturales, dado que los modelos que no incorporen explícitamente la cola tenderían a subestimar la probabilidad y la severidad de eventos catastróficos. Por esta razón, el enfoque semiparamétrico cuerpo--cola y el uso de distribuciones como Burr y GPD se justifican plenamente dentro del marco de análisis adoptado en este estudio.\subsection*{Resultados del ajuste de cópulas y medidas de riesgo conjuntas}
 
-Para cada tipo de relación (provincia--sector, provincia--categoría y sector--categoría) se ajustaron cópulas bivariadas y, para la cópula seleccionada en cada pareja, se estimó la correlación de Kendall $\tau$ junto con las medidas de riesgo conjunto VaR y CVaR al 95\,\% y 99\,\%. 
+Para cada tipo de relación (provincia--sector, provincia--categoría y sector--categoría) se ajustaron cópulas bivariadas y, para la cópula seleccionada en cada pareja, se estimó la correlación de Kendall $\tau$ junto con las medidas de riesgo conjunto VaR y CVaR al 95\,\% y 99\,\%.
 En términos de dependencia, la mayoría de las parejas presentan coeficientes de Kendall $\tau$ positivos de magnitud moderada, lo que indica que las pérdidas tienden a ser simultáneamente altas en las dimensiones analizadas. Las combinaciones que involucran la categoría hidrometeorológica y los sectores infraestructura y social muestran, en general, los valores más elevados de $\tau$, evidenciando una estructura de riesgo fuertemente interrelacionada en estos componentes. Además, las familias de cópulas seleccionadas se distribuyen principalmente entre modelos con capacidad para capturar dependencia en cola (como Clayton o Gumbel) y modelos elípticos (como la cópula Gaussiana), lo cual sugiere que en varios casos la dependencia se intensifica cuando las pérdidas son extremas en ambas variables, un comportamiento coherente con la ocurrencia de eventos climatológicos severos que afectan simultáneamente a múltiples provincias y sectores \parencite{nelsen_introduction_2006,joe_dependence_2014}.
 
 A partir de las cópulas ajustadas se calcularon el Valor en Riesgo (VaR) y el Valor en Riesgo Condicional (CVaR) conjuntos al 95\,\% y 99\,\% para cada pareja. En las tablas completas, los escenarios que combinan la categoría hidrometeorológica con los sectores infraestructura y social, así como ciertas parejas provincia--sector (por ejemplo, provincias costeras altamente expuestas), presentan los niveles más elevados de VaR y CVaR. En muchos de estos casos se observa que el CVaR supera de manera significativa al VaR, especialmente al 99\,\%, lo que indica que, una vez superado el cuantil correspondiente, las pérdidas esperadas en la cola se incrementan de forma pronunciada. Este patrón es típico de distribuciones con colas pesadas y refuerza la importancia de considerar explícitamente tanto la estructura de dependencia como el comportamiento extremo en la evaluación del riesgo de desastres naturales \parencite{mcneil_quantitative_2015,6,5}.
@@ -186,10 +186,10 @@ Social -- Geológico & N & 0.28 \\
 \footnotesize
 \raggedright
 
-\textit{Fuente:} Elaboración propia con datos del CNE 2005--2023. \par 
+\textit{Fuente:} Elaboración propia con datos del CNE 2005--2023. \par
 \vspace{0.3cm}
-\textit{Nota:} SC denota una cópula t--Student, 
-C denota una cópula de Clayton, 
+\textit{Nota:} SC denota una cópula t--Student,
+C denota una cópula de Clayton,
 N denota una cópula Normal o Gaussiana
 y C270 corresponde a una rotación de 270 grados de la cópula de Clayton.
 \end{table}
@@ -223,7 +223,7 @@ Social -- Geológico & 26.17 & 27.88 & 28.84 & 30.60 \\
 \textit{Fuente:} Elaboración propia con datos del CNE 2005--2023.
 \end{table}
 
-En la tabla~\ref{tab:var_cvar_resumen} se aprecia que, para todos los casos, el CVaR supera de manera sistemática al VaR, tanto al 95\,\% como al 99\,\%, lo cual refleja que las pérdidas esperadas condicionadas a superar el cuantil correspondiente son sustancialmente mayores que el propio umbral de VaR. Este efecto es especialmente notable en parejas asociadas a la categoría hidrometeorológica y al sector social, como SOCIAL--Geológico y Limón--Hidromet., donde las diferencias entre VaR y CVaR al 99\,\% son particularmente amplias. 
+En la tabla~\ref{tab:var_cvar_resumen} se aprecia que, para todos los casos, el CVaR supera de manera sistemática al VaR, tanto al 95\,\% como al 99\,\%, lo cual refleja que las pérdidas esperadas condicionadas a superar el cuantil correspondiente son sustancialmente mayores que el propio umbral de VaR. Este efecto es especialmente notable en parejas asociadas a la categoría hidrometeorológica y al sector social, como SOCIAL--Geológico y Limón--Hidromet., donde las diferencias entre VaR y CVaR al 99\,\% son particularmente amplias.
 
 En conjunto, estos resultados confirman la presencia de colas pesadas y ponen de manifiesto que una parte importante del riesgo económico se concentra en un reducido número de eventos extremos. Además, la combinación de colas marginales pesadas con dependencia positiva en las colas implica que los escenarios conjuntos de pérdida severa no son eventos excepcionales bajo el modelo, sino componentes relevantes del perfil de riesgo. Esto justifica el uso conjunto de VaR y CVaR en la evaluación del riesgo de desastres naturales y refuerza la necesidad de incorporar explícitamente la estructura de dependencia en los análisis de solvencia y planificación financiera \parencite{mcneil_quantitative_2015,gomez_teoria_2009,mora_construccion_2013}.
 
